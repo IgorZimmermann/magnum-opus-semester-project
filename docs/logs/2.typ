@@ -14,8 +14,8 @@
   members: json("../team-members.json"),
 )
 
-- We signed the Group Contract
-- We contacted the group supervisor
-- We designed the initial component diagram
-- We decided the tech stack
-- We calculated the dependency depth
+- We signed the Group Contract.
+- We contacted the group supervisor.
+- We designed the initial component diagram.
+- We decided the tech stack.
+- We calculated the dependency depth.
