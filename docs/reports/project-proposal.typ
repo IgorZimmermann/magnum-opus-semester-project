@@ -34,27 +34,27 @@
 This semester project will be structured using a layered architecture. Implementing a component-based system (CBS) framework focusing on modularity, replaceability & reusability. Components communicate via an API Gateway implementing a service orchestration pattern. 
 
   == Application Layer Diagram
-  This section analyses the Application diagram, *see @appLayer.* Breaking down the individual layers of this layered architecture.
+  This section analyses the Application diagram, see @appLayer. Breaking down the individual layers of this layered architecture.
 
   #figure(
   image("../images/applicationLayer.jpg"),
   caption: "Application Layer Diagram", 
   ) <appLayer>
 
-  1) Frontend Layer
+  === Frontend Layer
   
   The main responsibility of this layer is to act as an intermediate between the user and the backend services, by triggering API calls to the orchestration logic.
 
   - *User Portal (Next.js/Typescript):* Provides user interface for booking management and authentication for clients. Allows users to search for doctors, see availability and create/remove bookings
   - *Doctor Portal (Next.js/Typescript):*  Provides doctor interface for selecting bookings and starting consultation. Allows doctor to record consultation, edit transcription, accept/deny LLM generated suggestions and send prescription notes.
   
-  2) Gateway Layer
+  === Gateway Layer
 
   The main responsibility of this layer is to route frontend requests to the corresponding backend services (e.g. logging in, booking creation, start consultation). This provides a centralised role-based authentication to protects backend endpoints. 
 
   - *Gateway (Next.js):* Provides an interface for backend access for the frontend.
   \
-  3) Application Layer:
+  === Application Layer:
   
   The main responsibility of this layer is the implementation of orchestration logic to coordinate workflows between services and databases.
   - *Authentication Manager:* Uses relational database to authenticate login requests
@@ -64,7 +64,7 @@ This semester project will be structured using a layered architecture. Implement
   - *Transcribe Editor Orchestrator:* Allows doctor to correct any transcription errors and rewrites them using 'LLM' service.
   - *Doctor Note Orchestrator:* Uses doctor apporved suggestions and consulation to create a doctor note using 'PDF Generator', 'LLM' and 'Secure Email' service.
 
-  4) Infrastructure Services:
+  === Infrastructure Services:
 
   The infrastructure services exposed through stable HTTP interfaces provides specialised functions. These services are isolated Docker containers exposed via an HTTP interface for modularity and follow CBS framework. 
   - *Speech-to-Text (Faster-Whisper):* Transcribes audio files
@@ -72,21 +72,23 @@ This semester project will be structured using a layered architecture. Implement
   - *PDF Generation (Typst):* Produces exportable PDF files.
   - *Secure Email (Mailpit):* Sends generated outputs to corresponding clients
   
-  5) Data Layer:
+  === Data Layer:
 
   The main responsibility of this layer is data persistence.
   - *Relational Database (PostgreSQL):* Stores structured data such as users, doctors and booking information. 
   - *Non-relational Database (MongoDB):* Stores unstructured data such as transcripts, accepted AI suggestions, AI summaries and generated doctor notes. 
 
   == Component-Based System Diagram
-  The Component-Based System (CBS)  *see @CBSE*, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: user interface, orchestrators/managers and services & databases. This design allows individual components to be independently developed and interchanged at runtime. 
+  The Component-Based System (CBS)  see @CBSE, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: user interface, orchestrators/managers and services & databases. This design allows individual components to be independently developed and interchanged at runtime. 
   #figure(
   image("../images/CBSDiagram.png"),
-  caption: "Application Layer Diagram", 
+  caption: "Component-Based System Diagram", 
   ) <CBSE>
 
   == Tech Stack
-  #table(
+  #figure(
+  caption: "Application tech stack",
+  table(
   columns: 3,
   align: left,
   stroke: 0.5pt,
@@ -105,6 +107,7 @@ This semester project will be structured using a layered architecture. Implement
   [Deployment], [Docker Compose], [Containerised services & networking],
   [CI (OPTIONAL)], [GitHub Actions], [Automated test & build checks],
 )
+)<tech-stack>
   
 #pagebreak()
 = Risks
