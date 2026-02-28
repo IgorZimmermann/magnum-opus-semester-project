@@ -11,7 +11,7 @@
 
 = Aim
 
-- Problem statement
+In many outpatient departments, doctors must manually manage appointments, transcribe consultations, and write prescriptions, which disrupts the flow of patients and increases the workload of hospital staff. Our project addresses this by providing a privacy-preserving, locally hosted OPD management system that automates the flow from consultation to digital prescription using open‑source speech and language models, offers a "safety net" through suggestive alerts, and is designed as a modular, easily replaceable component-based system.
 
 = Objectives
 
