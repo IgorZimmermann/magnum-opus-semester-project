@@ -34,14 +34,18 @@ The following requirements define the core functionality of the project. The pri
   - The system shall send the approved prescription to the patient via a secure local email service.
   - The system shall store structured data (users, bookings) in a relational database.
   - The system shall store transcripts and AI-generated content in a non-relational database.
+  - The system shall support user registration through secure email invitations.
 
 - *SHOULD have*
   - The system should log AI prompts and outputs for evaluation purposes.
   - The system should allow configurable instructions for the Suggestive Mode.
+  - The system should allow users to search for a doctor / see available doctors.
+  - The system should allow doctors to start / end consultations.
 
 - *COULD have*
   - The system could allow doctors to upload diagnostic images as part of a consultation.
   - The system could provide simple statistics about number of consultations and bookings.
+  - The system could support switching between different local LLM models.
 
 - *WON'T have*
   - The system will not use any cloud-based AI services.
@@ -61,6 +65,12 @@ The following requirements define the core functionality of the project. The pri
 - *Scalability*
   - The system shall support at least 5 concurrent consultations without service failure.
   - Each infrastructure service shall be independently replaceable without modifying other components.
+
+- *Maintainability*
+  - The project shall follow a CBSE-aligned architecture, where services and components are loosely coupled and communicate through clearly defined API interfaces.
+  - Each service/component shall be replaceable or upgradable with minimal impact on the rest of the system.
+  - The modular structure shall simplify debugging by isolating faults to specific services/components.
+  - The defined interfaces and separation of concerns shall improve long-term maintainability and make components interchangeable.
 
 - *Security*
   - All patient and consultation data shall remain within the local network.
