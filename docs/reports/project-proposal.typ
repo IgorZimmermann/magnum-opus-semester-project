@@ -25,7 +25,7 @@ This modular design makes it easy to replace components while preserving privacy
 
 == Booking process
 - Primary actor (user)
-  - Patient 
+  - Patient
 - Preconditions
   - Patient is registered in the system
   - Patient has valid login credentials
@@ -43,61 +43,59 @@ This modular design makes it easy to replace components while preserving privacy
   - The system sends an email as a confirmation
 
 == Users interacting during consultation process
-  - Primary actor (user)
-    - Doctor
-  - Secondary actor
-    - Patient
-  - Preconditions
-    - Appointment exists in the system
-    - Doctor has valid credentials
-  - Goal
-    - Doctor and patient discuss the issues
-    - Doctor identifies symptoms, concludes a diagnosis and if necessary prescribes medicine and refers to other department
-    - The system internally processes the audio and transcribes the consultation
-  - Flow
-    - User navigates to the doctor website
-    - User logs in
-    - The system display a dashboard with todays bookings related to the user
-    - The user selects the appropriate appointment
-    - The user presses start consultation
-    - The system starts the audio recording
-    - The system waits until the user presses end consultation
-    - Audio recording is stopped and sent to process by the speech-to-text component
+- Primary actor (user)
+  - Doctor
+- Secondary actor
+  - Patient
+- Preconditions
+  - Appointment exists in the system
+  - Doctor has valid credentials
+- Goal
+  - Doctor and patient discuss the issues
+  - Doctor identifies symptoms, concludes a diagnosis and if necessary prescribes medicine and refers to other department
+  - The system internally processes the audio and transcribes the consultation
+- Flow
+  - User navigates to the doctor website
+  - User logs in
+  - The system display a dashboard with todays bookings related to the user
+  - The user selects the appropriate appointment
+  - The user presses start consultation
+  - The system starts the audio recording
+  - The system waits until the user presses end consultation
+  - Audio recording is stopped and sent to process by the speech-to-text component
 
 == Review and send doctors note to patient
-  - Primary actor (user)
-    - Doctor
-  - Preconditions
-    - Consultation recording completed and successfully transcribed
-  - Goal
-    - Review AI-generated documentation, validate clinical suggestions and send final doctors note
-  - Flow
-    - The system generates a summary based on the transcription
-    - The system displays the consultaions dashboard:
-      - Raw transcription
-      - Transcription summary
-    - User has the ability to either edit or accept both documents
-    - If the user edits the raw transcription
-      - Summary is regenerated
-    - If the user edits the summary
-      - Nothing is regenerated
-    - When both documents are accepted the system generates suggestions based on the transcription
-    - Suggestions includes:
-      - Medicine
-      - Referral to other departments
-    - The system displays suggestions
-    - User has the ability to accept or decline the suggestions
-    - The system generates a doctors note
-    - The doctors note is solely based on:
-      - Transcription
-      - Summary
-      - Accepted suggestions
-    - The doctors note includes:
-      - Symptoms
-      - Diagnosis
-      - Prescriptions
-  
-
+- Primary actor (user)
+  - Doctor
+- Preconditions
+  - Consultation recording completed and successfully transcribed
+- Goal
+  - Review AI-generated documentation, validate clinical suggestions and send final doctors note
+- Flow
+  - The system generates a summary based on the transcription
+  - The system displays the consultaions dashboard:
+    - Raw transcription
+    - Transcription summary
+  - User has the ability to either edit or accept both documents
+  - If the user edits the raw transcription
+    - Summary is regenerated
+  - If the user edits the summary
+    - Nothing is regenerated
+  - When both documents are accepted the system generates suggestions based on the transcription
+  - Suggestions includes:
+    - Medicine
+    - Referral to other departments
+  - The system displays suggestions
+  - User has the ability to accept or decline the suggestions
+  - The system generates a doctors note
+  - The doctors note is solely based on:
+    - Transcription
+    - Summary
+    - Accepted suggestions
+  - The doctors note includes:
+    - Symptoms
+    - Diagnosis
+    - Prescriptions
 
 = Initial Requirements
 
@@ -167,9 +165,6 @@ The following requirements define the core functionality of the project. The pri
   - Core backend logic shall include unit and integration tests.
   - At least 80% of core application logic shall be covered by automated tests.
 
-
-#pagebreak()
-
 = Methods
 
 Before starting out on our project, we outlined a set of rules and methods to ensure that progression through the project will be smooth and continuous. The methodology and tools used also ensure that every contribution made to the project is peer-reviewed.
@@ -196,95 +191,84 @@ To make sure code contribution is safe, each issue has its own branch, and pull 
   "Pull Request template",
 )
 
-#pagebreak()
-
-#pagebreak()
 = Architecture
-This semester project will be structured using a layered architecture. Implementing a component-based system (CBS) framework focusing on modularity, replaceability & reusability. Components communicate via an API Gateway implementing a service orchestration pattern. 
+This semester project will be structured using a layered architecture. Implementing a component-based system (CBS) framework focusing on modularity, replaceability & reusability. Components communicate via an API Gateway implementing a service orchestration pattern.
 
-  == Application Layer Diagram
-  This section analyses the Application diagram, see @appLayer. Breaking down the individual layers of this layered architecture.
+== Application Layer Diagram
+This section analyses the Application diagram, see @appLayer. Breaking down the individual layers of this layered architecture.
 
-  #figure(
+#figure(
   image("../images/applicationLayer.jpg"),
-  caption: "Application Layer Diagram", 
-  ) <appLayer>
+  caption: "Application Layer Diagram",
+) <appLayer>
 
-  === Frontend Layer
-  
-  The main responsibility of this layer is to act as an intermediate between the user and the backend services, by triggering API calls to the orchestration logic.
+=== Frontend Layer
 
-  - *User Portal (Next.js/Typescript):* Provides user interface for booking management and authentication for clients. Allows users to search for doctors, see availability and create/remove bookings
-  - *Doctor Portal (Next.js/Typescript):*  Provides doctor interface for selecting bookings and starting consultation. Allows doctor to record consultation, edit transcription, accept/deny LLM generated suggestions and send prescription notes.
-  
-  === Gateway Layer
+The main responsibility of this layer is to act as an intermediate between the user and the backend services, by triggering API calls to the orchestration logic.
 
-  The main responsibility of this layer is to route frontend requests to the corresponding backend services (e.g. logging in, booking creation, start consultation). This provides a centralised role-based authentication to protects backend endpoints. 
+- *User Portal (Next.js/Typescript):* Provides user interface for booking management and authentication for clients. Allows users to search for doctors, see availability and create/remove bookings
+- *Doctor Portal (Next.js/Typescript):*  Provides doctor interface for selecting bookings and starting consultation. Allows doctor to record consultation, edit transcription, accept/deny LLM generated suggestions and send prescription notes.
 
-  - *Gateway (Next.js):* Provides an interface for backend access for the frontend.
-  \
-  === Application Layer:
-  
-  The main responsibility of this layer is the implementation of orchestration logic to coordinate workflows between services and databases.
-  - *Authentication Manager:* Uses relational database to authenticate login requests
-  - *Booking Orchestrator:* Uses relational database to read/write data whilst creating / removing bookings. Additionally uses the 'Secure Email' service to send booking confirmation to clients. 
-  - *Consultation Manager:* Uses 'Speech To Text' service to transcribe consultation audio to text and write it into non-relational database. 
-  - *Suggestive Orchestrator:* Reads consultation data from the non-relational database and forwards it to the 'LLM' service to create suggestions. Stores accepted LLM generated suggestions.
-  - *Transcribe Editor Orchestrator:* Allows doctor to correct any transcription errors and rewrites them using 'LLM' service.
-  - *Doctor Note Orchestrator:* Uses doctor apporved suggestions and consulation to create a doctor note using 'PDF Generator', 'LLM' and 'Secure Email' service.
+=== Gateway Layer
 
-  === Infrastructure Services:
+The main responsibility of this layer is to route frontend requests to the corresponding backend services (e.g. logging in, booking creation, start consultation). This provides a centralised role-based authentication to protects backend endpoints.
 
-  The infrastructure services exposed through stable HTTP interfaces provides specialised functions. These services are isolated Docker containers exposed via an HTTP interface for modularity and follow CBS framework. 
-  - *Speech-to-Text (Faster-Whisper):* Transcribes audio files
-  - *LLM Runtime (Ollama + model):* Ollama acts as an  intermediary between HTTP requests and the LLM. We have yet to decide on a specific model/s.
-  - *PDF Generation (Typst):* Produces exportable PDF files.
-  - *Secure Email (Mailpit):* Sends generated outputs to corresponding clients
-  
-  === Data Layer:
+- *Gateway (Next.js):* Provides an interface for backend access for the frontend.
+\
+=== Application Layer:
 
-  The main responsibility of this layer is data persistence.
-  - *Relational Database (PostgreSQL):* Stores structured data such as users, doctors and booking information. 
-  - *Non-relational Database (MongoDB):* Stores unstructured data such as transcripts, accepted AI suggestions, AI summaries and generated doctor notes. 
+The main responsibility of this layer is the implementation of orchestration logic to coordinate workflows between services and databases.
+- *Authentication Manager:* Uses relational database to authenticate login requests
+- *Booking Orchestrator:* Uses relational database to read/write data whilst creating / removing bookings. Additionally uses the 'Secure Email' service to send booking confirmation to clients.
+- *Consultation Manager:* Uses 'Speech To Text' service to transcribe consultation audio to text and write it into non-relational database.
+- *Suggestive Orchestrator:* Reads consultation data from the non-relational database and forwards it to the 'LLM' service to create suggestions. Stores accepted LLM generated suggestions.
+- *Transcribe Editor Orchestrator:* Allows doctor to correct any transcription errors and rewrites them using 'LLM' service.
+- *Doctor Note Orchestrator:* Uses doctor apporved suggestions and consulation to create a doctor note using 'PDF Generator', 'LLM' and 'Secure Email' service.
 
-  == Component-Based System Diagram
-  The Component-Based System (CBS)  see @CBSE, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: user interface, orchestrators/managers and services & databases. This design allows individual components to be independently developed and interchanged at runtime. 
-  #figure(
+=== Infrastructure Services:
+
+The infrastructure services exposed through stable HTTP interfaces provides specialised functions. These services are isolated Docker containers exposed via an HTTP interface for modularity and follow CBS framework.
+- *Speech-to-Text (Faster-Whisper):* Transcribes audio files
+- *LLM Runtime (Ollama + model):* Ollama acts as an  intermediary between HTTP requests and the LLM. We have yet to decide on a specific model/s.
+- *PDF Generation (Typst):* Produces exportable PDF files.
+- *Secure Email (Mailpit):* Sends generated outputs to corresponding clients
+
+=== Data Layer:
+
+The main responsibility of this layer is data persistence.
+- *Relational Database (PostgreSQL):* Stores structured data such as users, doctors and booking information.
+- *Non-relational Database (MongoDB):* Stores unstructured data such as transcripts, accepted AI suggestions, AI summaries and generated doctor notes.
+
+== Component-Based System Diagram
+The Component-Based System (CBS)  see @CBSE, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: user interface, orchestrators/managers and services & databases. This design allows individual components to be independently developed and interchanged at runtime.
+#figure(
   image("../images/CBSDiagram.png"),
-  caption: "Component-Based System Diagram", 
-  ) <CBSE>
+  caption: "Component-Based System Diagram",
+) <CBSE>
 
-  == Tech Stack
-  #figure(
+== Tech Stack
+#figure(
   caption: "Application tech stack",
   table(
-  columns: 3,
-  align: left,
-  stroke: 0.5pt,
-  inset: 6pt,
+    columns: 3,
+    align: left,
+    stroke: 0.5pt,
+    inset: 6pt,
 
-  [*Layer*], [*Technology*], [*Purpose*],
+    [*Layer*], [*Technology*], [*Purpose*],
 
-  [Frontend], [Next.js / Typescript], [User/Doctor interface],
-  [Gateway], [Next.js], [API entry point & routing],
-  [Application Services], [FastAPI], [Orchestration & business logic],
-  [Speech-to-Text], [Faster-Whisper], [Audio transcription],
-  [LLM Runtime], [Ollama + LLM models], [Local AI],
-  [PDF Generator], [Typst], [PDF generation],
-  [Email], [Mailpit], [Email sending],
-  [Data], [PostgreSQL + MongoDB], [Un/structured storage],
-  [Deployment], [Docker Compose], [Containerised services & networking],
-  [CI (OPTIONAL)], [GitHub Actions], [Automated test & build checks],
-)
+    [Frontend], [Next.js / Typescript], [User/Doctor interface],
+    [Gateway], [Next.js], [API entry point & routing],
+    [Application Services], [FastAPI], [Orchestration & business logic],
+    [Speech-to-Text], [Faster-Whisper], [Audio transcription],
+    [LLM Runtime], [Ollama + LLM models], [Local AI],
+    [PDF Generator], [Typst], [PDF generation],
+    [Email], [Mailpit], [Email sending],
+    [Data], [PostgreSQL + MongoDB], [Un/structured storage],
+    [Deployment], [Docker Compose], [Containerised services & networking],
+    [CI (OPTIONAL)], [GitHub Actions], [Automated test & build checks],
+  ),
 )<tech-stack>
-  
-#pagebreak()
-= Risks
-
-- What poses a risk to the success of your project?
-- What can you do to mitigate these risks?
-
-#pagebreak()
 
 = Risks
 
@@ -292,7 +276,7 @@ In this section we will identify potential risk and security factors. As this pr
 
 == Security
 
-To ensure this, we will be implementing two separate databases. Our PostgreSQL database will be used to store user data such as login, while our MongoDB database will be storing documents generated during the doctor-patient discussions, and doctor notes. 
+To ensure this, we will be implementing two separate databases. Our PostgreSQL database will be used to store user data such as login, while our MongoDB database will be storing documents generated during the doctor-patient discussions, and doctor notes.
 
 This approach keeps sensitive data separate, even if one of the database is compromised, the other one will still be secure.
 
@@ -302,6 +286,6 @@ Our API gateway will implement JWT token authentication, so unauthorized access 
 
 == Componentized approach
 
-The componentized architecture addresses the risk of tight coupling. By breaking down the whole system into smaller components and separating responsibilities, we can ensure that if one fails, others can still function. This approach also allows us to easily find issues and replace components without affecting the whole system. 
+The componentized architecture addresses the risk of tight coupling. By breaking down the whole system into smaller components and separating responsibilities, we can ensure that if one fails, others can still function. This approach also allows us to easily find issues and replace components without affecting the whole system.
 
-To achieve this we will be using Docker containerization, to isolate each component. This allows us to scale components as needed, and run health checks and automatic recovery. This would mean we could periodically check the availability of components and automatically restart them if they fail to respond, reducing downtime and improving reliability. 
+To achieve this we will be using Docker containerization, to isolate each component. This allows us to scale components as needed, and run health checks and automatic recovery. This would mean we could periodically check the availability of components and automatically restart them if they fail to respond, reducing downtime and improving reliability.

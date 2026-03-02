@@ -29,6 +29,16 @@
     numbering: "1.",
   )
 
+  show heading.where(level: 1): it => {
+    pagebreak(weak: true)
+    text()[
+      #if (it.numbering != none) {
+        counter(heading).display()
+      }
+      #it.body]
+    parbreak()
+  }
+
   page(
     numbering: none,
   )[
@@ -65,8 +75,12 @@
 
   pagebreak()
 
-  heading(numbering: none, level: 1)[Appendix]
-  v(20pt)
+  context [
+    #if appendixState.get().len() != 0 {
+      heading(numbering: none, level: 1)[Appendix]
+      v(20pt)
+    }
+  ]
 
   show figure: set figure(
     numbering: "A.1",
