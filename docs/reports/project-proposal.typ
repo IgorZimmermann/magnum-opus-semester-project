@@ -113,7 +113,6 @@ This modular design makes it easy to replace components while preserving privacy
       - Prescriptions
     - The user can edit the doctor's note/prescription
 
-  #colbreak()
 
 
 = Initial Requirements
@@ -150,7 +149,6 @@ The following requirements define the core functionality of the project. The pri
   - The system will not use any cloud-based AI services.
   - The system will not include a mobile application.
 
-#colbreak()
 
 == Non-Functional Requirements
 
@@ -264,7 +262,7 @@ This semester's project will be structured using a layered architecture, impleme
   The main responsibility of this layer is data persistence.
   - *Relational Database (PostgreSQL):* Stores structured data such as users, doctors, and booking information. 
   - *Non-relational Database (MongoDB):* Stores unstructured data such as transcripts, accepted AI suggestions, AI summaries, and generated doctor's notes. 
-#colbreak()
+
   == Component-Based System Diagram
   The Component-Based System (CBS), see @CBSE, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: Frontend, Backend, and Services/Databases. This design allows individual components to be independently developed and interchanged at runtime. 
   #figure(
