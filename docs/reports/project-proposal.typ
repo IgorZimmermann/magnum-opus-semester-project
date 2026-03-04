@@ -219,10 +219,6 @@ To make sure code contributions are safe, each issue has its own branch, and pul
   "Pull Request template",
 )
 
-<<<<<<< HEAD
-=======
-#colbreak()
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
 = Architecture
 This semester's project will be structured using a layered architecture, implementing a component-based system (CBS) framework focusing on modularity, replaceability, and reusability. Components communicate via an API Gateway implementing a service-oriented pattern. 
 
@@ -245,8 +241,6 @@ This semester's project will be structured using a layered architecture, impleme
   === Backend Layer:
   
   For this project, the backend layer is split into different systems. One is for the user booking system, the other for the doctor consultation system. The reason for this design choice is to ensure privacy first. By separating the system into two, any calls made to the booking system only handle booking data, protecting client medical data.
-<<<<<<< HEAD
-=======
 
   - *Clinical Workflow Service:* This backend service focuses on the doctor workflow, including the following business logic:
 
@@ -261,7 +255,6 @@ This semester's project will be structured using a layered architecture, impleme
     - Authentication: authenticates logins, requests, and registrations.
     - Availability: checks for doctor availability.
     - Booking: manages patient bookings by creating or removing them.
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
 
   - *Clinical Workflow Service:* This backend service focuses on the doctor workflow, including the following business logic:
 
@@ -281,11 +274,8 @@ This semester's project will be structured using a layered architecture, impleme
 
   The infrastructure services exposed through stable HTTP interfaces provide specialized functions. These services are isolated Docker containers exposed via HTTP interfaces for modularity and follow the CBS framework. 
 
-<<<<<<< HEAD
-=======
   The infrastructure services exposed through stable HTTP interfaces provide specialized functions. These services are isolated Docker containers exposed via HTTP interfaces for modularity and follow the CBS framework. 
 
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
   - *Speech-to-Text (Faster-Whisper):* Transcribes audio files
   - *LLM Runtime (Ollama + model):* Ollama acts as an intermediary between HTTP requests and the LLM. We have yet to decide on a specific model.
   - *PDF Generation (Typst):* Produces exportable PDF files.
@@ -296,11 +286,7 @@ This semester's project will be structured using a layered architecture, impleme
   The main responsibility of this layer is data persistence.
   - *Relational Database (PostgreSQL):* Stores structured data such as users, doctors, and booking information. 
   - *Non-relational Database (MongoDB):* Stores unstructured data such as transcripts, accepted AI suggestions, AI summaries, and generated doctor's notes. 
-<<<<<<< HEAD
-
-=======
-#colbreak()
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
+  
   == Component-Based System Diagram
   The Component-Based System (CBS), see @CBSE, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: Frontend, Backend, and Services/Databases. This design allows individual components to be independently developed and interchanged at runtime. 
   #figure(
@@ -331,16 +317,9 @@ This semester's project will be structured using a layered architecture, impleme
 )
 )<tech-stack>
 
-<<<<<<< HEAD
 = Risks
 
 In this section we will identify potential risk and security factors. As this project will be used in professional medical environments, making sure that sensitive personal data is handled correctly is our top priority.
-=======
-#colbreak()
-= Risks
-
-In this section we will identify potential risks and security factors. As this project will be used in professional medical environments, making sure that sensitive personal data is handled correctly is our top priority.
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
 
 == Security
 
