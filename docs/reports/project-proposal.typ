@@ -113,10 +113,7 @@ This modular design makes it easy to replace components while preserving privacy
       - Prescriptions
     - The user can edit the doctor's note/prescription
 
-<<<<<<< HEAD
-=======
   #colbreak()
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
 
 
 = Initial Requirements
@@ -153,10 +150,6 @@ The following requirements define the core functionality of the project. The pri
   - The system will not use any cloud-based AI services.
   - The system will not include a mobile application.
 
-<<<<<<< HEAD
-=======
-#colbreak()
->>>>>>> 0c37c79c7a87c9a4001b45fe1fc849666166d51d
 
 == Non-Functional Requirements
 
