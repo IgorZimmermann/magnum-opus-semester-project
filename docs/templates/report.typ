@@ -44,14 +44,20 @@
   )[
     #align(horizon + center)[
       #place(
-        center,
-        image(
-          "../images/mona.png",
-          width: 50%,
-        ),
+        center + top,
+        block[
+          #image("../images/mona.png", width: 40%)
+          #place(top + right, "*", dx: 5pt)
+        ],
+        float: true,
       )
+
+    ]
+
+    #align(horizon + center)[
       #text(weight: "bold", size: 24pt)[#title]
     ]
+
     #align(bottom + center)[
       #grid(
         columns: 1,
@@ -64,6 +70,10 @@
           ]
         ])
       )
+
+      #v(40pt)
+
+      \* The Mona Lisa is considered as Da Vinci's magnum opus.\ This project is our magnum opus.
     ]
   ]
 
