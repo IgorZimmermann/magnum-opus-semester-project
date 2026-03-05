@@ -16,7 +16,7 @@
 
 - Team members contributions since last meeting:
   - *Örs*: No contributions yet.
-  - *Dávid*: Setup LLMs for testing.
+  - *Dávid*: Setup LLMs for testing (`OPUS-12`).
   - *Sean*: Completed task (`OPUS-18`). Resolved requested changes. PR merged.
   - *Igor*: No contributions yet.
   - *Denis*: No contributions yet. Will not be done with task by Friday.
