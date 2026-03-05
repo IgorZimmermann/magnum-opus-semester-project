@@ -19,5 +19,5 @@
   - *Dávid*: Setup LLMs for testing.
   - *Sean*: Completed task (`OPUS-18`). Resolved requested changes. PR merged.
   - *Igor*: No contributions yet.
-  - *Denis*: No contributions yet.
+  - *Denis*: No contributions yet. Will not be done with task by Friday.
   - *Ákos*: Has started researching task (`OPUS-15`).
