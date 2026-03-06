@@ -6,11 +6,12 @@
 )
 
 = Researched options
-- *#link("https://typst.app")[Typst] with custom API*
+- *#link("https://typst.app")[Typst]*
+- #link("https://pandoc.org")[Pandoc + Markdown]
 
 = Reason
 
-In Typst, it is easy to create a highly-customized template and pass in data. A custom wrapper API would be easy to implement around the typst-cli in whatever we choose as our backend tech.
+Typst unfortunately does not support passing in data from the cli, so writing data to a `json` file would be necessary. However, it support more extensive customizable options for the document, allowing us to make the final document look official. Ultimately I chose typst, because we already use it in the project and it's more customizable than markdown.
 
 = How to get started
 
