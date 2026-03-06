@@ -24,7 +24,7 @@ Liquid AI's quality is close to them, with less amount of raw text and with a wa
 
 1. You will need to have #link("https://ollama.com/")[Ollama] installed on your machine.
 
-2. Then you will need to pased the following command in your terminal to install olama python library:
+2. Then you will need to paset the following command in your terminal to install olama python library:
   ```bash
   pip install ollama
   ```
@@ -47,7 +47,7 @@ Liquid AI's quality is close to them, with less amount of raw text and with a wa
 
 = Interactivity
 
-Once the transcrip is made it is sent LLM through a POST request to Olama HTTP as a prompt. It will genarate a response and send it back.
+Once the transcrip is made it is sent to the LLM through a POST request to Olama HTTP as a prompt. It will genarate a response and send it back.
 When the changes are made by the doctor, through the same procces the doctor's note is made.
 
 Swaping will be easy, since we would only need to change the model name in the Olama call.
