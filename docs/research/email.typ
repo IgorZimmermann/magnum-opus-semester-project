@@ -12,12 +12,14 @@
 
 = Reason
 
-After looking at various options for the secure email component:
-Mailtrap's lack of offical Docker image and it being cloud-hosted make it not the proper tool for the project;
+After looking at various options for the secure email component, Mailpit appeared to be the most optimal choice.
 
-Mailu would be a great choice if the project needed to both send and receive emails. Since only the former service will be utilised, it makes this option too heavy;
+Mailu would have been a great choice had the project needed to both send and receive emails. Since only the former is required, its full feature set would be excessive.
 
-Mailpit appeared to be the most optimal choice due to data staying within the local network and its relative simple set up in Docker.
+Mailtrap does not have an official Docker image and its cloud-hosted nature make it unsuitable for the project.
+
+Mailpit keeps all data locally, its Docker set up is relatively simple, and it covers exactly what the project requires: sending emails.
+It is worth noting that Mailpit is intended for development use only; a production deployment would require a different service.
 
 
 = How to get started
