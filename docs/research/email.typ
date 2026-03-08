@@ -16,9 +16,9 @@ After looking at various options for the secure email component, Mailpit appeare
 
 Mailu would have been a great choice had the project needed to both send and receive emails. Since only the former is required, its full feature set would be excessive.
 
-Mailtrap does not have an official Docker image and its cloud-hosted nature make it unsuitable for the project.
+Mailtrap does not have an official Docker image and its cloud-hosted nature makes it unsuitable for the project.
 
-Mailpit keeps all data locally, its Docker set up is relatively simple, and it covers exactly what the project requires: sending emails.
+Mailpit keeps all data locally, its Docker setup is relatively simple, and it covers exactly what the project requires: sending emails.
 It is worth noting that Mailpit is intended for development use only; a production deployment would require a different service.
 
 
