@@ -15,7 +15,7 @@
 )
 
 - We showed the supervisor our progress and our new diagrams. Based on those he gave us the feedback that we should start implementing from the smallest components, building up to the biggest.
-- We went through our flow diagrams, so everyone understands how the application.
+- We went through our flow diagrams, so everyone understands how the application works.
 - Everyone presented their research to the rest of the members.
 - Final tech stack:
   - Backend: C\# ASP.NET
