@@ -92,7 +92,7 @@ The website also mentions that it's easy to integrate with LLM's such as MedGemm
 == Testing results
 
 I decided to focus on the two main contenders, MedASR and Faster-Whisper, and put NVIDIA Canary Qwen 2.5B a bit into the background (because the first two
-allign with our needs better).
+align with our needs better).
 
 I ran several tests to see whether the tested models provide the expected results. 
 I used multiple samples with different attributes:
@@ -152,4 +152,4 @@ based on what I read online it would fit our project better (intentionally built
 Check out installation section #link("https://github.com/SYSTRAN/faster-whisper?tab=readme-ov-file#installation")[here]
 = Interactivity
 
-Once the STT service processes the audio input, it sends the transcription for summarization to the LLM via the backend with a POST request.
+The service recieves the audio from the frontend through the backend via HTTP POST request. Once the STT service processes the audio input, it sends the transcription for summarization to the LLM via the backend with a POST request.
