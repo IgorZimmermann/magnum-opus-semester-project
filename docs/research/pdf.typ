@@ -11,7 +11,7 @@
 
 = Reason
 
-Typst unfortunately does not support passing in data from the cli, so writing data to a `json` file would be necessary. However, it support more extensive customizable options for the document, allowing us to make the final document look official. Ultimately I chose typst, because we already use it in the project and it's more customizable than markdown.
+Both Typst and Pandoc allows inputting json data in the command line, so my choice ultimately came down to customizability of the document, in which Typst highly exceeds Pandoc + Markdown.
 
 = How to get started
 
