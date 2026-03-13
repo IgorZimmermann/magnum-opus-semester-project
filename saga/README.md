@@ -2,16 +2,39 @@
 
 ## How to start container
 
-Describe what parameters are required and how to start it.
+The container requires only a port expose to work. The internal port is 3000, map that to any desired port.
 
 ## How to add to a `docker-compose`
 
 ```yaml
-# docker-compose configuration snippet
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
 ```
 
 ## Endpoints/Interface
 
-Describe what endpoints/interfaces are exposed by the component.
+## `GET /ping`
 
-Try to format it using headers, code blocks, bolds and italics.
+Health check. Returns `pong` as plain text.
+
+## `POST /generate`
+
+Generates a PDF and returns it as a binary file buffer.
+
+**Request body** (`application/json`):
+
+| Field | Type | Required |
+|---|---|---|
+| `doctor.name` | string | ✓ |
+| `doctor.id` | number | ✓ |
+| `diagnosis` | string | ✓ |
+| `description` | string | ✓ |
+| `advice_prescription` | string | ✓ |
+
+**Responses:**
+
+- `200` — `application/pdf` binary
+- `500` — `{ "message": string }`
