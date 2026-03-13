@@ -6,10 +6,14 @@
   size: 16pt
 )
 
-#let data = json(bytes(sys.inputs.at(
-  "data",
-  default: json("example.json")
-)))
+#let data = json(
+  bytes(
+    sys.inputs.at(
+      "data",
+      default: read("example.json")
+    )
+  )
+)
 
 #align(center, [
   #title(
