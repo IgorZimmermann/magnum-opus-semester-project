@@ -3,8 +3,7 @@
 )
 
 #set text(
-  size: 16pt,
-  font: ("Helvetica Neue")
+  size: 16pt
 )
 
 #let data = json(bytes(sys.inputs.at(
