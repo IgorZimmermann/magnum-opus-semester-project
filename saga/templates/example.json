@@ -3,6 +3,10 @@
 		"name": "dr. Martin Hertz",
 		"id": 1239134283
 	},
+	"patient": {
+		"name": "John Curtis",
+		"id": 942382
+	},
 	"diagnosis": "iridocyclitis",
 	"description": "Iridocyclitis is a painful, often sudden, inflammation of both the iris and ciliary body in the front of the eye (anterior uveitis). Key symptoms include severe eye pain, red eye, sensitivity to light (photophobia), and blurry vision.",
 	"advice_prescription": "You might need eye drops, topical eye ointments or pills."

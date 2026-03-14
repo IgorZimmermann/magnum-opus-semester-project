@@ -48,6 +48,10 @@ app.openapi(
 								name: z.string(),
 								id: z.number(),
 							}),
+							patient: z.object({
+								name: z.string(),
+								id: z.number(),
+							}),
 							diagnosis: z.string(),
 							description: z.string(),
 							advice_prescription: z.string(),

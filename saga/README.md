@@ -30,6 +30,8 @@ Generates a PDF and returns it as a binary file buffer.
 |---|---|---|
 | `doctor.name` | string | ✓ |
 | `doctor.id` | number | ✓ |
+| `patient.name` | string | ✓ |
+| `patient.id` | number | ✓ |
 | `diagnosis` | string | ✓ |
 | `description` | string | ✓ |
 | `advice_prescription` | string | ✓ |

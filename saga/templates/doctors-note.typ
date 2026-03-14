@@ -20,7 +20,25 @@
     "Doctor's Note"
   )
 
-  #data.doctor.name (#data.doctor.id)
+  #datetime.today().display()
+
+  #grid(
+    columns: (1fr, 1fr),
+    block[
+      *Doctor*
+
+      #data.doctor.name
+
+      #data.doctor.id
+    ],
+    block[
+      *Patient*
+
+      #data.patient.name
+
+      #data.patient.id
+    ]
+  )
 ])
 
 #v(50pt)
