@@ -14,12 +14,14 @@ FK - underlined
 - Enum status (confirmed, cancelled, completed)
 - Constraint: Unique(doc_id, appointment_date, appointment_time)
 
+The schema: ![](../docs/images/relational_database.drawio.svg)
+
 Business logic:
 
 - User selects the doctor
 - System looks at when does that doctor work using day_of_the_week(appointment_date)
 - Then the system looks at whether that timeslot has been occupied
-- The system only displays a day if it has avaible timeslot
+- The system only displays a day if it has available timeslot
 - Then the user can select a time
 - The system inserts a row as the user saves the appointment
 - The system sends an email
@@ -112,7 +114,7 @@ Small notes
 docker compose up --build
 ```
 
-## How to add to a `docker-compose`
+## How to add this to a `docker-compose`
 
 -`.env.example`
 ```.env
@@ -159,3 +161,38 @@ services:
 
 ## Endpoints/Interface
 
+- **Base URL:** `http://localhost:3000/api/v1`
+- Take it with a grain of salt as this is made by AI
+- **Responses:** JSON files with errors returning a `{ "error": "message" }`.
+
+### Relational DB (PostgreSQL)
+ 
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/doctors` | List all doctors |
+| `GET` | `/doctors/:id/schedule` | Get a doctor's weekly working hours |
+| `GET` | `/doctors/:id/availability?date=` | Get free timeslots for a doctor on a given date |
+| `POST` | `/patients` | Create a new patient record |
+| `GET` | `/patients/:id` | Get a patient by ID |
+| `GET` | `/appointments?doc_id=&date=` | List appointments, filtered by doctor and/or date |
+| `POST` | `/appointments` | Create a new appointment |
+| `GET` | `/appointments/:id` | Get a single appointment by ID |
+| `PATCH` | `/appointments/:id/status` | Update appointment status (`confirmed` / `cancelled` / `completed`) |
+| `DELETE` | `/appointments/:id` | Cancel an appointment |
+
+### Non-Relational DB (MongoDB)
+ 
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/transcripts` | Create a raw transcript for an appointment |
+| `GET` | `/transcripts?appointmentId=` | Get the transcript for a given appointment |
+| `PATCH` | `/transcripts/:id/status` | Update transcript status (`pending` / `completed` / `failed`) |
+| `POST` | `/summaries` | Create a summary from a transcript |
+| `GET` | `/summaries?appointmentId=` | Get the summary for a given appointment |
+| `PATCH` | `/summaries/:id/status` | Doctor approves or rejects the summary |
+| `POST` | `/llm-outputs` | Trigger LLM generation for a summary (`advice` or `prescription`) |
+| `PATCH` | `/llm-outputs/:id` | Doctor saves edited content and approves or rejects |
+| `POST` | `/doctors-notes` | Create a doctor's note for an appointment |
+| `PATCH` | `/doctors-notes/:id` | Update note fields (symptoms, diagnosis, prescription, etc.) |
+| `POST` | `/doctors-notes/:id/export-pdf` | Export the prescription as a PDF |
+| `POST` | `/doctors-notes/:id/send-email` | Email the prescription PDF to the patient |
