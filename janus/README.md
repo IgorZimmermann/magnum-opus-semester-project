@@ -1,4 +1,4 @@
-# Heimdall - Consultation Backend
+# Janus - Booking Backend
 
 ## How to start container
 
