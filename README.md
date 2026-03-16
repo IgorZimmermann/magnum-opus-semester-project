@@ -7,8 +7,11 @@
 | **Name** | **Function**   |
 | -------- | -------------- |
 | Echo     | Speech-to-text |
-| Heimdall | Backend        |
+| Heimdall | Consultation Backend  |
 | Hermes   | Email          |
 | Mneme    | Database       |
 | Odin     | LLM            |
 | Saga     | PDF Generation |
+| Janus    | Booking Backend|
+| Eir      | Consultation Frontend |
+| Iris     | Booking Frontend|
