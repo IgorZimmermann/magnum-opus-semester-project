@@ -66,23 +66,12 @@ const summary = {
 		id: 67
 	},
     output: "Summarized text of the transcription",
+    type: "advice", //advice/prescription/summary
     createdAt: new ISODate("2024-01-15T10:30:00Z"),
     status: "approved", //pending_review/approved
 }
 ```
 
-- Llm output
-```js
-const llm_output = {
-    _id: new ObjectId(),
-    appointmentId: 123,
-    summaryId: ObjectId("..."),
-    type: "advice", //advice/prescription
-    generated_content: "LLM-generated text based on summary...",
-    status: "approved", //pending/approved/rejected
-    created_at: new ISODate("2024-01-15T10:40:00Z")
-};
-```
 
 - Doctors note
 ```js
@@ -93,12 +82,15 @@ const doctors_note = {
 		name: "dr. Martin Hertz",
 		id: 1239134283
 	},
+    patient: {
+		name: "Bad Bunny",
+		id: 67
+	},
     symptoms: "Patient has deep, aching pain in his right eye. Patient has severe sensitivity to light (photophobia). Patient has noticeable redness, particularly around the iris. Patient has blurred or hazy vision. Patient notices the pupil in the affected eye is smaller than the other.",
 	diagnosis: "iridocyclitis",
 	description: "Iridocyclitis is a painful, often sudden, inflammation of both the iris and ciliary body in the front of the eye (anterior uveitis). Key symptoms include severe eye pain, red eye, sensitivity to light (photophobia), and blurry vision.",
-	prescription: "You might need eye drops, topical eye ointments or pills.",
-    advice: "Urgent Referral to an Ophthalmologist",
-    pdf_url: "/exports/prescriptions/123.pdf"
+	advice_prescription: "You might need eye drops, topical eye ointments or pills.Urgent Referral to an Ophthalmologist",
+    pdf_url: "/exports/prescriptions/123.pdf",
     created_at: new ISODate("2024-01-15T10:50:00Z")
 };
 ```
@@ -157,42 +149,3 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     ports:
       - "${MONGO_PORT:-27017}:27017"
-```
-
-## Endpoints/Interface
-
-- **Base URL:** `http://localhost:3000/api/v1`
-- Take it with a grain of salt as this is made by AI
-- **Responses:** JSON files with errors returning a `{ "error": "message" }`.
-
-### Relational DB (PostgreSQL)
- 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/doctors` | List all doctors |
-| `GET` | `/doctors/:id/schedule` | Get a doctor's weekly working hours |
-| `GET` | `/doctors/:id/availability?date=` | Get free timeslots for a doctor on a given date |
-| `POST` | `/patients` | Create a new patient record |
-| `GET` | `/patients/:id` | Get a patient by ID |
-| `GET` | `/appointments?doc_id=&date=` | List appointments, filtered by doctor and/or date |
-| `POST` | `/appointments` | Create a new appointment |
-| `GET` | `/appointments/:id` | Get a single appointment by ID |
-| `PATCH` | `/appointments/:id/status` | Update appointment status (`confirmed` / `cancelled` / `completed`) |
-| `DELETE` | `/appointments/:id` | Cancel an appointment |
-
-### Non-Relational DB (MongoDB)
- 
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/transcripts` | Create a raw transcript for an appointment |
-| `GET` | `/transcripts?appointmentId=` | Get the transcript for a given appointment |
-| `PATCH` | `/transcripts/:id/status` | Update transcript status (`pending` / `completed` / `failed`) |
-| `POST` | `/summaries` | Create a summary from a transcript |
-| `GET` | `/summaries?appointmentId=` | Get the summary for a given appointment |
-| `PATCH` | `/summaries/:id/status` | Doctor approves or rejects the summary |
-| `POST` | `/llm-outputs` | Trigger LLM generation for a summary (`advice` or `prescription`) |
-| `PATCH` | `/llm-outputs/:id` | Doctor saves edited content and approves or rejects |
-| `POST` | `/doctors-notes` | Create a doctor's note for an appointment |
-| `PATCH` | `/doctors-notes/:id` | Update note fields (symptoms, diagnosis, prescription, etc.) |
-| `POST` | `/doctors-notes/:id/export-pdf` | Export the prescription as a PDF |
-| `POST` | `/doctors-notes/:id/send-email` | Email the prescription PDF to the patient |
