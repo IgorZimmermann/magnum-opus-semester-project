@@ -27,9 +27,6 @@ Business logic:
 - The system sends an email
 - The system updates the row based on the status response from the email service
 
-Small notes:
-
-- We might consider first selecting the appointment as i dont know how hard it is to show in the UI avaiable days and times (Igor?)
 
 ### Non Relational db
 
@@ -95,9 +92,6 @@ const doctors_note = {
 };
 ```
 
-Small notes
-- We have to go over the nonrel db schemas as it is very important how we want to format it. 
-- I changed Igors format a bit just separated prescription and advice and also added a symptoms part.
 
 ## How to start container
 
