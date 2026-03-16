@@ -44,4 +44,4 @@ App connects here to send mail automatically.
 
 - URL: `http://<localhost>:8025`
 
-Browser-based email client for viewing, searching, and managing captured emails. In our case mostly for testing
+Browser-based email client for viewing, searching, and managing captured emails. In our case mostly for testing.
