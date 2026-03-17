@@ -1,0 +1,6 @@
+@ConsultationBackend_HostAddress = http://localhost:5096
+
+GET {{ConsultationBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
