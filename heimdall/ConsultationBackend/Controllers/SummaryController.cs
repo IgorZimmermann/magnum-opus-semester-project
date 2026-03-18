@@ -1,4 +1,4 @@
-
+using ConsultationBackend.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsultationBackend.Controllers;
@@ -23,7 +23,7 @@ public class SummaryController : ControllerBase
 
     // there should be something like Summary summary as well or SummaryEditRequest request 
     [HttpPut("EditSumamry")]
-    public IActionResult EditSummary(Guid consultationId)
+    public IActionResult EditSummary(Guid consultationId, SummaryEditRequest request)
     {
         return Ok("ok");
     }

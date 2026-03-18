@@ -1,6 +1,5 @@
-
 using Microsoft.AspNetCore.Mvc;
-
+using ConsultationBackend.Dtos;
 namespace ConsultationBackend.Controllers;
 
 [ApiController]
@@ -21,7 +20,6 @@ public class PrescriptionController : ControllerBase
         return Ok("ok");
     }
 
-    // there should be something like PrescriptionEditRequest request / Prescription editedPrescription
     [HttpPut("EditPrescription")]
     public IActionResult EditPrescription(Guid consultationId, [FromBody] PrescriptionEditRequest request)
     {
