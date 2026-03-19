@@ -18,4 +18,6 @@ public class MongoDbContext
     public IMongoCollection<DoctorNoteDocument> DoctorNotes => _database.GetCollection<DoctorNoteDocument>("doctor_notes");
 
     public IMongoCollection<RawTranscriptDocument> RawTranscripts => _database.GetCollection<RawTranscriptDocument>("raw_transcripts");
+
+    public IMongoCollection<ConsultationDocument> Consultations => _database.GetCollection<ConsultationDocument>("consultations");
 }

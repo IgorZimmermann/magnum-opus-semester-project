@@ -84,6 +84,25 @@ public class StartupSeeder : IHostedService
                 }, new InsertOneOptions(), cancellationToken);
             }
 
+            if (await _mongo.Consultations.CountDocumentsAsync(FilterDefinition<ConsultationDocument>.Empty, cancellationToken: cancellationToken) == 0)
+            {
+                var docAliceId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+                var patJohnId  = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+                var appt1Id    = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc");
+
+                await _mongo.Consultations.InsertOneAsync(new ConsultationDocument
+                {
+                    AppointmentId = appt1Id,
+                    DoctorId = docAliceId,
+                    DoctorName = "Dr. Alice Carter",
+                    PatientId = patJohnId,
+                    PatientName = "John Doe",
+                    PatientEmail = "john.doe@example.com",
+                    Status = "completed",
+                    CreatedAt = DateTime.UtcNow
+                }, new InsertOneOptions(), cancellationToken);
+            }
+
             _logger.LogInformation("StartupSeeder: MongoDB seed ensured.");
         }
         catch (Exception ex)

@@ -1,8 +1,11 @@
+using ConsultationBackend.Dtos;
+using ConsultationBackend.DTOs;
+
 namespace ConsultationBackend.Interfaces.Services;
 
 public interface IConsultationService
 {
-    void StartConsultation(Guid boookingId);
-    void UploadAudio(Guid consultationId, IFormFile audio);
-    void GetConsultation(Guid consultationId);
+    Guid StartConsultation(BookingRequest request);
+    Task UploadAudio(Guid consultationId, IFormFile audio);
+    ConsultationResponse GetConsultation(Guid consultationId);
 }

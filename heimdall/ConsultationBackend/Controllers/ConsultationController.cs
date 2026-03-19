@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ConsultationBackend.DTOs;
 using ConsultationBackend.Interfaces.Services;
 
 namespace ConsultationBackend.Controllers;
@@ -16,24 +17,62 @@ public class ConsultationController : ControllerBase
 
 
     [HttpPost("startConsultation")]
-    public IActionResult StartConsultation(Guid bookingId)
+    public IActionResult StartConsultation(BookingRequest request)
     {
-        _consultationService.StartConsultation(bookingId);
-        return Ok("ok");
+        try
+        {
+            var consultationId = _consultationService.StartConsultation(request);
+            return Ok(new { consultationId });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("UploadAudio")]
-    public IActionResult UploadAudio(Guid consultationId, IFormFile audio)
+    public async Task<IActionResult> UploadAudio(Guid consultationId, IFormFile audio)
     {
-        _consultationService.UploadAudio(consultationId, audio);
-        return Ok("ok");
+        try
+        {
+            await _consultationService.UploadAudio(consultationId, audio);
+            return Ok("Audio Uploaded");
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidDataException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
+
     }
 
     [HttpGet("GetConsultation")]
     public IActionResult GetConsultation(Guid consultationId)
     {
-        _consultationService.GetConsultation(consultationId);
-        return Ok("ok");
+        try
+        {
+            var consultation = _consultationService.GetConsultation(consultationId);
+            return Ok(new { consultation });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }
 
