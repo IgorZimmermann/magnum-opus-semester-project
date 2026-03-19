@@ -15,10 +15,20 @@ builder.Services.AddHttpClient<ILLM, LLM>((sp, client) =>
 {
     // this fetches the url from appsetting.json
     var config = sp.GetRequiredService<IConfiguration>();
-    var baseUrl = config["LLM:BaseUrl"];
+    var baseUrl = config["Services:LLM:BaseUrl"];
 
     client.BaseAddress = new Uri(baseUrl!);
 });
+
+builder.Services.AddHttpClient<IPdf, Pdf>((sp, client) =>
+{
+    // this fetches the url from appsetting.json
+    var config = sp.GetRequiredService<IConfiguration>();
+    var baseUrl = config["Services:Pdf:BaseUrl"];
+
+    client.BaseAddress = new Uri(baseUrl!);
+});
+
 
 // Add services to the container.
 
