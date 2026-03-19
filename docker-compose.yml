@@ -1,0 +1,69 @@
+services:
+  odin:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+
+  hermes:
+    image: axllent/mailpit
+    container_name: mailpit
+    restart: unless-stopped
+    volumes:
+        - hermes_data:/data
+    ports:
+        - 8025:8025 # Web UI
+        - 1025:1025 # SMTP
+    environment:
+        MP_MAX_MESSAGES: 5000
+        MP_DATABASE: /data/mailpit.db
+        # app can use any credential without TLS 
+        # dev/testing
+        MP_SMTP_AUTH_ACCEPT_ANY: 1 
+        MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  echo:
+    build:
+      context: ./echo
+      dockerfile: Dockerfile
+    container_name: faster-whisper
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+
+  mongo:
+    image: mongo:7.0
+    container_name: mongo
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+
+volumes:
+  ollama_data:
+  hermes_data:
+  pgdata:
+  mongodata:
