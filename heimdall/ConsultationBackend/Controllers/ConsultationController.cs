@@ -34,33 +34,6 @@ public class ConsultationController : ControllerBase
         }
     }
 
-    [HttpPost("UploadAudio")]
-    public async Task<IActionResult> UploadAudio(Guid consultationId, IFormFile audio)
-    {
-        try
-        {
-            await _consultationService.UploadAudio(consultationId, audio);
-            return Ok("Audio Uploaded");
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch (ArgumentException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch (InvalidDataException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return NotFound(ex.Message);
-        }
-
-    }
-
     [HttpGet("GetConsultation")]
     public IActionResult GetConsultation(Guid consultationId)
     {

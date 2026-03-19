@@ -1,16 +1,71 @@
 using ConsultationBackend.Interfaces.Services;
+using ConsultationBackend.Data;
+using ConsultationBackend.Interfaces.Infrastructure;
+using ConsultationBackend.Models.NonRelational;
+using MongoDB.Driver;
 
 namespace ConsultationBackend.Services;
 
 public class TranscriptService : ITranscriptService
 {
-    public void GenerateTranscript(Guid consultationId)
+    private readonly MongoDbContext _mongo;
+    private readonly IspeechToText _speechToText;
+
+    public TranscriptService(MongoDbContext mongo, IspeechToText speechToText)
     {
-        Console.WriteLine($"Generating transcript for: {consultationId}");
+        _mongo = mongo;
+        _speechToText = speechToText;
     }
 
-    public void GetTranscript(Guid consultationId)
+    public async Task GenerateTranscript(Guid consultationId, IFormFile audio)
     {
-        Console.WriteLine($"Getting transcript for: {consultationId}");
+        Console.WriteLine($"Uploaded audio for consultation: {consultationId}");
+        
+        var filter = Builders<ConsultationDocument>.Filter.Eq(c => c.ConsultationId, consultationId);
+
+        var consult = _mongo.Consultations.Find(filter).FirstOrDefault();
+
+        if (consult is null)
+        {
+            throw new KeyNotFoundException("Consultation not found");
+        } 
+
+        if (audio is null)
+        {
+            throw new ArgumentNullException("Audio file cannot be nul   l");
+        }
+
+   
+        if (!audio.FileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException("Only .wav files are allowed");
+        }
+
+        using var stream = audio.OpenReadStream();
+
+        string transcript = await _speechToText.TranscribeAsync(stream);
+
+        var doc = new RawTranscriptDocument
+        {
+            AppointmentId = consultationId,
+            DoctorId = consult.DoctorId,
+            DoctorName = consult.DoctorName,
+            PatientId = consult.PatientId,
+            PatientName = consult.PatientName,
+            Transcription = transcript,
+        };
+
+        _mongo.RawTranscripts.InsertOne(doc);
+
+        Console.WriteLine($"Audio file uploaded and transcribed with booking number: {consultationId}");
+    }
+
+    public RawTranscriptDocument GetTranscript(Guid consultationId)
+    {
+        var filter = Builders<RawTranscriptDocument>.Filter.Eq(c => c.AppointmentId, consultationId);
+        var doc = _mongo.RawTranscripts.Find(filter).FirstOrDefault() ?? throw new KeyNotFoundException("Consultation not found");
+
+        return doc;
+
     }
 }

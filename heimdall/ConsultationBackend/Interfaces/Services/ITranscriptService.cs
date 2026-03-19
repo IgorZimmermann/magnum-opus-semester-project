@@ -1,8 +1,10 @@
+using ConsultationBackend.Models.NonRelational;
+
 namespace ConsultationBackend.Interfaces.Services;
 
 public interface ITranscriptService
 {
-    void GenerateTranscript(Guid consultationId);
+    Task GenerateTranscript(Guid consultationId, IFormFile audio);
 
-    void GetTranscript(Guid consultationId);
+    RawTranscriptDocument GetTranscript(Guid consultationId);
 }

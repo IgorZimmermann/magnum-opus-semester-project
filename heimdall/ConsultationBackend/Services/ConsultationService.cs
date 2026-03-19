@@ -61,50 +61,6 @@ public class ConsultationService : IConsultationService
         return doc.ConsultationId;
     }
 
-    // Accepts consultaionId with the Audio file
-    //  It finds the consultaiton
-    // If found it will use the speechToText infrastructure to transcribe it
-    // Then it will create a new doc called SummaryDocument and save it in the db
-    public async Task UploadAudio(Guid consultationId, IFormFile audio)
-    {
-        Console.WriteLine($"Uploaded audio for consultation: {consultationId}");
-        
-        var filter = Builders<ConsultationDocument>.Filter.Eq(c => c.ConsultationId, consultationId);
-
-        var consult = _mongo.Consultations.Find(filter).FirstOrDefault();
-
-        if (consult is null)
-        {
-            throw new KeyNotFoundException("Consultation not found");
-        } 
-
-        if (audio is null)
-        {
-            throw new ArgumentNullException("Audio file cannot be nul   l");
-        }
-
-   
-        if (!audio.FileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase))
-        {
-            throw new InvalidOperationException("Only .wav files are allowed");
-        }
-
-        using var stream = audio.OpenReadStream();
-
-        string transcript = await _speechToText.TranscribeAsync(stream);
-
-        var doc = new SummaryDocument
-        {
-            AppointmentId = consultationId,
-            Output = transcript,
-            Type = "Summary",
-            Status = "pending_review",
-        };
-
-        _mongo.Summaries.InsertOne(doc);
-
-        Console.WriteLine($"Audio file uploaded and transcribed with booking number: {consultationId}");
-    }
 
     // Accepts consultationId
     // Returns a doc of consultaion information

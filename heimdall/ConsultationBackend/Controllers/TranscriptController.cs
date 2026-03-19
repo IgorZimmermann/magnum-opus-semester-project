@@ -16,17 +16,40 @@ public class TranscriptController : ControllerBase
     }
 
     [HttpPost("GenerateTranscript")]
-    public IActionResult GenerateTranscript(Guid consultationId)
+    public async Task<IActionResult> GenerateTranscript(Guid consultationId, IFormFile audio)
     {
-        _transcriptService.GenerateTranscript(consultationId);
-        return Ok("ok");
+        try
+        {
+            await _transcriptService.GenerateTranscript(consultationId, audio);
+            return Ok("Transcript generated");
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("GetTranscript")]
     public IActionResult GetTranscript(Guid consultationId)
-    {
-        _transcriptService.GetTranscript(consultationId);
-        return Ok("ok");
+    {   
+        try
+        {
+            var transcript = _transcriptService.GetTranscript(consultationId);
+            return Ok(new { transcript });    
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        
     }
 
 }
