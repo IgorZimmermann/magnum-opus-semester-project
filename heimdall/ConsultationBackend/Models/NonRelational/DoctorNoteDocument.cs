@@ -1,14 +1,23 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace ConsultationBackend.Models.NonRelational;
 
 public class DoctorNoteDocument
 {
-    public string Id { get; set; } = string.Empty; 
-    public int AppointmentId { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
 
-    public int DoctorId { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid AppointmentId { get; set; }
+
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid DoctorId { get; set; }
     public string DoctorName { get; set; } = string.Empty;
 
-    public int PatientId { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid PatientId { get; set; }
     public string PatientName { get; set; } = string.Empty;
 
     public string Symptoms { get; set; } = string.Empty;
@@ -18,5 +27,5 @@ public class DoctorNoteDocument
 
     public string PdfUrl { get; set; } = string.Empty;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

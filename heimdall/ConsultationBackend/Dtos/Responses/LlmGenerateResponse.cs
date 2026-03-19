@@ -1,4 +1,4 @@
-namespace ConsultationBackend.Infrastructure;
+namespace ConsultationBackend.Dtos;
 
 public class LlmGenerateResponse
 {
