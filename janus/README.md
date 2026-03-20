@@ -1,35 +1,92 @@
 # Janus - Booking Backend
 
-## How to start container
+.NET Core 10 backend for Booking. It manages doctor availability, appointments and mail sending to patients.
 
-Describe what parameters are required and how to start it.
 
-## How to add to a `docker-compose`
 
-```yaml
-# docker-compose configuration snippet
+## Quick Start
+- During development I ran the needed components from the terminal, not from the compose file
+
+### 1. Start services
+
+```bash
+docker compose up -d
 ```
 
-## Endpoints/Interface
 
-email service test:
+### 2. Configure environment
 
-- run the email container
-- start backend
+Copy `.env.example` to `.env` and make sure db configuration matches
 
-- use the command to send a test mail:
+I used the configurations found in mneme/README.md
+
+### 3. Run the backend
+
+Run the command in the project folder (janus/BookingBackend)
+
+```bash
+dotnet run
 ```
-    curl -X POST http://localhost:5093/api/email/send \
-    -H "Content-Type: application/json" \
-    -d '{
-        "to": "test@example.com",
-        "subject": "Test Email",
-        "body": "asd",
-        "isHtml": false
-    }'
-```
-[HttpPost("send")]
-ENDPOINT
-Describe what endpoints/interfaces are exposed by the component.
 
-Try to format it using headers, code blocks, bolds and italics.
+## Project Structure
+
+```
+BookingBackend/
+├── Controllers/                    # HTTP endpoints / routes
+│   ├── AppointmentController.cs    
+│   ├── AvailabilityController.cs   
+│   └── EmailController.cs          
+├── Data/
+│   ├── BookingDbContext.cs         # EF Core context (PostgreSQL)
+│   └── Migrations/                 # EF Core migrations
+│       ├── 20260320140630_InitialCreate.cs
+│       ├── 20260320140630_InitialCreate.Designer.cs
+│       └── BookingDbContextModelSnapshot.cs
+├── DTO/                            # Data Transfer Objects
+│   ├── AppointmentDTO.cs           
+│   └── AvailabilityDTO.cs          
+├── Interfaces/                     # Service contracts
+│   ├── IAppointment.cs             
+│   ├── IAvailability.cs            
+│   ├── IEmailService.cs            
+│   └── IRelationalDb.cs            
+├── Models/                         # EF Core entities
+│   ├── Appointment.cs              
+│   ├── AppointmentStatus.cs        
+│   ├── Doctor.cs                   
+│   ├── Patient.cs                  
+│   └── WorksOn.cs                  
+├── Services/                       
+│   ├─── AppointmentService.cs    
+│   ├── AvailabilityService.cs  
+│   └── EmailService.cs         
+├── Properties/
+│   └── launchSettings.json         
+├── appsettings.Development.json    
+├── appsettings.json                # Base configuration
+├── BookingBackend.csproj           # Project file / dependencies
+├── Program.cs                      # Application entry point & DI setup
+├── BookingBackend.http             
+└── bin/                            
+    └── Debug/
+        └── net10.0/                
+```
+## Endpoints
+
+### Availability
+---
+**GET /api/availability/doctors** 
+- Returns all doctors with their weekly availability slots
+
+### Appointment
+---
+**GET /api/appointment** 
+- Returns all appointments in the system
+
+**POST /api/appointment** 
+- Creates a new appointment (with docId, patId, date, time)
+### Mail
+---
+**POST /api/email/send** 
+- Sends emails (requires SMTP config)
+

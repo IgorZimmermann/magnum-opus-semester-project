@@ -1,7 +1,7 @@
 using BookingBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookingBackend.Data
+namespace BookingBackend.Interfaces
 {
     public interface IRelationalDb
     {

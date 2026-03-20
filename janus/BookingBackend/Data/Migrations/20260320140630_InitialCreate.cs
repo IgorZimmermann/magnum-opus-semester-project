@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BookingBackend.Migrations
+namespace BookingBackend.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {
