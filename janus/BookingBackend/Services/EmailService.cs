@@ -1,7 +1,8 @@
+using BookingBackend.Interfaces;
 using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace BookingBackend.Services
+namespace BookingBackend.Services.Implementations
 {
     public class EmailService : IEmailService
     {
@@ -39,7 +40,6 @@ namespace BookingBackend.Services
                 using (var client = new SmtpClient())
                 {
                     await client.ConnectAsync(smtpHost, smtpPort, useSsl: false);
-                    // Mailpit accepts any credentials in dev mode
                     await client.AuthenticateAsync("dev", "dev");
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);

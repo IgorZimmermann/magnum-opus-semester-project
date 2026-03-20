@@ -1,4 +1,4 @@
-using BookingBackend.Services;
+using BookingBackend.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingBackend.Controllers

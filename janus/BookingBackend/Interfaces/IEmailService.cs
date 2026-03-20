@@ -1,4 +1,4 @@
-namespace BookingBackend.Services
+namespace BookingBackend.Interfaces
 {
     public interface IEmailService
     {

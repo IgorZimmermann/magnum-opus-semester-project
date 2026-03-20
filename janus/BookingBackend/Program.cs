@@ -1,5 +1,7 @@
 using BookingBackend.Data;
 using BookingBackend.Services;
+using BookingBackend.Interfaces;
+using BookingBackend.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddScoped<IRelationalDb>(provider =>
     provider.GetRequiredService<BookingDbContext>());
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IAvailability, AvailabilityService>();
+builder.Services.AddScoped<IAppointment, AppointmentService>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
