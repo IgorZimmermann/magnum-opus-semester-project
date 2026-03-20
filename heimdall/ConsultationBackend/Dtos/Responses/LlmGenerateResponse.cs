@@ -1,6 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace ConsultationBackend.Dtos;
 
 public class LlmGenerateResponse
 {
-    public string Output { get; set; } = string.Empty;
+    public LlmMessage? Message { get; set; }
 }

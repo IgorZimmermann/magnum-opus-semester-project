@@ -1,5 +1,7 @@
+using System.Data;
 using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Services;
+using DnsClient.Protocol;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsultationBackend.Controllers;
@@ -15,24 +17,50 @@ public class SummaryController : ControllerBase
     }
 
     [HttpPost("GenerateSummary")]
-    public IActionResult GenerateSummary(Guid consultationId)
+    public async Task<IActionResult> GenerateSummary(Guid consultationId)
     {
-        _summaryService.GenerateSummary(consultationId);
-        return Ok("ok");
+        try
+        {
+            var summary = await _summaryService.GenerateSummary(consultationId);
+            return Ok(new {summary});
+        }
+
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpGet("GetSummary")]
     public IActionResult GetSummary(Guid consultationId)
     {
-        _summaryService.GetSummary(consultationId);
-        return Ok("ok");
+        try
+        {
+            var sumamry = _summaryService.GetSummary(consultationId);
+            return Ok(new {sumamry});
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPut("EditSumamry")]
     public IActionResult EditSummary(Guid consultationId, SummaryEditRequest request)
     {
-        _summaryService.EditSummary(consultationId, request);
-        return Ok("ok");
+        try
+        {
+            var sumamry = _summaryService.EditSummary(consultationId, request);
+            return Ok(new {sumamry});
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (NoNullAllowedException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
 

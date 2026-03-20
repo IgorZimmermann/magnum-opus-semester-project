@@ -1,12 +1,13 @@
 using ConsultationBackend.Dtos;
+using ConsultationBackend.Models.NonRelational;
 
 namespace ConsultationBackend.Interfaces.Services;
 
 public interface ISummaryService
 {
-    void GenerateSummary(Guid consultationId);
+    Task<SummaryDocument> GenerateSummary(Guid consultationId);
 
-    void GetSummary(Guid consultationId);
+    SummaryDocument GetSummary(Guid consultationId);
 
-    void EditSummary(Guid consultaitonId, SummaryEditRequest request);
+    SummaryDocument EditSummary(Guid consultaitonId, SummaryEditRequest request);
 }

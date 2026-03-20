@@ -24,12 +24,29 @@ public class SpeechToText : IspeechToText
 
         content.Add(fileContent, "file", "audio.wav");
 
-        var response = await _httpClient.PostAsync("/process", content);
+        using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PostAsync("/process", content, cts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            throw new TimeoutException("Speech-to-text service did not respond within 5 minutes");
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new InvalidOperationException("Failed to reach the speech-to-text service", ex);
+        }
 
         response.EnsureSuccessStatusCode();
 
-        var result = await response.Content.ReadFromJsonAsync<SpeechToTextResponse>();
+        var result = await response.Content.ReadFromJsonAsync<SpeechToTextResponse>(cts.Token);
 
-        return result?.Text ?? "Nothing returned";
+        if (string.IsNullOrWhiteSpace(result?.Text))
+            throw new InvalidOperationException("Speech-to-text service returned an empty transcript");
+
+        return result.Text;
     }
 }

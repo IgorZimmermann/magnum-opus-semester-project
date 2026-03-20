@@ -43,7 +43,21 @@ public class TranscriptService : ITranscriptService
 
         using var stream = audio.OpenReadStream();
 
-        string transcript = await _speechToText.TranscribeAsync(stream);
+
+        // added timeout exception passed from speech to text infrastructure
+        string transcript;
+        try
+        {
+            transcript = await _speechToText.TranscribeAsync(stream);
+        }
+        catch (TimeoutException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Transcription failed.", ex);
+        }
 
         var doc = new RawTranscriptDocument
         {
