@@ -1,11 +1,12 @@
 using ConsultationBackend.Dtos;
+using ConsultationBackend.Models.NonRelational;
 
 namespace ConsultationBackend.Interfaces.Services;
 
 public interface IPrescriptionService
 {
-    void GeneratePrescription(Guid consultationId);
-    void GetPrescription(Guid consultaionId);
-    void EditPrescription(Guid consultationId, PrescriptionEditRequest request);
-    void ApprovePrescription(Guid consultaionId);
+    Task<DoctorNoteDocument> GeneratePrescription(Guid consultationId);
+    DoctorNoteDocument GetPrescription(Guid consultaionId);
+    DoctorNoteDocument EditPrescription(Guid consultationId, PrescriptionEditRequest request);
+    Task ApprovePrescription(Guid consultationId);
 }

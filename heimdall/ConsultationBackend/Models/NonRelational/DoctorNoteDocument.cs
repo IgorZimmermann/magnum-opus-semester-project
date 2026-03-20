@@ -27,5 +27,8 @@ public class DoctorNoteDocument
 
     public string PdfUrl { get; set; } = string.Empty;
 
+    // pending_review / approved
+    public string Status { get; set; } = string.Empty;
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Services;
+using System.Data;
 
 namespace ConsultationBackend.Controllers;
 
@@ -16,33 +17,74 @@ public class PrescriptionController : ControllerBase
     }
 
     [HttpPost("GeneratePrescription")]
-    public IActionResult GeneratePrescription(Guid consultationId)
+    public async Task<IActionResult> GeneratePrescription(Guid consultationId)
     {
-        _prescriptionService.GeneratePrescription(consultationId);
-        return Ok("ok");
+        try
+        {
+            var note = await _prescriptionService.GeneratePrescription(consultationId);
+            return Ok(new { note });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (TimeoutException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("GetPrescription")]
     public IActionResult GetPrescription(Guid consultationId)
     {
-        _prescriptionService.GetPrescription(consultationId);
-        return Ok("ok");
+        try
+        {
+            var note = _prescriptionService.GetPrescription(consultationId);
+            return Ok(new { note });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPut("EditPrescription")]
     public IActionResult EditPrescription(Guid consultationId, [FromBody] PrescriptionEditRequest request)
     {
-        _prescriptionService.EditPrescription(consultationId, request);
-        return Ok("ok");
+        try
+        {
+            var note = _prescriptionService.EditPrescription(consultationId, request);
+            return Ok(new { note });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (NoNullAllowedException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("ApprovePrescription")]
-    public IActionResult ApprovePrescription(Guid consultationId)
+    public async Task<IActionResult> ApprovePrescription(Guid consultationId)
     {
-        _prescriptionService.ApprovePrescription(consultationId);
-        return Ok("ok");
+        try
+        {
+            await _prescriptionService.ApprovePrescription(consultationId);
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-
-
 }
-
