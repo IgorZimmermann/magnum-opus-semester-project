@@ -1,9 +1,17 @@
+using BookingBackend.Data;
 using BookingBackend.Services;
-using BookingBackend.Services.Implementations;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Database
+builder.Services.AddDbContext<BookingDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IRelationalDb>(provider => 
+    provider.GetRequiredService<BookingDbContext>());
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddControllers();

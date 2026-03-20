@@ -1,7 +1,7 @@
 using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace BookingBackend.Services.Implementations
+namespace BookingBackend.Services
 {
     public class EmailService : IEmailService
     {

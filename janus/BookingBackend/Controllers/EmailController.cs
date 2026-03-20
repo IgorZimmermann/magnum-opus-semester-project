@@ -17,7 +17,7 @@ namespace BookingBackend.Controllers
         }
 
         [HttpPost("send")]
-        public async Task<IActionResult> SendEmail([FromBody] EmailRequest request)
+        public async Task<IActionResult> SendEmailAsync([FromBody] EmailRequest request)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace BookingBackend.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Email send failed: {ex.Message}");
+                _logger.LogError(ex, "Email send failed for {Recipient}", request.To);
                 return StatusCode(500, new { error = ex.Message });
             }
         }
