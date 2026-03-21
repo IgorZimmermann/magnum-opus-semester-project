@@ -32,7 +32,7 @@ builder.Services.AddHttpClient<IPdf, Pdf>((sp, client) =>
     client.BaseAddress = new Uri(baseUrl!);
 });
 
-builder.Services.AddHttpClient<IspeechToText, SpeechToText>((sp, client) =>
+builder.Services.AddHttpClient<ISpeechToText, SpeechToText>((sp, client) =>
 {
     // this fetches the url from appsetting.json
     var config = sp.GetRequiredService<IConfiguration>();
