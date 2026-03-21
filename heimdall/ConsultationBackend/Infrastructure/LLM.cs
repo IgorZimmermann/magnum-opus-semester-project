@@ -17,7 +17,7 @@ public class LLM : ILLM
     {
         var request = new LlmGenerateRequest
         {
-            Messages = [new LlmMessage { Role = "user", Content = promt }]
+            Messages = [new LlmMessage { Role = "user", Content = prompt }]
         };
 
         using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
