@@ -69,7 +69,7 @@ public class SummaryService : ISummaryService
             Status = "pending_review"
         };
 
-        _mongo.Summaries.InsertOne(sumamry);
+        _mongo.Summaries.InsertOne(summary);
 
         Console.WriteLine($"Generating summary for {consultationId}");
 
