@@ -13,7 +13,7 @@ public class LLM : ILLM
         _httpClient = httpClient;
     }
 
-    public async Task<string> GenerateAsync(string promt)
+    public async Task<string> GenerateAsync(string prompt)
     {
         var request = new LlmGenerateRequest
         {
