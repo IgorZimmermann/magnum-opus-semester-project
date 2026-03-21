@@ -73,7 +73,7 @@ public class SummaryService : ISummaryService
 
         Console.WriteLine($"Generating summary for {consultationId}");
 
-        return sumamry;
+        return summary;
     }
 
     public SummaryDocument GetSummary(Guid consultationId)
