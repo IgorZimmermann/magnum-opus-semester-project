@@ -63,7 +63,7 @@ public class ConsultationService : IConsultationService
 
 
     // Accepts consultationId
-    // Returns a doc of consultaion information
+    // Returns a doc of consultation information
     public ConsultationResponse GetConsultation(Guid consultationId)
     {
         var filter = Builders<ConsultationDocument>.Filter.Eq(c => c.ConsultationId, consultationId);
