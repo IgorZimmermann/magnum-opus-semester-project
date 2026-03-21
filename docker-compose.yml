@@ -1,6 +1,8 @@
 services:
   odin:
-    image: ollama/ollama
+    build:
+      context: ./odin
+      dockerfile: Dockerfile
     container_name: ollama
     restart: unless-stopped
     volumes:
@@ -39,7 +41,7 @@ services:
     build:
       context: ./saga
       dockerfile: Dockerfile
-    container_name: saga
+    container_name: typst
     restart: unless-stopped
     ports:
       - "3001:3000"
