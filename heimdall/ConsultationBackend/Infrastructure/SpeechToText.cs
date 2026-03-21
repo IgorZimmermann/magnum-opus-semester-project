@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace ConsultationBackend.Infrastructure;
 
-public class SpeechToText : IspeechToText
+public class SpeechToText : ISpeechToText
 {
     private readonly HttpClient _httpClient;
 
