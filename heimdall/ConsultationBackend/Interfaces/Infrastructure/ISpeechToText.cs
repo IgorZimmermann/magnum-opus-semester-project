@@ -1,6 +1,6 @@
 namespace ConsultationBackend.Interfaces.Infrastructure;
 
-public interface IspeechToText
+public interface ISpeechToText
 {
     Task<string> TranscribeAsync(Stream audio);
 }
