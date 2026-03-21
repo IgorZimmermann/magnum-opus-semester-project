@@ -57,7 +57,7 @@ public class SummaryService : ISummaryService
             throw new InvalidOperationException("Summary generation failed.", ex);
         }
 
-        var sumamry = new SummaryDocument
+        var summary = new SummaryDocument
         {
             AppointmentId = consultationId,
             DoctorId = doc.DoctorId,
