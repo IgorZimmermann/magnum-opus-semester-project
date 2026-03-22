@@ -16,6 +16,7 @@ public class TranscriptController : ControllerBase
     }
 
     [HttpPost("GenerateTranscript")]
+    [RequestSizeLimit(100_000_000)]
     public async Task<IActionResult> GenerateTranscript(Guid consultationId, IFormFile audio)
     {
         try
