@@ -9,7 +9,7 @@ namespace ConsultationBackend.Services;
 public class TranscriptService : ITranscriptService
 {
     private readonly MongoDbContext _mongo;
-    private readonly IspeechToText _speechToText;
+    private readonly ISpeechToText _speechToText;
 
     public TranscriptService(MongoDbContext mongo, ISpeechToText speechToText)
     {
