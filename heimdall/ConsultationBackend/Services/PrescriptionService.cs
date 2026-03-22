@@ -44,7 +44,7 @@ public class PrescriptionService : IPrescriptionService
 
             Return ONLY a valid JSON object with exactly these 4 fields (no extra text, no markdown):
             {
-              "symptoms": "concise list of symptoms the patient reported",
+              "symptoms": "concise list of symptoms the patient reported as a space separated string",
               "diagnosis": "the doctor's diagnosis or most likely condition",
               "description": "brief clinical description of the case and findings",
               "advice_prescription": "all medical advice, prescriptions, or treatment recommendations given"
