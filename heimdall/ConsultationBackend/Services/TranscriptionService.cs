@@ -11,7 +11,7 @@ public class TranscriptService : ITranscriptService
     private readonly MongoDbContext _mongo;
     private readonly IspeechToText _speechToText;
 
-    public TranscriptService(MongoDbContext mongo, IspeechToText speechToText)
+    public TranscriptService(MongoDbContext mongo, ISpeechToText speechToText)
     {
         _mongo = mongo;
         _speechToText = speechToText;
