@@ -16,7 +16,7 @@ public class ConsultationController : ControllerBase
     }
 
 
-    [HttpPost("startConsultation")]
+    [HttpPost("StartConsultation")]
     public IActionResult StartConsultation(BookingRequest request)
     {
         try
