@@ -78,7 +78,7 @@ public class Email : IEmail
 
     private sealed class MailpitAttachment
     {
-        [JsonPropertyName("Name")]
+        [JsonPropertyName("Filename")]
         public string Name { get; set; } = string.Empty;
 
         [JsonPropertyName("ContentType")]
