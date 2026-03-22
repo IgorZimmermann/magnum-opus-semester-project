@@ -19,7 +19,7 @@ public class ConsultationService : IConsultationService
 
     private readonly ISpeechToText _speechToText;
 
-    public ConsultationService(AppDbContext context, MongoDbContext mongo, IspeechToText speechToText)
+    public ConsultationService(AppDbContext context, MongoDbContext mongo, ISpeechToText speechToText)
     {
         _context = context;
         _mongo = mongo;
