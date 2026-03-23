@@ -2,6 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "janus", "janus", "{6A9526F1-5132-0C18-A1CB-E0DCBE0FB124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingBackend", "janus\BookingBackend\BookingBackend.csproj", "{17D17CF8-053E-7D55-3549-2ACC6F0262C6}"
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "heimdall", "heimdall", "{4FCC1BCA-6712-BD41-7AB6-5EF1F77EBE1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultationBackend", "heimdall\ConsultationBackend\ConsultationBackend.csproj", "{11106E9A-28CB-6624-DC13-14655165F434}"
@@ -12,6 +15,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17D17CF8-053E-7D55-3549-2ACC6F0262C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D17CF8-053E-7D55-3549-2ACC6F0262C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D17CF8-053E-7D55-3549-2ACC6F0262C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D17CF8-053E-7D55-3549-2ACC6F0262C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11106E9A-28CB-6624-DC13-14655165F434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11106E9A-28CB-6624-DC13-14655165F434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11106E9A-28CB-6624-DC13-14655165F434}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -21,6 +28,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{17D17CF8-053E-7D55-3549-2ACC6F0262C6} = {6A9526F1-5132-0C18-A1CB-E0DCBE0FB124}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A71F422-57B5-408F-86CA-D69F28C15D5B}
 		{11106E9A-28CB-6624-DC13-14655165F434} = {4FCC1BCA-6712-BD41-7AB6-5EF1F77EBE1A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
