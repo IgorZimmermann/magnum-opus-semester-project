@@ -14,6 +14,8 @@
   members: (..json("../team-members.json"), (name: "Riccardo Terrenzi")),
 )
 
+Current status of the project: we have currently created the two backends, and set up all the infrastructure.
+Both backends expose the relevant endpoints and have all PDF, email, LLM and Speech-to-text services connected and functioning.  
 - We resolved merge conflicts.
 - We showed our supervisor our progress.
 - He gave us feedback on what we could do for the next Sprint.
