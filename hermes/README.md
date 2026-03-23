@@ -34,14 +34,8 @@ services:
 
 ## Endpoints/Interface
 
-**SMTP**
+To use the service, connect to the SMTP server using the `System.Net.Mail.MailMessage` class of the .NET framework.
 
-- URL: `<localhost>:1025`
+An example of the example can be seen [here](https://stackoverflow.com/a/449897).
 
-App connects here to send mail automatically.
-
-**Web UI**
-
-- URL: `http://<localhost>:8025`
-
-Browser-based email client for viewing, searching, and managing captured emails. In our case mostly for testing.
+To access the WebUI, go to `http://localhost:8025`.
