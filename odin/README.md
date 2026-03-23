@@ -2,7 +2,7 @@
 
 ## How to start container
 
-The container runs the `ollama/ollama` image.
+The container runs a custom image built from `odin/Dockerfile`.
 
 The Ollama API is available on port `11434`. Docker maps host port `11434` to container port `11434`.
 
@@ -14,20 +14,18 @@ The container is started with:
 docker compose up -d
 ```
 
-After the container is running, the required model is pulled with:
+On startup, the entrypoint automatically checks whether the required model `sam860/LFM2:2.6b` is present and pulls it if missing:
 
-```bash
-docker compose exec <service_name> ollama pull sam860/LFM2:2.6b
-```
-
-`<service_name>` would need to be replaced with the Docker Compose service name.
+Because `/root/.ollama` is mounted to the `ollama_data` volume, the model is persisted and only needs to be pulled once.
 
 ## How to add to a `docker-compose`
 
 ```yaml
 services:
   ollama:
-    image: ollama/ollama
+    build:
+      context: ./odin
+      dockerfile: Dockerfile
     volumes:
       - ollama_data:/root/.ollama
     ports:
