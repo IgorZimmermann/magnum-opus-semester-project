@@ -53,7 +53,7 @@ public class PrescriptionService : IPrescriptionService
             - "symptoms": comma-separated list of symptoms the patient reported (e.g. "headache, fever, sore throat")
             - "diagnosis": the doctor's diagnosis or most likely condition (e.g. "viral upper respiratory tract infection")
             - "description": one or two sentences describing the clinical case and key findings
-            - "advice_prescription": all treatment recommendations and prescriptions given (e.g. "rest for 3 days, paracetamol 500mg every 6 hours as needed")
+            - "advice_prescription": a combined, comma-separated list of ALL treatment recommendations and prescriptions from every source — include what the doctor prescribed or advised during the consultation AND any additional recommendations or suggestions made by the medical AI assistant; do not omit any recommendation regardless of its source (e.g. "rest for 3 days, paracetamol 500mg every 6 hours as needed, drink plenty of fluids, follow up in 1 week if symptoms persist")
 
             Consultation Summary:
             {{summary.Output}}
@@ -190,7 +190,7 @@ public class PrescriptionService : IPrescriptionService
             Text      =
                 $"Dear {note.PatientName},\n\n" +
                 $"Please find attached your doctor's note from your consultation with {note.DoctorName}.\n\n" +
-                "If you have any questions, please contact the clinic.\n\nKind regards,\nMagnus Opus Clinic",
+                "If you have any questions, please contact the clinic.\n\nKind regards,\nMagnum Opus Clinic",
             Attachments =
             [
                 new EmailAttachmentRequest
