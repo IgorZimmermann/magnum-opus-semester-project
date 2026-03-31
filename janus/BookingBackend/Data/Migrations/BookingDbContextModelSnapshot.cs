@@ -40,9 +40,6 @@ namespace BookingBackend.Data.Migrations
                     b.Property<Guid>("DocId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("EmailConfirmationSent")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime?>("EmailSentAt")
                         .HasColumnType("timestamp with time zone");
 

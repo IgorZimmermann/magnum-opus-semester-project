@@ -66,7 +66,6 @@ namespace BookingBackend.Data.Migrations
                     PatId = table.Column<Guid>(type: "uuid", nullable: false),
                     AppointmentDate = table.Column<DateOnly>(type: "date", nullable: false),
                     AppointmentTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    EmailConfirmationSent = table.Column<bool>(type: "boolean", nullable: false),
                     EmailSentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false)

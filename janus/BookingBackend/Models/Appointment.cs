@@ -7,7 +7,6 @@ namespace BookingBackend.Models
         public Guid PatId { get; set; }
         public DateOnly AppointmentDate { get; set; }
         public TimeOnly AppointmentTime { get; set; }
-        public bool EmailConfirmationSent { get; set; } = false;
         public DateTime? EmailSentAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public AppointmentStatus Status { get; set; } = AppointmentStatus.Confirmed;

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookingBackend.Data.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20260331144533_UpdateGuids")]
+    [Migration("20260331152600_UpdateGuids")]
     partial class UpdateGuids
     {
         /// <inheritdoc />
@@ -42,9 +42,6 @@ namespace BookingBackend.Data.Migrations
 
                     b.Property<Guid>("DocId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("EmailConfirmationSent")
-                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("EmailSentAt")
                         .HasColumnType("timestamp with time zone");

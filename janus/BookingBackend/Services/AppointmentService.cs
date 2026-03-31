@@ -48,7 +48,12 @@ namespace BookingBackend.Services.Implementations
                     HTML = $"<h2>Appointment Confirmation</h2><p>Your appointment with <strong>Dr. {doctor.Name}</strong> has been confirmed.</p><p><strong>Date:</strong> {appointment.AppointmentDate}</p><p><strong>Time:</strong> {appointment.AppointmentTime}</p>"
                 };
 
-                await _emailService.SendEmailAsync(emailRequest);
+                var emailSent = await _emailService.SendEmailAsync(emailRequest);
+                if (emailSent)
+                {
+                    appointment.EmailSentAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
             }
 
             return new AppointmentDTO
