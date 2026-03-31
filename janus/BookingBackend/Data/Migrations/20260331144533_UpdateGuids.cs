@@ -1,21 +1,21 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace BookingBackend.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    /// <inheritdoc />
+    public partial class UpdateGuids : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
                 {
-                    DocId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DocId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false)
                 },
@@ -28,8 +28,7 @@ namespace BookingBackend.Data.Migrations
                 name: "Patients",
                 columns: table => new
                 {
-                    PatId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PatId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false)
                 },
@@ -42,7 +41,7 @@ namespace BookingBackend.Data.Migrations
                 name: "WorksOn",
                 columns: table => new
                 {
-                    DocId = table.Column<int>(type: "integer", nullable: false),
+                    DocId = table.Column<Guid>(type: "uuid", nullable: false),
                     DayOfTheWeek = table.Column<int>(type: "integer", nullable: false),
                     StartsFrom = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
                     EndsAt = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
@@ -62,10 +61,9 @@ namespace BookingBackend.Data.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    AppointmentId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DocId = table.Column<int>(type: "integer", nullable: false),
-                    PatId = table.Column<int>(type: "integer", nullable: false),
+                    AppointmentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DocId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PatId = table.Column<Guid>(type: "uuid", nullable: false),
                     AppointmentDate = table.Column<DateOnly>(type: "date", nullable: false),
                     AppointmentTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
                     EmailConfirmationSent = table.Column<bool>(type: "boolean", nullable: false),
@@ -102,6 +100,7 @@ namespace BookingBackend.Data.Migrations
                 column: "PatId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

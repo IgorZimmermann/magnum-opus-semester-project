@@ -1,8 +1,10 @@
+using System.Runtime.InteropServices;
+
 namespace BookingBackend.Models
 {
     public class WorksOn
     {
-        public int DocId { get; set; }
+        public Guid DocId { get; set; }
         public int DayOfTheWeek { get; set; } // 0 = Sunday, 6 = Saturday
         public TimeOnly StartsFrom { get; set; }
         public TimeOnly EndsAt { get; set; }
