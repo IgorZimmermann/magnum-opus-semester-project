@@ -1,11 +1,13 @@
 
 using Microsoft.AspNetCore.Mvc;
 using ConsultationBackend.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultationBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TranscriptController : ControllerBase
 {
     private readonly ITranscriptService _transcriptService;

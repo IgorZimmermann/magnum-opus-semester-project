@@ -3,11 +3,13 @@ using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Services;
 using DnsClient.Protocol;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultationBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class SummaryController : ControllerBase
 {
     private readonly ISummaryService _summaryService;
