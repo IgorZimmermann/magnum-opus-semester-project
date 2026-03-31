@@ -15,12 +15,22 @@ builder.Services.AddDbContext<BookingDbContext>(options =>
 builder.Services.AddScoped<IRelationalDb>(provider => 
     provider.GetRequiredService<BookingDbContext>());
 
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<IAvailability, AvailabilityService>();
 builder.Services.AddScoped<IAppointment, AppointmentService>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddHttpClient<IEmail, Email>((sp, client) =>
+{
+    // this fetches the url from appsetting.json
+    var config = sp.GetRequiredService<IConfiguration>();
+    var baseUrl = config["Services:Email:BaseUrl"];
+
+    client.BaseAddress = new Uri(baseUrl!);
+});
+
 
 var app = builder.Build();
 
