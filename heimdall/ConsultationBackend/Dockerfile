@@ -1,16 +1,30 @@
+# ── Build stage ────────────────────────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-COPY ConsultationBackend.csproj .
-RUN dotnet restore
+# Restore dependencies first (layer-cached until .csproj changes)
+COPY ["ConsultationBackend.csproj", "ConsultationBackend/"]
+RUN dotnet restore "ConsultationBackend/ConsultationBackend.csproj"
 
-COPY . .
-RUN dotnet publish -c Release -o /app/publish
+# Copy the rest of the source and publish
+COPY . ConsultationBackend/
+WORKDIR /src/ConsultationBackend
+RUN dotnet publish "ConsultationBackend.csproj" \
+    --configuration Release \
+    --no-restore \
+    --output /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+# ── Runtime stage ───────────────────────────────────────────────────────────────
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
+
+# Run as a non-root user
+RUN groupadd --system appgroup && useradd --system --gid appgroup appuser
+USER appuser
+
 COPY --from=build /app/publish .
 
+ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "ConsultationBackend.dll"]
