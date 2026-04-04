@@ -2,6 +2,8 @@ using BookingBackend.Data;
 using BookingBackend.Services;
 using BookingBackend.Interfaces;
 using BookingBackend.Services.Implementations;
+using Auth0.AspNetCore.Authentication.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,16 @@ builder.Services.AddScoped<IRelationalDb>(provider =>
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAvailability, AvailabilityService>();
 builder.Services.AddScoped<IAppointment, AppointmentService>();
+builder.Services.AddAuth0ApiAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"];
+    options.JwtBearerOptions = new JwtBearerOptions
+    {
+        Audience = builder.Configuration["Auth0:Audience"]
+    };
+});
+
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -32,6 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
