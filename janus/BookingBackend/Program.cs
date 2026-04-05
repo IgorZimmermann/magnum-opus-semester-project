@@ -42,10 +42,19 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Public endpoint - no authentication required
+app.MapGet("/api/public", () =>
+    Results.Ok(new { Message = "This endpoint is public" }))
+    .WithName("GetPublic");
+
+// Protected endpoint - requires authentication
+app.MapGet("/api/private", () =>
+    Results.Ok(new { Message = "This endpoint requires authentication" }))
+    .RequireAuthorization()
+    .WithName("GetPrivate");
 
 app.MapControllers();
 
