@@ -83,12 +83,11 @@
   - Unit tests and functional tests (target: ≥ 80% coverage)
 ]
 
-// PLACEHOLDER: Left to Do with frontend design image (uncomment when image is in repo)
-// #slide(title: "Left to Do")[
-//   #align(center + horizon)[
-//     #image("../images/frontend-design.png", width: 100%, fit: "contain")
-//   ]
-// ]
+#slide(title: "Left to Do")[
+  #align(center + horizon)[
+    #image("../images/frontend_wireframe.jpg", width: 100%, fit: "contain")
+  ]
+]
 
 // Slide: Extra (If We Have Time)
 
