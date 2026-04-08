@@ -14,7 +14,7 @@
 #slide(title: "Core Features")[
   - Appointment booking
   - Speech-To-Text //Transcription via Faster-Whisper
-  - LLM summerisation //Conversion of consultation transcript to comprehensive summary
+  - LLM summarisation //Conversion of consultation transcript to comprehensive summary
   - Prescription generation //Structured doctor's note (explain what it includes)
   - LLM suggestions //Provides a safety-net, checks for mistakes
   - Prescription review //The doctor can edit and review, they get the final say!!
