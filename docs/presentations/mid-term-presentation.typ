@@ -75,6 +75,14 @@
   - Implementing authentication & authorisation
 ]
 
+// Slide: Challenges / Blockers
+
+#slide(title: "Challenges / Blockers")[
+  - Coming up with a working component-based system design
+  - Model parameter size limitations, due to low performance hardware
+  - Broad project scope/specification
+]
+
 // Slide: Left to Do
 
 #slide(title: "Left to Do")[
@@ -96,4 +104,12 @@
   - Benchmark testing (comparing LLM model performance)
   - Switchable LLM models / try alternative models
   - Diagnostic image upload during consultations
+]
+
+// Slide: Conclusion, Wrap-up
+
+#slide(title: "Wrapping up")[
+  - Our team made great progress
+  - We have a thought-out roadmap
+  - We believe our software will be a great help for doctors
 ]
