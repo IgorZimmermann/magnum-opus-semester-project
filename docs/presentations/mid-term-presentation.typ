@@ -5,6 +5,40 @@
   members: json("../team-members.json"),
 )
 
+#slide(title: "Proposed Solution")[
+  - Locally hosted OPD management system for workflow automation
+  - Isolated services, component-based architecture
+  - Privacy-first approach
+]
+
+#slide(title: "Core Features")[
+  - Appointment booking
+  - Speech-To-Text //Transcription via Faster-Whisper
+  - LLM summerisation //Conversion of consultation transcript to comprehensive summary
+  - Prescription generation //Structured doctor's note (explain what it includes)
+  - LLM suggestions //Provides a safety-net, checks for mistakes
+  - Prescription review //The doctor can edit and review, they get the final say!!
+  - PDF generation, email sending
+]
+
+#slide(title: "System Workflow - Login")[
+  #align(center + horizon)[
+    #image("../images/ActivityLogin.drawio.svg", width: 100%, height: 120%, fit: "contain")
+  ]
+]
+
+#slide(title: "System Workflow - Booking")[
+  #align(center + horizon)[
+    #image("../images/ActivityBooking.drawio.svg", width: 100%, height: 120%, fit: "contain")
+  ]
+]
+
+#slide(title: "System Workflow - Consultation")[
+  #align(center + horizon)[
+    #image("../images/ActivityDoctor.drawio.svg", width: 100%, height: 120%, fit: "contain")
+  ]
+]
+
 // Slide: Implied Tech Stack
 // Talking points:
 //  - This is the application layer diagram — gives a high-level overview of
