@@ -5,6 +5,20 @@
   members: json("../team-members.json"),
 )
 
+#slide(title: "Problem statement")[
+  #align(center + horizon)[
+    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.
+
+    #text(size: 10pt)[Source: Beskrivelse af almen praksissektoren i Danmark (2016)]
+  ]
+]
+//https://www.ism.dk/Media/D/4/03-Beskrivelse-af-almen-praksis.pdf page 15
+#slide(title: "Project's goal")[
+  #align(center + horizon)[
+    The goal of this year's semester project is to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
+  ]
+]
+
 // Slide: Implied Tech Stack
 // Talking points:
 //  - This is the application layer diagram — gives a high-level overview of
