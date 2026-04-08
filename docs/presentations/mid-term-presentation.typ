@@ -36,6 +36,17 @@
 #slide(title: "System Workflow - Consultation")[
   #align(center + horizon)[
     #image("../images/ActivityDoctor.drawio.svg", width: 100%, height: 120%, fit: "contain")
+#slide(title: "Problem statement")[
+  #align(center + horizon)[
+    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.
+
+    #text(size: 10pt)[Source: Beskrivelse af almen praksissektoren i Danmark (2016)]
+  ]
+]
+//https://www.ism.dk/Media/D/4/03-Beskrivelse-af-almen-praksis.pdf page 15
+#slide(title: "Project's goal")[
+  #align(center + horizon)[
+    The goal of this year's semester project is to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
   ]
 ]
 
@@ -109,6 +120,14 @@
   - Implementing authentication & authorisation
 ]
 
+// Slide: Challenges / Blockers
+
+#slide(title: "Challenges / Blockers")[
+  - Coming up with a working component-based system design
+  - Model parameter size limitations, due to low performance hardware
+  - Broad project scope/specification
+]
+
 // Slide: Left to Do
 
 #slide(title: "Left to Do")[
@@ -117,12 +136,11 @@
   - Unit tests and functional tests (target: ≥ 80% coverage)
 ]
 
-// PLACEHOLDER: Left to Do with frontend design image (uncomment when image is in repo)
-// #slide(title: "Left to Do")[
-//   #align(center + horizon)[
-//     #image("../images/frontend-design.png", width: 100%, fit: "contain")
-//   ]
-// ]
+#slide(title: "Left to Do")[
+  #align(center + horizon)[
+    #image("../images/frontend_wireframe.jpg", width: 100%, fit: "contain")
+  ]
+]
 
 // Slide: Extra (If We Have Time)
 
@@ -131,4 +149,12 @@
   - Benchmark testing (comparing LLM model performance)
   - Switchable LLM models / try alternative models
   - Diagnostic image upload during consultations
+]
+
+// Slide: Conclusion, Wrap-up
+
+#slide(title: "Wrapping up")[
+  - Our team made great progress
+  - We have a thought-out roadmap
+  - We believe our software will be a great help for doctors
 ]
