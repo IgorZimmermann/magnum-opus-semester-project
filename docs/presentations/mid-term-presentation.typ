@@ -5,6 +5,41 @@
   members: json("../team-members.json"),
 )
 
+
+
+
+
+#slide(title: "Problem statement")[
+  #align(center + horizon)[
+    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.
+
+    #text(size: 10pt)[Source: Beskrivelse af almen praksissektoren i Danmark (2016)]
+  ]
+]
+
+//https://www.ism.dk/Media/D/4/03-Beskrivelse-af-almen-praksis.pdf page 15
+#slide(title: "Project's goal")[
+  #align(center + horizon)[
+    The goal of this year's semester project is to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
+  ]
+]
+
+// Slide: Implied Tech Stack
+// Talking points:
+//  - This is the application layer diagram — gives a high-level overview of
+//    the system and how all the pieces interact with each other.
+//  - We follow a service-oriented and component-based architecture.
+//  - Two separate backend systems: one for the booking system and one for the
+//    consultation workflow. They share the same databases.
+//  - Walk through the layers top to bottom:
+//      Frontend  — Next.js / TypeScript (patient portal + doctor portal)
+//      Backend   — FastAPI (booking service + clinical workflow service)
+//      Services  — Faster-Whisper, Ollama + LLM, Typst (PDF), Mailpit (email)
+//      Data      — PostgreSQL (structured) + MongoDB (unstructured)
+//  - Everything is run with Docker Compose.
+//      Each service is its own isolated container and they talk via REST API.
+//      The backends loosely follow the OpenAPI spec and expose a SwaggerUI.
+
 #slide(title: "Proposed Solution")[
   - Locally hosted OPD management system for workflow automation
   - Isolated services, component-based architecture
@@ -36,35 +71,8 @@
 #slide(title: "System Workflow - Consultation")[
   #align(center + horizon)[
     #image("../images/ActivityDoctor.drawio.svg", width: 100%, height: 120%, fit: "contain")
-#slide(title: "Problem statement")[
-  #align(center + horizon)[
-    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.
-
-    #text(size: 10pt)[Source: Beskrivelse af almen praksissektoren i Danmark (2016)]
   ]
 ]
-//https://www.ism.dk/Media/D/4/03-Beskrivelse-af-almen-praksis.pdf page 15
-#slide(title: "Project's goal")[
-  #align(center + horizon)[
-    The goal of this year's semester project is to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
-  ]
-]
-
-// Slide: Implied Tech Stack
-// Talking points:
-//  - This is the application layer diagram — gives a high-level overview of
-//    the system and how all the pieces interact with each other.
-//  - We follow a service-oriented and component-based architecture.
-//  - Two separate backend systems: one for the booking system and one for the
-//    consultation workflow. They share the same databases.
-//  - Walk through the layers top to bottom:
-//      Frontend  — Next.js / TypeScript (patient portal + doctor portal)
-//      Backend   — FastAPI (booking service + clinical workflow service)
-//      Services  — Faster-Whisper, Ollama + LLM, Typst (PDF), Mailpit (email)
-//      Data      — PostgreSQL (structured) + MongoDB (unstructured)
-//  - Everything is run with Docker Compose.
-//      Each service is its own isolated container and they talk via REST API.
-//      The backends loosely follow the OpenAPI spec and expose a SwaggerUI.
 
 #slide(title: "Implied Tech Stack")[
   #align(center + horizon)[
