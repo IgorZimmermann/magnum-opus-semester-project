@@ -33,9 +33,17 @@ public class SummaryService : ISummaryService
         }
 
         var prompt = $$"""
-            You are a medical assistant. Below is a verbatim transcription of a doctor-patient consultation.
-            Write a concise clinical summary in plain prose. Cover what the patient reported, what the doctor assessed, and any next steps or recommendations discussed.
-            Do not include any headings or bullet points — write it as a single short paragraph.
+            You are a medical assistant. Read the transcription of a doctor-patient consultation and write a clinical summary.
+
+            STRICT RULES:
+            - Output ONLY the clinical summary. No other text.
+            - Do NOT use markdown, bullet points, numbered lists, headings, backticks, or emoji.
+            - Do NOT include small talk, greetings, or anything not directly related to the medical consultation.
+            - Only include clinically relevant information from the transcription.
+            - If something is not mentioned in the transcription, do not include it.
+
+            OUTPUT DEFINITION:
+            - "Output": a plain text clinical summary written in flowing prose covering: (1) the symptoms or concerns the patient reported, (2) what the doctor assessed or found, and (3) any treatments, prescriptions, or next steps discussed
 
             Transcription:
             {{doc.Transcription}}
@@ -83,9 +91,7 @@ public class SummaryService : ISummaryService
         var docs = _mongo.Summaries.Find(filter).ToList();
         if (docs.Count == 0) throw new KeyNotFoundException("Summary not found");
 
-        // this looks for the approved version first (if found)
-        // the group should talk if another method / way is needed to find the old version
-        return docs.FirstOrDefault(d => d.Status == "approved") ?? docs.First();
+        return docs.OrderByDescending(d => d.CreatedAt).First();
     }
 
     public SummaryDocument EditSummary(Guid consultationId, SummaryEditRequest request)
