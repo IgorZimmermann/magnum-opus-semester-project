@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ConsultationBackend.DTOs;
 using ConsultationBackend.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultationBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ConsultationController : ControllerBase
 {
     private readonly IConsultationService _consultationService;

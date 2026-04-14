@@ -5,10 +5,22 @@ using ConsultationBackend.Interfaces.Infrastructure;
 using ConsultationBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
+using Auth0.AspNetCore.Authentication.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 var builder = WebApplication.CreateBuilder(args);
 var postgresConnectionString = builder.Configuration.GetConnectionString("Postgres");
+builder.Services.AddAuth0ApiAuthentication(options =>
+{
+	options.Domain = builder.Configuration["Auth0:Domain"];
+	options.JwtBearerOptions = new JwtBearerOptions
+	{
+		Audience = builder.Configuration["Auth0:Audience"]
+	};
+});
+
+builder.Services.AddAuthorization();
 builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 builder.Services.AddScoped<ISummaryService, SummaryService>();
 builder.Services.AddScoped<ITranscriptService, TranscriptService>();
@@ -90,6 +102,7 @@ if (app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
