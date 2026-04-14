@@ -1,11 +1,13 @@
 using BookingBackend.DTO;
 using BookingBackend.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointment _appointmentService;
