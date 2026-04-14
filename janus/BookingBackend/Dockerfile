@@ -1,21 +1,21 @@
 # ── Build stage ────────────────────────────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Restore dependencies first (layer-cached until .csproj changes)
-COPY ["ConsultationBackend.csproj", "ConsultationBackend/"]
-RUN dotnet restore "ConsultationBackend/ConsultationBackend.csproj"
+COPY ["BookingBackend.csproj", "BookingBackend/"]
+RUN dotnet restore "BookingBackend/BookingBackend.csproj"
 
 # Copy the rest of the source and publish
-COPY . ConsultationBackend/
-WORKDIR /src/ConsultationBackend
-RUN dotnet publish "ConsultationBackend.csproj" \
+COPY . BookingBackend/
+WORKDIR /src/BookingBackend
+RUN dotnet publish "BookingBackend.csproj" \
     --configuration Release \
     --no-restore \
     --output /app/publish
 
 # ── Runtime stage ───────────────────────────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
 # Run as a non-root user
@@ -27,4 +27,4 @@ COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "ConsultationBackend.dll"]
+ENTRYPOINT ["dotnet", "BookingBackend.dll"]

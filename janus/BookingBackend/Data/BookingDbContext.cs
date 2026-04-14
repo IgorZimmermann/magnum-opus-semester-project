@@ -1,6 +1,7 @@
 using BookingBackend.Models;
 using BookingBackend.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using BookingBackend.Interfaces;
 
 namespace BookingBackend.Data
 {
