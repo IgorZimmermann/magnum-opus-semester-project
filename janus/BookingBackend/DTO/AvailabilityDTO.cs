@@ -2,7 +2,7 @@ namespace BookingBackend.DTO
 {
     public class DoctorAvailability
     {
-        public int DocId { get; set; }
+        public Guid DocId { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<AvailabilitySlot> AvailabilitySlots { get; set; } = new();
     }

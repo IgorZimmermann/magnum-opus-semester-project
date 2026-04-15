@@ -17,7 +17,7 @@ builder.Services.AddDbContext<BookingDbContext>(options =>
 builder.Services.AddScoped<IRelationalDb>(provider => 
     provider.GetRequiredService<BookingDbContext>());
 
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddScoped<IAvailability, AvailabilityService>();
 builder.Services.AddScoped<IAppointment, AppointmentService>();
 builder.Services.AddAuth0ApiAuthentication(options =>
@@ -33,13 +33,32 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpClient<IEmail, Email>((sp, client) =>
+{
+    // this fetches the url from appsetting.json
+    var config = sp.GetRequiredService<IConfiguration>();
+    var baseUrl = config["Services:Email:BaseUrl"];
+
+    client.BaseAddress = new Uri(baseUrl!);
+});
+
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<BookingDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseAuthentication();

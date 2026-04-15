@@ -9,10 +9,12 @@ namespace BookingBackend.Services.Implementations
     public class AppointmentService : IAppointment
     {
         private readonly BookingDbContext _context;
+        private readonly IEmail _emailService;
 
-        public AppointmentService(BookingDbContext context)
+        public AppointmentService(BookingDbContext context, IEmail emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         public async Task<AppointmentDTO> SaveAppointmentAsync(CreateAppointmentDTO dto)
@@ -29,6 +31,30 @@ namespace BookingBackend.Services.Implementations
 
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
+
+            // Send confirmation email
+            var patient = await _context.Patients.FindAsync(dto.PatId);
+            var doctor = await _context.Doctors.FindAsync(dto.DocId);
+
+            if (patient != null && doctor != null)
+            {
+                var emailRequest = new EmailGenerateRequest
+                {
+                    FromEmail = "noreply@booking.com",
+                    FromName = "Booking System",
+                    ToEmails = new List<string> { patient.Email },
+                    Subject = "Appointment Confirmation",
+                    Text = $"Your appointment with Dr. {doctor.Name} has been confirmed for {appointment.AppointmentDate} at {appointment.AppointmentTime}.",
+                    HTML = $"<h2>Appointment Confirmation</h2><p>Your appointment with <strong>Dr. {doctor.Name}</strong> has been confirmed.</p><p><strong>Date:</strong> {appointment.AppointmentDate}</p><p><strong>Time:</strong> {appointment.AppointmentTime}</p>"
+                };
+
+                var emailSent = await _emailService.SendEmailAsync(emailRequest);
+                if (emailSent)
+                {
+                    appointment.EmailSentAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
+            }
 
             return new AppointmentDTO
             {

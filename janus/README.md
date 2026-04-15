@@ -35,20 +35,25 @@ BookingBackend/
 ├── Controllers/                    # HTTP endpoints / routes
 │   ├── AppointmentController.cs    
 │   ├── AvailabilityController.cs   
-│   └── EmailController.cs          
+│             
 ├── Data/
 │   ├── BookingDbContext.cs         # EF Core context (PostgreSQL)
 │   └── Migrations/                 # EF Core migrations
-│       ├── 20260320140630_InitialCreate.cs
-│       ├── 20260320140630_InitialCreate.Designer.cs
-│       └── BookingDbContextModelSnapshot.cs
+│       
+│       
+│       
 ├── DTO/                            # Data Transfer Objects
 │   ├── AppointmentDTO.cs           
-│   └── AvailabilityDTO.cs          
+│   ├── AvailabilityDTO.cs          
+│   └── Requests/
+│       ├── EmailAttachmentRequest.cs       
+│       └── EmailGenerateRequest.cs
+│
+│
 ├── Interfaces/                     # Service contracts
 │   ├── IAppointment.cs             
 │   ├── IAvailability.cs            
-│   ├── IEmailService.cs            
+│   ├── IEmail.cs            
 │   └── IRelationalDb.cs            
 ├── Models/                         # EF Core entities
 │   ├── Appointment.cs              
@@ -57,9 +62,9 @@ BookingBackend/
 │   ├── Patient.cs                  
 │   └── WorksOn.cs                  
 ├── Services/                       
-│   ├─── AppointmentService.cs    
+│   ├── AppointmentService.cs    
 │   ├── AvailabilityService.cs  
-│   └── EmailService.cs         
+│   └── Email.cs         
 ├── Properties/
 │   └── launchSettings.json         
 ├── appsettings.Development.json    
@@ -85,8 +90,5 @@ BookingBackend/
 
 **POST /api/appointment** 
 - Creates a new appointment (with docId, patId, date, time)
-### Mail
----
-**POST /api/email/send** 
-- Sends emails (requires SMTP config)
+- Once the appointment is made, an email is sent out with the details 
 
