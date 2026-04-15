@@ -1,4 +1,56 @@
 services:
+  heimdall:
+    build:
+      context: ./heimdall/ConsultationBackend
+      dockerfile: Dockerfile
+    container_name: consultation_backend
+    restart: unless-stopped
+    ports:
+        - "5000:8080"
+    environment:
+      - ConnectionStrings__Postgres=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - MongoDbSettings__ConnectionString=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017
+      - Services__LLM__BaseUrl=http://odin:11434
+      - Services__Pdf__BaseUrl=http://saga:3000
+      - Services__Email__BaseUrl=http://hermes:8025
+      - Services__SpeechToText__BaseUrl=http://echo:3000
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      echo:
+        condition: service_healthy
+      saga:
+        condition: service_healthy
+      odin:
+        condition: service_started
+      hermes:
+        condition: service_started
+
+  janus:
+    build:
+      context: ./janus/BookingBackend
+      dockerfile: Dockerfile
+    container_name: booking_backend
+    restart: unless-stopped
+    ports:
+      - "5050:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      echo:
+        condition: service_healthy
+      saga:
+        condition: service_healthy
+      odin:
+        condition: service_started
+      hermes:
+        condition: service_started
+
   odin:
     build:
       context: ./odin
@@ -35,6 +87,12 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
       
   saga:
@@ -45,6 +103,12 @@ services:
     restart: unless-stopped
     ports:
       - "3001:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   postgres:
     image: postgres:16
@@ -59,6 +123,12 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   mongo:
     image: mongo:7.0
@@ -73,9 +143,17 @@ services:
       - mongodata:/data/db
     ports:
       - "${MONGO_PORT:-27017}:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
 volumes:
   ollama_data:
   hermes_data:
   pgdata:
   mongodata:
+
+

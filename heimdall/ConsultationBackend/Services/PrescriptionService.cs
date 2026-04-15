@@ -37,18 +37,23 @@ public class PrescriptionService : IPrescriptionService
         var summaryFilter = Builders<SummaryDocument>.Filter.Eq(c => c.AppointmentId, consultationId);
         var summaryDocs = _mongo.Summaries.Find(summaryFilter).ToList();
         if (summaryDocs.Count == 0) throw new KeyNotFoundException("Summary not found");
-        var summary = summaryDocs.FirstOrDefault(d => d.Status == "approved") ?? summaryDocs.First();
+        var summary = summaryDocs.OrderByDescending(d => d.CreatedAt).First();
 
         var prompt = $$"""
-            You are a medical assistant. Based on the doctor-patient consultation summary below, generate a structured doctor's note.
+            You are a medical assistant. Read the consultation summary and output a JSON object.
 
-            Return ONLY a valid JSON object with exactly these 4 fields (no extra text, no markdown):
-            {
-              "symptoms": "concise list of symptoms the patient reported as a space separated string",
-              "diagnosis": "the doctor's diagnosis or most likely condition",
-              "description": "brief clinical description of the case and findings",
-              "advice_prescription": "all medical advice, prescriptions, or treatment recommendations given"
-            }
+            STRICT RULES:
+            - Output ONLY the JSON object. No other text.
+            - Do NOT use markdown, backticks, or code blocks.
+            - Do NOT add extra fields or change field names.
+            - Every field must be a plain string. No nested objects or arrays.
+            - If the summary does not mention a field, write "not mentioned".
+
+            FIELD DEFINITIONS:
+            - "symptoms": comma-separated list of symptoms the patient reported (e.g. "headache, fever, sore throat")
+            - "diagnosis": the doctor's diagnosis or most likely condition (e.g. "viral upper respiratory tract infection")
+            - "description": one or two sentences describing the clinical case and key findings
+            - "advice_prescription": a combined, comma-separated list of ALL treatment recommendations and prescriptions from every source — include what the doctor prescribed or advised during the consultation AND any additional recommendations or suggestions made by the medical AI assistant; do not omit any recommendation regardless of its source (e.g. "rest for 3 days, paracetamol 500mg every 6 hours as needed, drink plenty of fluids, follow up in 1 week if symptoms persist")
 
             Consultation Summary:
             {{summary.Output}}
@@ -122,7 +127,7 @@ public class PrescriptionService : IPrescriptionService
         var filter = Builders<DoctorNoteDocument>.Filter.Eq(c => c.AppointmentId, consultationId);
         var docs = _mongo.DoctorNotes.Find(filter).ToList() ?? throw new KeyNotFoundException("Prescription not found");
 
-        return docs.FirstOrDefault(d => d.Status == "approved") ?? docs.First();
+        return docs.OrderByDescending(d => d.CreatedAt).First();
     }
 
     public DoctorNoteDocument EditPrescription (Guid consultaionId, PrescriptionEditRequest request)
@@ -185,8 +190,7 @@ public class PrescriptionService : IPrescriptionService
             Text      =
                 $"Dear {note.PatientName},\n\n" +
                 $"Please find attached your doctor's note from your consultation with {note.DoctorName}.\n\n" +
-                $"Diagnosis: {note.Diagnosis}\n\n" +
-                "If you have any questions, please contact the clinic.\n\nKind regards,\nThe Consultation Team",
+                "If you have any questions, please contact the clinic.\n\nKind regards,\nMagnum Opus Clinic",
             Attachments =
             [
                 new EmailAttachmentRequest

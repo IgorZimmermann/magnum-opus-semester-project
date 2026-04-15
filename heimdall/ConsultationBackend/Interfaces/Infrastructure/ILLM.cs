@@ -2,5 +2,5 @@ namespace ConsultationBackend.Interfaces.Infrastructure;
 
 public interface ILLM
 {
-    Task<string> GenerateAsync(string promt);
+    Task<string> GenerateAsync(string prompt);
 }

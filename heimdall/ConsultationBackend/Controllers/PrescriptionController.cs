@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Services;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultationBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PrescriptionController : ControllerBase
 {
     private readonly IPrescriptionService _prescriptionService;
