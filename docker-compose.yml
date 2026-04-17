@@ -50,6 +50,9 @@ services:
         condition: service_started
       hermes:
         condition: service_started
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - Services__Email__BaseUrl=http://hermes:8025
 
   odin:
     build:

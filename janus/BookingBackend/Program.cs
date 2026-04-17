@@ -44,8 +44,6 @@ builder.Services.AddHttpClient<IEmail, Email>((sp, client) =>
     client.BaseAddress = new Uri(baseUrl!);
 });
 
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
@@ -54,12 +52,9 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();
