@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { auth0 } from "@/lib/auth0"
 import Link from "next/link"
 
-export default function Page() {
-	const session: { user: { name: string } } | undefined = { user: { name: "Dr. Hegedűs" } }
+export default async function Page() {
+	const session = await auth0.getSession()
 
 	const appointments = [{
 		id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
