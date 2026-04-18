@@ -3,11 +3,12 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useAudioRecorder } from "@/hooks/use-audio-recorder"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function Page() {
 	const { id } = useParams<{ id: string }>()
+	const router = useRouter()
 
 	const appointment = {
 		id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
@@ -18,9 +19,6 @@ export default function Page() {
 
 	const { start, finish } = useAudioRecorder()
 	const [isRecording, setIsRecoding] = useState<boolean>(false)
-
-	async function processRecording() {
-	}
 
 	return (
 		<div className="w-dvw h-dvh flex flex-col gap-5 items-center justify-center">
@@ -41,6 +39,8 @@ export default function Page() {
 							try {
 								const buffer = await finish()
 								setIsRecoding(false)
+
+								router.push(`/appointment/${id}/transcript`)
 							} catch { }
 						}}>End consultation</Button>
 					) : (
