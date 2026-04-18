@@ -26,12 +26,14 @@ export default function Page() {
 				<div className="w-[40dvw] flex flex-col items-center gap-5">
 					<p>Welcome {session.user.name}! Here are your appointments for today:</p>
 					{appointments.map(a => (
-						<Card key={a.id} className="grow w-[40dvw]">
-							<CardContent className="flex flex-row w-full justify-between items-center">
-								<p>{a.name}</p>
-								<span className="font-bold text-xl">{a.time}</span>
-							</CardContent>
-						</Card>
+						<Link href={`/appointment/${a.id}`} key={a.id}>
+							<Card className="grow w-[40dvw]">
+								<CardContent className="flex flex-row w-full justify-between items-center">
+									<p>{a.name}</p>
+									<span className="font-bold text-xl">{a.time}</span>
+								</CardContent>
+							</Card>
+						</Link>
 					))}
 				</div>
 			)}
