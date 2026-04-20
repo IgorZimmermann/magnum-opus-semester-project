@@ -1,0 +1,60 @@
+{
+  "timestamp_unix": 1776679443,
+  "config": {
+    "endpoint": "http://localhost:3000/process",
+    "requests": 30,
+    "concurrency": [
+      1,
+      2
+    ],
+    "timeout": 240,
+    "file_count": 1,
+    "files": [
+      "src/test.wav"
+    ]
+  },
+  "results": [
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 30,
+      "concurrency": 1,
+      "wall_time_s": 74.844,
+      "throughput_rps": 0.401,
+      "success_count": 30,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 2.494,
+        "mean_success": 2.494,
+        "median_success": 2.455,
+        "p90_success": 2.642,
+        "p95_success": 2.804,
+        "p99_success": 2.952,
+        "max_success": 2.996
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    },
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 30,
+      "concurrency": 2,
+      "wall_time_s": 75.34,
+      "throughput_rps": 0.398,
+      "success_count": 30,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 4.938,
+        "mean_success": 4.938,
+        "median_success": 4.958,
+        "p90_success": 5.182,
+        "p95_success": 5.295,
+        "p99_success": 5.464,
+        "max_success": 5.5
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    }
+  ]
+}
