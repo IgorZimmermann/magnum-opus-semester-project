@@ -15,7 +15,7 @@ export default function Page() {
 						<CardTitle>Symptoms</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-wrap">{`In aliquam, sapien a ullamcorper tempor, risus tellus imperdiet diam, at sagittis neque metus at est. Etiam pellentesque tincidunt luctus. Fusce mauris leo, gravida et congue in, tristique et orci. Etiam ut leo iaculis, lobortis nibh at, tincidunt purus. Nam urna ipsum, tincidunt ut sollicitudin quis, luctus id purus. Praesent maximus vulputate turpis, eu vehicula nisl sollicitudin non. Cras feugiat dolor nibh, eu mattis mauris luctus a.`}</p>
+						<p className="text-wrap" contentEditable suppressContentEditableWarning>{`In aliquam, sapien a ullamcorper tempor, risus tellus imperdiet diam, at sagittis neque metus at est. Etiam pellentesque tincidunt luctus. Fusce mauris leo, gravida et congue in, tristique et orci. Etiam ut leo iaculis, lobortis nibh at, tincidunt purus. Nam urna ipsum, tincidunt ut sollicitudin quis, luctus id purus. Praesent maximus vulputate turpis, eu vehicula nisl sollicitudin non. Cras feugiat dolor nibh, eu mattis mauris luctus a.`}</p>
 					</CardContent>
 				</Card>
 				<Card className='w-[40dvw]'>
@@ -23,7 +23,7 @@ export default function Page() {
 						<CardTitle>Diagnosis</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-wrap">{`In aliquam, sapien a ullamcorper tempor, risus tellus imperdiet diam, at sagittis neque metus at est. Etiam pellentesque tincidunt luctus. Fusce mauris leo, gravida et congue in, tristique et orci. Etiam ut leo iaculis, lobortis nibh at, tincidunt purus. Nam urna ipsum, tincidunt ut sollicitudin quis, luctus id purus. Praesent maximus vulputate turpis, eu vehicula nisl sollicitudin non. Cras feugiat dolor nibh, eu mattis mauris luctus a.`}</p>
+						<p className="text-wrap" contentEditable suppressContentEditableWarning>{`In aliquam, sapien a ullamcorper tempor, risus tellus imperdiet diam, at sagittis neque metus at est. Etiam pellentesque tincidunt luctus. Fusce mauris leo, gravida et congue in, tristique et orci. Etiam ut leo iaculis, lobortis nibh at, tincidunt purus. Nam urna ipsum, tincidunt ut sollicitudin quis, luctus id purus. Praesent maximus vulputate turpis, eu vehicula nisl sollicitudin non. Cras feugiat dolor nibh, eu mattis mauris luctus a.`}</p>
 					</CardContent>
 				</Card>
 				<Card className='w-[40dvw]'>
@@ -31,7 +31,7 @@ export default function Page() {
 						<CardTitle>Advice/Prescription</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-wrap">{`In aliquam, sapien a ullamcorper tempor, risus tellus imperdiet diam, at sagittis neque metus at est. Etiam pellentesque tincidunt luctus. Fusce mauris leo, gravida et congue in, tristique et orci. Etiam ut leo iaculis, lobortis nibh at, tincidunt purus. Nam urna ipsum, tincidunt ut sollicitudin quis, luctus id purus. Praesent maximus vulputate turpis, eu vehicula nisl sollicitudin non. Cras feugiat dolor nibh, eu mattis mauris luctus a.`}</p>
+						<p className="text-wrap" contentEditable suppressContentEditableWarning>{`In aliquam, sapien a ullamcorper tempor, risus tellus imperdiet diam, at sagittis neque metus at est. Etiam pellentesque tincidunt luctus. Fusce mauris leo, gravida et congue in, tristique et orci. Etiam ut leo iaculis, lobortis nibh at, tincidunt purus. Nam urna ipsum, tincidunt ut sollicitudin quis, luctus id purus. Praesent maximus vulputate turpis, eu vehicula nisl sollicitudin non. Cras feugiat dolor nibh, eu mattis mauris luctus a.`}</p>
 					</CardContent>
 				</Card>
 			</div>
