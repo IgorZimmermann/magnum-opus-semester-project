@@ -9,19 +9,19 @@
 
 In this research testing topic I will be covering the quality and performance difference between the #link("https://ollama.com/sam860/LFM2:2.6b")[*Liquid AI*] and #link("https://ollama.com/library/gemma4:e4b")[*Gemma 4*] LLM models.
 
-During development of this project we have already tested other models such as Qwen3, Medgemma, Phi-3.5-mini and Liquid AI. However with the recent gain of traction with Gemma 4 we will compare our current LLM model to see if its worth changing and to see the capability of both models.
+During development of this project we have already tested other models such as Qwen3, Medgemma, Phi-3.5-mini and Liquid AI. However with the recent gain of traction with Gemma 4 we will compare our current LLM model to see if it's worth changing and to see the capability of both models.
 
-In this testing it will be broken down into the following:
+Testing will be broken down into the following:
 
 - Summary & suggestion quality assessment using ROUGE and BERTScore
 - MedQA medical AI benchmark database
 
-For each of these tests we will be also assessing the performance by measuring its latency and the token usage.
+For each of these tests we will be also assessing the performance by measuring their latency and token usage.
 
 
 #pagebreak()
 === Summary & Suggestion - Assessment
-In order to check the quality of the text generation of the LLM models, we will be giving the LLM models 10 fake transcripts varying in length, complexity and messiness. The output will then be assessed by ROUGE and BERTScore metric. It uses a reference containing key words and summaries to assess generated output.
+In order to check the quality of the text generation of the LLM models, we will be giving the LLM models 10 fake transcripts varying in length, complexity and messiness. The output will then be assessed by ROUGE and BERTScore metrics. It uses a reference containing key words and summaries to assess generated output.
 
 During this it will be assessed on the following:
 - ROUGE-1: counts individual word matches (higher the score the right words are there)
@@ -30,7 +30,6 @@ During this it will be assessed on the following:
 To also take in count hardware usage, we will be comparing latency and token usage.
 
 === Summary & Suggestion - Results
-
 
 *Gemma 4*
 
@@ -77,9 +76,6 @@ From the table above we can draw the following:
 
 Based on the results produced there is no good evidence of switching to Gemma 4 as all results indicate to better results with LFM2. Additionally LFM2 is a much smaller model of 2.6B params compared to the 4b of Gemma4.
 
-
-
-
 #pagebreak()
 
 === MedQA benchmark - assessment
@@ -104,11 +100,9 @@ From the results above we can conclude the following:
 
 Based on the results produced, there is better evidence that Gemma4 could be potentially used for more accurate diagnosis, however the slowness of Gemma4 must be accounted for in a real-time clinical environment.
 
-
 #pagebreak()
 
 === Conclusion
-
 
 Based on the results of the two tests, it can conclude that for the semester project the chosen LLM model will remain as LFM2.
 Although Gemma 4 has produced better and more medical related output it generated worse outputs for summaries & suggestions. Additionally the latency and the large parameter of the model does not deem suitable for this real-time clinical environment.
