@@ -7,7 +7,7 @@
 
 == Introduction
 
-In this research testing topic I will be covering the quality and performance difference between two models of #link("https://ollama.com/sam860/LFM2:2.6b")[*Liquid AI*] and #link("https://ollama.com/library/gemma4:e4b")[*Gemma 4*] LLM models.
+In this research testing topic I will be covering the quality and performance difference between the #link("https://ollama.com/sam860/LFM2:2.6b")[*Liquid AI*] and #link("https://ollama.com/library/gemma4:e4b")[*Gemma 4*] LLM models.
 
 During development of this project we have already tested other models such as Qwen3, Medgemma, Phi-3.5-mini and Liquid AI. However with the recent gain of traction with Gemma 4 we will compare our current LLM model to see if its worth changing and to see the capability of both models.
 
