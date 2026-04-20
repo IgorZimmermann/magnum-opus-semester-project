@@ -1,21 +1,29 @@
 # Eir - Consultation Frontend
 
-This is a Next.js template with shadcn/ui.
+## How to run in development
 
-## Adding components
+1. Run via pnpm on port `3002`
+    ```sh
+    pnpm dev -p 3002
+    ```
 
-To add components to your app, run the following command:
+## File structure
 
-```bash
-npx shadcn@latest add button
-```
+- `app/`
+    This folder contains the pages.
 
-This will place the ui components in the `components` directory.
+    Paths are resolved based on the file structure.
+    `app/page.tsx -> /`, `app/appointment/[id]/page.tsx -> /appointment/<id>`, `app/appointment/[id]/note/page.tsx -> /appointment/<id>/note`
 
-## Using components
+- `components/`
+    This folder contains the ui components used in the application.
 
-To use the components in your app, import them as follows:
+    In this application this folder is mostly used by `shadcn/ui` components, but custom components would also go here.
 
-```tsx
-import { Button } from "@/components/ui/button";
-```
+- `hooks/`
+    This folder contains the custom React hooks used in the application.
+
+- `lib/`
+    This folder mainly contains configuration logic for packages (like `auth0`).
+
+    Custom utilities like date formatters, etc. would also go here.
