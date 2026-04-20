@@ -1,7 +1,25 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import { Card, CardContent } from "@/components/ui/card"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+import { format } from "date-fns"
+import { ChevronDownIcon } from "lucide-react"
+import * as React from "react"
 import { useState } from "react"
 
 type Booking = {
@@ -27,6 +45,8 @@ export default function Page() {
 	const [showForm, setShowForm] = useState<boolean>(false)
 	const [selectedDoctor, setSelectedDoctor] = useState<string>("")
 	const [selectedDatetime, setSelectedDatetime] = useState<string>("")
+	const [open, setOpen] = useState<boolean>(false)
+	const [date, setDate] = React.useState<Date | undefined>(undefined)
 
 	function handleMakeBooking() {
 		if (!selectedDatetime) return
@@ -66,27 +86,65 @@ export default function Page() {
 						Dear {session.user.name}, add your booking details:
 					</p>
 					<p className="font-bold">Doctor</p>
-					<select
-						className="rounded-md border bg-card p-2"
+					<Select
 						value={selectedDoctor}
-						onChange={(e) => setSelectedDoctor(e.target.value)}
+						onValueChange={(value) => setSelectedDoctor(value)}
 					>
-						<option value="">Select a doctor...</option>
-						{doctors.map((d) => (
-							<option key={d} value={d}>
-								{d}
-							</option>
-						))}
-					</select>
+						<SelectTrigger className="w-full">
+							<SelectValue placeholder="Select a doctor..." />
+						</SelectTrigger>
+						<SelectContent>
+							{doctors.map((d) => (
+								<SelectItem key={d} value={d}>
+									{d}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 					{selectedDoctor && (
 						<>
-							<p className="font-bold">Date</p>
-							<input
-								className="rounded-md border bg-card p-2"
-								type="datetime-local"
-								value={selectedDatetime}
-								onChange={(e) => setSelectedDatetime(e.target.value)}
-							/>
+							<FieldGroup className="w-full flex-row">
+								<Field>
+									<FieldLabel htmlFor="date-picker-optional">Date</FieldLabel>
+									<Popover open={open} onOpenChange={setOpen}>
+										<PopoverTrigger asChild>
+											<Button
+												variant="outline"
+												id="date-picker-optional"
+												className="w-32 justify-between font-normal"
+											>
+												{date ? format(date, "PPP") : "Select date"}
+												<ChevronDownIcon />
+											</Button>
+										</PopoverTrigger>
+										<PopoverContent
+											className="w-auto overflow-hidden p-0"
+											align="start"
+										>
+											<Calendar
+												mode="single"
+												selected={date}
+												captionLayout="dropdown"
+												defaultMonth={date}
+												onSelect={(date) => {
+													setDate(date)
+													setOpen(false)
+												}}
+											/>
+										</PopoverContent>
+									</Popover>
+								</Field>
+								<Field className="w-32">
+									<FieldLabel htmlFor="time-picker-optional">Time</FieldLabel>
+									<Input
+										type="time"
+										id="time-picker-optional"
+										step="900"
+										defaultValue="10:30:00"
+										className="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+									/>
+								</Field>
+							</FieldGroup>
 							<Button onClick={handleMakeBooking}>Make booking</Button>
 						</>
 					)}
