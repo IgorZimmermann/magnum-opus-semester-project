@@ -7,7 +7,7 @@ using ConsultationBackend.Interfaces.Infrastructure;
 using ConsultationBackend.Interfaces.Services;
 using ConsultationBackend.Models.NonRelational;
 using ConsultationBackend.Models.Relational;
-
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace ConsultationBackend.Services;
@@ -42,7 +42,7 @@ public class ConsultationService : IConsultationService
         {
             throw new InvalidOperationException("Booking is not confirmed");
         }
-        
+
         var doc = new ConsultationDocument
         {
             ConsultationId = Guid.NewGuid(),
@@ -82,4 +82,35 @@ public class ConsultationService : IConsultationService
             CreatedAt = doc.CreatedAt
         };
     }
+
+    // Accepts doctor id
+    // Returns doctor appointment, max 10
+    // it returns a list of AppointmentSummaryResponse DTO
+    public List<AppointmentSummaryResponse> GetDoctorAppointments(Guid doctorId)
+    {
+        try
+        {
+            return _context.Appointments
+                .Include(a => a.Patient)
+                .Where(a => a.DocId == doctorId)
+                .OrderBy(a => a.AppointmentDate)
+                .ThenBy(a => a.AppointmentTime)
+                .Take(10)
+                .Select(a => new AppointmentSummaryResponse
+                {
+                    AppointmentId = a.AppointmentId,
+                    PatientName = a.Patient!.Name,
+                    PatientEmail = a.Patient!.Email,
+                    AppointmentDate = a.AppointmentDate,
+                    AppointmentTime = a.AppointmentTime,
+                    AppointmentStatus = a.AppointmentStatus.ToString()
+                })
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to retrieve appointments for doctor {doctorId}", ex);
+        }
+    }
+
 }

@@ -9,9 +9,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -21,6 +26,7 @@ import type {
 import type {
   BookingRequest,
   GetApiConsultationGetConsultationParams,
+  GetApiConsultationGetDoctorAppointmentsParams,
   GetApiPrescriptionGetPrescriptionParams,
   GetApiSummaryGetSummaryParams,
   GetApiTranscriptGetTranscriptParams,
@@ -110,13 +116,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePostApiConsultationStartConsultation = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiConsultationStartConsultation>>, TError,{data: BookingRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiConsultationStartConsultation>>,
         TError,
         {data: BookingRequest},
         TContext
       > => {
-      return useMutation(getPostApiConsultationStartConsultationMutationOptions(options));
+      return useMutation(getPostApiConsultationStartConsultationMutationOptions(options), queryClient);
     }
 
 export type getApiConsultationGetConsultationResponse200 = {
@@ -175,7 +181,7 @@ export const getGetApiConsultationGetConsultationQueryKey = (params?: GetApiCons
     }
 
 
-export const getGetApiConsultationGetConsultationQueryOptions = <TData = Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError = unknown>(params?: GetApiConsultationGetConsultationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>, fetch?: RequestInit}
+export const getGetApiConsultationGetConsultationQueryOptions = <TData = Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError = unknown>(params?: GetApiConsultationGetConsultationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -190,22 +196,167 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiConsultationGetConsultationQueryResult = NonNullable<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>>
 export type GetApiConsultationGetConsultationQueryError = unknown
 
 
+export function useGetApiConsultationGetConsultation<TData = Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError = unknown>(
+ params: undefined |  GetApiConsultationGetConsultationParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiConsultationGetConsultation>>,
+          TError,
+          Awaited<ReturnType<typeof getApiConsultationGetConsultation>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiConsultationGetConsultation<TData = Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError = unknown>(
+ params?: GetApiConsultationGetConsultationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiConsultationGetConsultation>>,
+          TError,
+          Awaited<ReturnType<typeof getApiConsultationGetConsultation>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiConsultationGetConsultation<TData = Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError = unknown>(
+ params?: GetApiConsultationGetConsultationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiConsultationGetConsultation<TData = Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError = unknown>(
- params?: GetApiConsultationGetConsultationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>, fetch?: RequestInit}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiConsultationGetConsultationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetConsultation>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiConsultationGetConsultationQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export type getApiConsultationGetDoctorAppointmentsResponse200 = {
+  data: void
+  status: 200
+}
+
+export type getApiConsultationGetDoctorAppointmentsResponseSuccess = (getApiConsultationGetDoctorAppointmentsResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiConsultationGetDoctorAppointmentsResponse = (getApiConsultationGetDoctorAppointmentsResponseSuccess)
+
+export const getGetApiConsultationGetDoctorAppointmentsUrl = (params?: GetApiConsultationGetDoctorAppointmentsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/Consultation/GetDoctorAppointments?${stringifiedParams}` : `/api/Consultation/GetDoctorAppointments`
+}
+
+export const getApiConsultationGetDoctorAppointments = async (params?: GetApiConsultationGetDoctorAppointmentsParams, options?: RequestInit): Promise<getApiConsultationGetDoctorAppointmentsResponse> => {
+
+  const res = await fetch(getGetApiConsultationGetDoctorAppointmentsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+)
+
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiConsultationGetDoctorAppointmentsResponse['data'] = body ? JSON.parse(body) : undefined
+  return { data, status: res.status, headers: res.headers } as getApiConsultationGetDoctorAppointmentsResponse
+}
+
+
+
+
+
+export const getGetApiConsultationGetDoctorAppointmentsQueryKey = (params?: GetApiConsultationGetDoctorAppointmentsParams,) => {
+    return [
+    `/api/Consultation/GetDoctorAppointments`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiConsultationGetDoctorAppointmentsQueryOptions = <TData = Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError = unknown>(params?: GetApiConsultationGetDoctorAppointmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError, TData>>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiConsultationGetDoctorAppointmentsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>> = ({ signal }) => getApiConsultationGetDoctorAppointments(params, { signal, ...fetchOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiConsultationGetDoctorAppointmentsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>>
+export type GetApiConsultationGetDoctorAppointmentsQueryError = unknown
+
+
+export function useGetApiConsultationGetDoctorAppointments<TData = Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError = unknown>(
+ params: undefined |  GetApiConsultationGetDoctorAppointmentsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>,
+          TError,
+          Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiConsultationGetDoctorAppointments<TData = Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError = unknown>(
+ params?: GetApiConsultationGetDoctorAppointmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>,
+          TError,
+          Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiConsultationGetDoctorAppointments<TData = Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError = unknown>(
+ params?: GetApiConsultationGetDoctorAppointmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiConsultationGetDoctorAppointments<TData = Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError = unknown>(
+ params?: GetApiConsultationGetDoctorAppointmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiConsultationGetDoctorAppointments>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiConsultationGetDoctorAppointmentsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -297,13 +448,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePostApiPrescriptionGeneratePrescription = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPrescriptionGeneratePrescription>>, TError,{params?: PostApiPrescriptionGeneratePrescriptionParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiPrescriptionGeneratePrescription>>,
         TError,
         {params?: PostApiPrescriptionGeneratePrescriptionParams},
         TContext
       > => {
-      return useMutation(getPostApiPrescriptionGeneratePrescriptionMutationOptions(options));
+      return useMutation(getPostApiPrescriptionGeneratePrescriptionMutationOptions(options), queryClient);
     }
 
 export type getApiPrescriptionGetPrescriptionResponse200 = {
@@ -362,7 +513,7 @@ export const getGetApiPrescriptionGetPrescriptionQueryKey = (params?: GetApiPres
     }
 
 
-export const getGetApiPrescriptionGetPrescriptionQueryOptions = <TData = Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError = unknown>(params?: GetApiPrescriptionGetPrescriptionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>, fetch?: RequestInit}
+export const getGetApiPrescriptionGetPrescriptionQueryOptions = <TData = Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError = unknown>(params?: GetApiPrescriptionGetPrescriptionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -377,22 +528,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiPrescriptionGetPrescriptionQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>>
 export type GetApiPrescriptionGetPrescriptionQueryError = unknown
 
 
+export function useGetApiPrescriptionGetPrescription<TData = Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError = unknown>(
+ params: undefined |  GetApiPrescriptionGetPrescriptionParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>,
+          TError,
+          Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiPrescriptionGetPrescription<TData = Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError = unknown>(
+ params?: GetApiPrescriptionGetPrescriptionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>,
+          TError,
+          Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiPrescriptionGetPrescription<TData = Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError = unknown>(
+ params?: GetApiPrescriptionGetPrescriptionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiPrescriptionGetPrescription<TData = Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError = unknown>(
- params?: GetApiPrescriptionGetPrescriptionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>, fetch?: RequestInit}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiPrescriptionGetPrescriptionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPrescriptionGetPrescription>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiPrescriptionGetPrescriptionQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -486,13 +661,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePutApiPrescriptionEditPrescription = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPrescriptionEditPrescription>>, TError,{data: PrescriptionEditRequest;params?: PutApiPrescriptionEditPrescriptionParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiPrescriptionEditPrescription>>,
         TError,
         {data: PrescriptionEditRequest;params?: PutApiPrescriptionEditPrescriptionParams},
         TContext
       > => {
-      return useMutation(getPutApiPrescriptionEditPrescriptionMutationOptions(options));
+      return useMutation(getPutApiPrescriptionEditPrescriptionMutationOptions(options), queryClient);
     }
 
 export type postApiPrescriptionApprovePrescriptionResponse200 = {
@@ -576,13 +751,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePostApiPrescriptionApprovePrescription = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPrescriptionApprovePrescription>>, TError,{params?: PostApiPrescriptionApprovePrescriptionParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiPrescriptionApprovePrescription>>,
         TError,
         {params?: PostApiPrescriptionApprovePrescriptionParams},
         TContext
       > => {
-      return useMutation(getPostApiPrescriptionApprovePrescriptionMutationOptions(options));
+      return useMutation(getPostApiPrescriptionApprovePrescriptionMutationOptions(options), queryClient);
     }
 
 export type postApiSummaryGenerateSummaryResponse200 = {
@@ -666,13 +841,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePostApiSummaryGenerateSummary = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSummaryGenerateSummary>>, TError,{params?: PostApiSummaryGenerateSummaryParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiSummaryGenerateSummary>>,
         TError,
         {params?: PostApiSummaryGenerateSummaryParams},
         TContext
       > => {
-      return useMutation(getPostApiSummaryGenerateSummaryMutationOptions(options));
+      return useMutation(getPostApiSummaryGenerateSummaryMutationOptions(options), queryClient);
     }
 
 export type getApiSummaryGetSummaryResponse200 = {
@@ -731,7 +906,7 @@ export const getGetApiSummaryGetSummaryQueryKey = (params?: GetApiSummaryGetSumm
     }
 
 
-export const getGetApiSummaryGetSummaryQueryOptions = <TData = Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError = unknown>(params?: GetApiSummaryGetSummaryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>, fetch?: RequestInit}
+export const getGetApiSummaryGetSummaryQueryOptions = <TData = Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError = unknown>(params?: GetApiSummaryGetSummaryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -746,22 +921,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiSummaryGetSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSummaryGetSummary>>>
 export type GetApiSummaryGetSummaryQueryError = unknown
 
 
+export function useGetApiSummaryGetSummary<TData = Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError = unknown>(
+ params: undefined |  GetApiSummaryGetSummaryParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSummaryGetSummary>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSummaryGetSummary>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSummaryGetSummary<TData = Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError = unknown>(
+ params?: GetApiSummaryGetSummaryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiSummaryGetSummary>>,
+          TError,
+          Awaited<ReturnType<typeof getApiSummaryGetSummary>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiSummaryGetSummary<TData = Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError = unknown>(
+ params?: GetApiSummaryGetSummaryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiSummaryGetSummary<TData = Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError = unknown>(
- params?: GetApiSummaryGetSummaryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>, fetch?: RequestInit}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiSummaryGetSummaryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSummaryGetSummary>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiSummaryGetSummaryQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -855,13 +1054,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePutApiSummaryEditSumamry = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiSummaryEditSumamry>>, TError,{data: SummaryEditRequest;params?: PutApiSummaryEditSumamryParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiSummaryEditSumamry>>,
         TError,
         {data: SummaryEditRequest;params?: PutApiSummaryEditSumamryParams},
         TContext
       > => {
-      return useMutation(getPutApiSummaryEditSumamryMutationOptions(options));
+      return useMutation(getPutApiSummaryEditSumamryMutationOptions(options), queryClient);
     }
 
 export type postApiTranscriptGenerateTranscriptResponse200 = {
@@ -951,13 +1150,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const usePostApiTranscriptGenerateTranscript = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTranscriptGenerateTranscript>>, TError,{data: PostApiTranscriptGenerateTranscriptBody;params?: PostApiTranscriptGenerateTranscriptParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiTranscriptGenerateTranscript>>,
         TError,
         {data: PostApiTranscriptGenerateTranscriptBody;params?: PostApiTranscriptGenerateTranscriptParams},
         TContext
       > => {
-      return useMutation(getPostApiTranscriptGenerateTranscriptMutationOptions(options));
+      return useMutation(getPostApiTranscriptGenerateTranscriptMutationOptions(options), queryClient);
     }
 
 export type getApiTranscriptGetTranscriptResponse200 = {
@@ -1016,7 +1215,7 @@ export const getGetApiTranscriptGetTranscriptQueryKey = (params?: GetApiTranscri
     }
 
 
-export const getGetApiTranscriptGetTranscriptQueryOptions = <TData = Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError = unknown>(params?: GetApiTranscriptGetTranscriptParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>, fetch?: RequestInit}
+export const getGetApiTranscriptGetTranscriptQueryOptions = <TData = Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError = unknown>(params?: GetApiTranscriptGetTranscriptParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -1031,22 +1230,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiTranscriptGetTranscriptQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>>
 export type GetApiTranscriptGetTranscriptQueryError = unknown
 
 
+export function useGetApiTranscriptGetTranscript<TData = Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError = unknown>(
+ params: undefined |  GetApiTranscriptGetTranscriptParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTranscriptGetTranscript<TData = Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError = unknown>(
+ params?: GetApiTranscriptGetTranscriptParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTranscriptGetTranscript<TData = Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError = unknown>(
+ params?: GetApiTranscriptGetTranscriptParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiTranscriptGetTranscript<TData = Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError = unknown>(
- params?: GetApiTranscriptGetTranscriptParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>, fetch?: RequestInit}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiTranscriptGetTranscriptParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTranscriptGetTranscript>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiTranscriptGetTranscriptQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }

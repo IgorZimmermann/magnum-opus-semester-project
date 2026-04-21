@@ -7,4 +7,5 @@ public interface IConsultationService
 {
     Guid StartConsultation(BookingRequest request);
     ConsultationResponse GetConsultation(Guid consultationId);
+    List<AppointmentSummaryResponse> GetDoctorAppointments(Guid appointmentId);
 }

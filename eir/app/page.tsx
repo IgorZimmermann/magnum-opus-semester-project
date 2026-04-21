@@ -9,6 +9,7 @@ export default async function Page() {
 	const appointments = [{
 		id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
 		name: "Péter Magyar",
+		email: "peter.magyar@kormany.hu",
 		time: "19:30"
 	}]
 
@@ -27,7 +28,7 @@ export default async function Page() {
 				<div className="w-[40dvw] flex flex-col items-center gap-5">
 					<p>Welcome {session.user.name}! Here are your appointments for today:</p>
 					{appointments.map(a => (
-						<Link href={`/appointment/${a.id}`} key={a.id}>
+						<Link href={`/appointment/${a.id}?name=${encodeURIComponent(a.name)}&email=${encodeURIComponent(a.email)}&time=${encodeURIComponent(a.time)}`} key={a.id}>
 							<Card className="grow w-[40dvw]">
 								<CardContent className="flex flex-row w-full justify-between items-center">
 									<p>{a.name}</p>

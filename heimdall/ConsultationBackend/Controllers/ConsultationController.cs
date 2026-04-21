@@ -49,5 +49,19 @@ public class ConsultationController : ControllerBase
             return NotFound(ex.Message);
         }
     }
+
+    [HttpGet("GetDoctorAppointments")]
+    public IActionResult GetDoctorAppointments(Guid doctorId)
+    {
+        try
+        {
+            var appointments = _consultationService.GetDoctorAppointments(doctorId);
+            return Ok(appointments);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 }
 

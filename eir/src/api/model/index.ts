@@ -7,6 +7,7 @@
 
 export * from './bookingRequest';
 export * from './getApiConsultationGetConsultationParams';
+export * from './getApiConsultationGetDoctorAppointmentsParams';
 export * from './getApiPrescriptionGetPrescriptionParams';
 export * from './getApiSummaryGetSummaryParams';
 export * from './getApiTranscriptGetTranscriptParams';
