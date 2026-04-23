@@ -6,5 +6,5 @@
  */
 
 export type GetApiConsultationGetDoctorAppointmentsParams = {
-doctorId?: string;
+email?: string;
 };
