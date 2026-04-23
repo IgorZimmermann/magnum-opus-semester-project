@@ -51,11 +51,11 @@ public class ConsultationController : ControllerBase
     }
 
     [HttpGet("GetDoctorAppointments")]
-    public IActionResult GetDoctorAppointments(Guid doctorId)
+    public IActionResult GetDoctorAppointments(string email)
     {
         try
         {
-            var appointments = _consultationService.GetDoctorAppointments(doctorId);
+            var appointments = _consultationService.GetDoctorAppointments(email);
             return Ok(appointments);
         }
         catch (KeyNotFoundException ex)
