@@ -15,7 +15,7 @@ The methodology and tools used also ensured that every contribution made to the 
 In order to ensure that none of the tasks get lost, we made every task (programming, diagramming, documenting) an issue on Jira.
 We completed these tasks during one-week-long Sprints, from one Monday to the next.
 Some exceptions were made with the length of the Sprints, for example around the spring break.
-Usually on Mondays, we held meetings, where we both reflected on the Sprint ending that day, and planned the one coming up.
+On Mondays, we held meetings, where we both reflected on the Sprint ending that day, and planned the one coming up.
 On Thursdays we also regularly held stand-up meetings, where everyone gave an update on their issue(s).
 
 To ensure that tasks were distributed fairly, we assigned tasks not based on their sheer quantity, but based on the tasks' actual difficulty.
