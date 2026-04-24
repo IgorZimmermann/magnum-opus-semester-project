@@ -23,8 +23,8 @@ We agreed collectively on an issue's story point value, using Story Point Poker.
 
 == Documents and Presentations
 To create our documentation and presentations, we chose #link("https://typst.app/")[Typst].
-It allowed us to version control and handle our documents as if they were code.
-Templates have also been made to create a uniform look for all of our reports and presentations.
+As Typst is a text-based document markup language, this allowed us to version control and handle our documents as if they were code.
+We also made templates to create a uniform look for all of our reports and presentations.
 In order to keep track of our images and diagrams, we also decided to store them in the same repository as our documents and code.
 We also created a meeting log document during each meeting to keep everyone accountable and to allow team members to catch up, in case they were absent.
 
@@ -41,6 +41,10 @@ We also created a pipeline that sends a message to our Discord server about a ne
   image("../images/pull-request-template.png"),
   "Pull Request Template",
 )
+
+All in all, these methods and rules helped us improve our productivity by a lot, compared to previous semesters.
+It also made the entire process, less of a hassle, and way more enjoyable.
+Our team completed every task within the deadlines, with time to review and discuss different opinions.
 
 = Problem analysis
 
