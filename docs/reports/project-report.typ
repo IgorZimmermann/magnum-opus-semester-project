@@ -59,13 +59,12 @@
 
   - The system should allow searching and filtering doctors by availability and name/specialty.
   - The system should log AI prompts and outputs for evaluation purposes.
-  - The system should allow configurable instructions.
-  - The system should allow users to search for a doctor and see available doctors.
 
 *COULD have*
 
   - Doctors could upload diagnostic images to consultation records.
   - The system could support runtime switching between local LLM models.
+  - The system could allow configurable instructions.
 
 *WON'T have*
 
@@ -74,30 +73,37 @@
 
 == Non-Functional Requirements
 
-  - Transcription request returns within 30 seconds for a 5-minute audio sample on reference hardware.
-  - PDF generation and email dispatch complete within 5 seconds after approval under normal load.
-  - Booking API responses complete within 3 seconds at expected load.
+*Performance*
+- Transcription request returns within 30 seconds for a 5-minute audio sample on low-end hardware.
+- PDF generation and email dispatch complete within 5 seconds after approval under normal load (up to 20 concurrent users).
+- Booking API responses complete within 3 seconds at expected load.
 
-  - The system runs on Windows, Linux, and macOS through containerized deployment.
-  - All core services are runnable with one orchestrated compose configuration.
+*Portability*
+- The system runs on Windows, Linux, and macOS through containerized deployment.
+- All core services are runnable with one orchestrated compose configuration.
 
-  - The system supports at least 5 concurrent consultations without service failure.
-  - Core services are independently deployable and replaceable via stable APIs.
+*Scalability / Capacity*
+- The system supports at least 5 concurrent consultations without service failure.
 
-  - The architecture follows CBSE principles with clear component boundaries and interfaces.
-  - Changes to one service should not require code changes in unrelated services.
+*Maintainability / Modularity*
+- Core services are independently deployable and replaceable via stable APIs.
+- The architecture follows CBSE principles with clear component boundaries and interfaces.
+- Changes to one service should not require code changes in unrelated services.
 
-  - Patient and consultation data in transit shall use encrypted channels in non-development environments.
-  - Passwords and secrets shall never be stored in plaintext.
-  - Role-based authorization rules shall enforce doctor vs patient access boundaries.
-  - Security events (login failure, unauthorized access, approval actions) shall be auditable.
+*Security*
+- Patient and consultation data in transit shall use encrypted channels in non-development environments.
+- Passwords and secrets shall never be stored in plaintext.
+- Role-based authorization rules shall enforce doctor vs patient access boundaries.
+- Security events (login failure, unauthorized access, approval actions) shall be auditable.
 
-  - Services auto-recover from container-level failures.
-  - No approved prescription or transcript shall be lost across restart events.
-  - Relational and non-relational stores shall use persistent volumes.
+*Reliability / Recoverability*
+- Services auto-recover from container-level failures.
+- No approved prescription or transcript shall be lost across restart events.
+- Relational and non-relational stores shall use persistent volumes.
 
-  - Core backend logic shall include unit and integration tests.
-  - At least 80% coverage shall be achieved for core application logic.
+*Testability*
+- Core backend logic shall include unit and integration tests.
+- At least 80% coverage shall be achieved for core application logic.
 
 = Design
 
