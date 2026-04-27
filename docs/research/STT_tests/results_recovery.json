@@ -1,0 +1,38 @@
+{
+  "timestamp_unix": 1776681518,
+  "config": {
+    "endpoint": "http://localhost:3000/process",
+    "requests": 30,
+    "concurrency": [
+      1
+    ],
+    "timeout": 240,
+    "file_count": 1,
+    "files": [
+      "src/test.wav"
+    ]
+  },
+  "results": [
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 30,
+      "concurrency": 1,
+      "wall_time_s": 72.343,
+      "throughput_rps": 0.415,
+      "success_count": 30,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 2.411,
+        "mean_success": 2.411,
+        "median_success": 2.383,
+        "p90_success": 2.466,
+        "p95_success": 2.543,
+        "p99_success": 2.674,
+        "max_success": 2.716
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    }
+  ]
+}

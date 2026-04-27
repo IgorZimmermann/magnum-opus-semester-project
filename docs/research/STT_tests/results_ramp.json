@@ -1,0 +1,148 @@
+{
+  "timestamp_unix": 1776680875,
+  "config": {
+    "endpoint": "http://localhost:3000/process",
+    "requests": 100,
+    "concurrency": [
+      1,
+      2,
+      4,
+      8,
+      12,
+      16
+    ],
+    "timeout": 300,
+    "file_count": 1,
+    "files": [
+      "src/test.wav"
+    ]
+  },
+  "results": [
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 100,
+      "concurrency": 1,
+      "wall_time_s": 240.322,
+      "throughput_rps": 0.416,
+      "success_count": 100,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 2.403,
+        "mean_success": 2.403,
+        "median_success": 2.373,
+        "p90_success": 2.501,
+        "p95_success": 2.594,
+        "p99_success": 2.904,
+        "max_success": 3.027
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    },
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 100,
+      "concurrency": 2,
+      "wall_time_s": 240.072,
+      "throughput_rps": 0.417,
+      "success_count": 100,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 4.777,
+        "mean_success": 4.777,
+        "median_success": 4.758,
+        "p90_success": 4.915,
+        "p95_success": 5.017,
+        "p99_success": 5.385,
+        "max_success": 5.415
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    },
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 100,
+      "concurrency": 4,
+      "wall_time_s": 238.14,
+      "throughput_rps": 0.42,
+      "success_count": 100,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 9.384,
+        "mean_success": 9.384,
+        "median_success": 9.476,
+        "p90_success": 9.709,
+        "p95_success": 10.116,
+        "p99_success": 11.944,
+        "max_success": 12.0
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    },
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 100,
+      "concurrency": 8,
+      "wall_time_s": 238.002,
+      "throughput_rps": 0.42,
+      "success_count": 100,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 18.38,
+        "mean_success": 18.38,
+        "median_success": 19.005,
+        "p90_success": 19.196,
+        "p95_success": 19.237,
+        "p99_success": 19.28,
+        "max_success": 19.319
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    },
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 100,
+      "concurrency": 12,
+      "wall_time_s": 237.417,
+      "throughput_rps": 0.421,
+      "success_count": 100,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 26.928,
+        "mean_success": 26.928,
+        "median_success": 28.443,
+        "p90_success": 28.596,
+        "p95_success": 28.633,
+        "p99_success": 28.646,
+        "max_success": 28.742
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    },
+    {
+      "endpoint": "http://localhost:3000/process",
+      "requests": 100,
+      "concurrency": 16,
+      "wall_time_s": 237.844,
+      "throughput_rps": 0.42,
+      "success_count": 100,
+      "failure_count": 0,
+      "failure_rate": 0.0,
+      "latency_s": {
+        "mean_all": 35.198,
+        "mean_success": 35.198,
+        "median_success": 38.015,
+        "p90_success": 38.228,
+        "p95_success": 38.253,
+        "p99_success": 38.34,
+        "max_success": 38.344
+      },
+      "failed_status_counts": {},
+      "sample_errors": []
+    }
+  ]
+}
