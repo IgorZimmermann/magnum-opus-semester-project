@@ -23,10 +23,13 @@ This semester's project was designed with layered architecture in mind, implemen
 
 The original design remained largely unchanged from the initial architecture sketch, consisting of two frontends, two backends and two databases. Direct REST calls were chosen instead of introducing an additional API gateway layer. The diagram illustrates how the components are connected and how they map to the individual layers of the overall architecture.
 
-
-#figure(
-  image("../images/ApplicationDiagram.jpg"),
-  caption: [Application Layer Diagram],
+See @application_layer_diagram.
+#appendix(
+  <application_layer_diagram>,
+  image(
+    "../images/ApplicationDiagram.jpg",
+  ),
+  "Application Layer Diagram",
 )
 
 === Two monolithic backend approaches
@@ -37,61 +40,60 @@ In addition, two separate backends were defined for the two primary use cases. T
 
 === Component-Based System Diagram
 
-The Component-Based System (CBS), see Figure 2, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: frontend, backend, and services/databases. This design allows individual components to be independently developed and interchanged at runtime.
+The Component-Based System (CBS), see @component_based_system_diagram, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: frontend, backend, and services/databases. This design allows individual components to be independently developed and interchanged at runtime.
 
-#figure(
-  image("../images/CBSE2.drawio.svg"),
-  caption: [Component-Based system diagram],
+#appendix(
+  <component_based_system_diagram>,
+  image(
+    "../images/CBSE2.drawio.svg",
+  ),
+  "Component-Based system diagram",
 )
 == Tech stack
 
 The choices we made were along the lines of: familiarity with a language, framework or model over technical suitability reduces the learning curve. However, we did research for each layer, and each member evaluated and made a choice based on which technology fits our group and project the best. Faster-Whisper came out as the most reliable in testing, with high transcription accuracy and acceptable speed, when compared to MedASR and NVIDIA Canary Qwen. For documentation, presentation and meeting logs, we used Typst, so it made for the perfect PDF generator. The LLM model was decided on with testing as well; with LFM2 from LiquidAI, it was faster and a better fit overall compared to Qwen3, Phi-3.5 and Medgemma.
 
-#figure(
-  caption: "Application tech stack",
-  table(
-    columns: 3,
-    align: left,
-    stroke: 0.5pt,
-    inset: 6pt,
+#table(
+  columns: 3,
+  align: left,
+  stroke: 0.5pt,
+  inset: 6pt,
 
-    [*Layer*], [*Technology*], [*Purpose*],
+  [*Layer*], [*Technology*], [*Purpose*],
 
-    [Frontend], [Next.js / TypeScript], [User/Doctor interface],
-    [Backend], [C\# - ASP.NET], [Orchestration & business logic],
-    [Speech-to-Text], [Faster-Whisper], [Audio transcription],
-    [LLM Runtime], [Ollama + LLM models], [Local AI],
-    [PDF Generator], [Typst], [PDF generation],
-    [Email], [Mailpit], [Email sending],
-    [Data], [PostgreSQL + MongoDB], [Un/structured storage],
-    [Deployment], [Docker Compose], [Containerized services & networking],
-  ),
-)<tech-stack>
+  [Frontend], [Next.js / TypeScript], [User/Doctor interface],
+  [Backend], [C\# - ASP.NET], [Orchestration & business logic],
+  [Speech-to-Text], [Faster-Whisper], [Audio transcription],
+  [LLM Runtime], [Ollama + LLM models], [Local AI],
+  [PDF Generator], [Typst], [PDF generation],
+  [Email], [Mailpit], [Email sending],
+  [Data], [PostgreSQL + MongoDB], [Un/structured storage],
+  [Deployment], [Docker Compose], [Containerized services & networking],
+)
+
+Application tech stack
 
 == Frontend
 
-The frontend design was based on the user flows; see figure 3 and 5. We decided not to go into detail with the frontend, as the requirements were flexible regarding styling. There are two different frontends with two separate authentications and backends. This was done separation of concerns and independent deployability in mind.
-=== Patient portal
-#figure(
-  image("../images/ActivityBooking.drawio.svg"),
-  caption: [Activity diagram for booking consultations],
+The frontend design was based on the user flows; see @activity_booking and @activity_doctor. We decided not to go into detail with the frontend, as the requirements were flexible regarding styling. There are two different frontends with two separate authentications and backends. This was done separation of concerns and independent deployability in mind.
+
+
+#appendix(
+  <activity_booking>,
+  image(
+    "../images/ActivityBooking.drawio.svg",
+  ),
+  "Activity diagram for booking consultations",
 )
 
-#figure(
-  image("../images/mona.png"),
-  caption: [Screenshot of the patient portal],
-)
 
-=== Doctor portal
 
-#figure(
-  image("../images/ActivityDoctor.drawio.svg"),
-  caption: [Activity diagram for Doctors' dashboard],
-)
-
-#figure(
-  image("../images/mona.png"),
-  caption: [Screenshot of the Doctor's portal],
+#appendix(
+  <activity_doctor>,
+  image(
+    "../images/ActivityDoctor.drawio.svg",
+  ),
+  "Activity diagram for Doctors' dashboard",
 )
 
 == Backend architecture.
@@ -100,10 +102,15 @@ The frontend design was based on the user flows; see figure 3 and 5. We decided 
 
 The booking backend was designed as a small ASP.NET service. The architecture is organised into layers: controllers, services, interfaces for the services and the data layer. The controllers only handle HTTP requests, and the actual business logic is being handled by separate services. This backend only uses the relational database for straightforward relational queries. We landed on this structure because of the abstraction it provides using interfaces and APIs, which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
 
+See the @uml_booking_backend.
 
-#figure(
-  image("../images/UMLv2.drawio.svg"),
-  caption: [UML diagram of the booking backend],
+#appendix(
+  <uml_booking_backend>,
+  image(
+    "../images/UMLv2.drawio.svg",
+    width: 100%,
+  ),
+  "UML diagram of the booking backend",
 )
 
 === Consultation backend
@@ -113,14 +120,17 @@ The consultation database, nicknamed Heimdall, generally uses the same principle
 
 == Database design
 
-#figure(
-  image("../images/relational_database.drawio.svg"),
-  caption: [Relational database Entity Relationship Diagram],
+#appendix(
+  <relational_database_er>,
+  image(
+    "../images/relational_database.drawio.svg",
+  ),
+  "Relational database Entity Relationship Diagram",
 )
 
 As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured data and the non-relational, MongoDB, for the document-style data. We decided to go with this design so that PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
 
-
+See @relational_database_er.
 = Implementation
 
 = Validation
