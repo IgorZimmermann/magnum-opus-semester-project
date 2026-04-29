@@ -27,3 +27,7 @@
     This folder mainly contains configuration logic for packages (like `auth0`).
 
     Custom utilities like date formatters, etc. would also go here.
+
+### OAuth Login for a doctor (seeded)
+email: alice.carter@example.com
+pass: Acarter123!

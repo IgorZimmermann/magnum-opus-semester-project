@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Providers } from "./providers";
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -24,7 +25,7 @@ export default function RootLayout({
 			className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
 		>
 			<body>
-				<Auth0Provider><ThemeProvider>{children}</ThemeProvider></Auth0Provider>
+				<Auth0Provider><Providers><ThemeProvider>{children}</ThemeProvider></Providers></Auth0Provider>
 			</body>
 		</html>
 	)
