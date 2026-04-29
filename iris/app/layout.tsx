@@ -1,8 +1,10 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Providers } from "./providers"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
+import { Auth0Provider } from "@auth0/nextjs-auth0"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})
 
@@ -23,7 +25,7 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <Auth0Provider><Providers><ThemeProvider>{children}</ThemeProvider></Providers></Auth0Provider>
       </body>
     </html>
   )
