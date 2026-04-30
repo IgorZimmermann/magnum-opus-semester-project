@@ -36,6 +36,8 @@
 #slide(title: "System Workflow - Consultation")[
   #align(center + horizon)[
     #image("../images/ActivityDoctor.drawio.svg", width: 100%, height: 120%, fit: "contain")
+  ]
+]
 #slide(title: "Problem statement")[
   #align(center + horizon)[
     Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.
