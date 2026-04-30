@@ -1,8 +1,12 @@
+// Custom http call for every request
 export const customFetch = async <T>(url: string, options: RequestInit): Promise<T> => {
+    // fetches the users JWT
     const tokenRes = await fetch('/api/access-token')
     if (!tokenRes.ok) {
+        // create fake one (will not work) if not found
         return { data: null, status: 401, headers: new Headers() } as T
     }
+    // else attaches it to every call
     const { token } = await tokenRes.json()
 
     const response = await fetch(url, {

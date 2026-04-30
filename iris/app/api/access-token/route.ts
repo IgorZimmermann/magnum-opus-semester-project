@@ -1,6 +1,7 @@
 import { auth0 } from '@/lib/auth0'
 import { NextResponse } from 'next/server'
 
+// calls auth0 to get token to return plain JWT (that customFetch.ts can use)
 export async function GET() {
     try {
         const { token } = await auth0.getAccessToken()
