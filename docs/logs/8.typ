@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: (),
   location: "SDU Løkken - 104",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: json("../team-members.json"),
-)
+)[
 
 - Team members contributions since last meeting:
   - *Örs*: No contributions yet.
@@ -21,3 +21,5 @@
   - *Igor*: Has begun development (`OPUS-19`).
   - *Denis*: Has experimented, only has to document (`OPUS-21`).
   - *Ákos*: Has started researching task (`OPUS-22`). Will not open request by Friday.
+
+]

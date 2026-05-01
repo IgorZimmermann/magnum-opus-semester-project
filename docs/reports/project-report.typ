@@ -364,16 +364,6 @@ The frontend design was based on the user flows; see @activity_booking and @acti
   "Activity diagram for booking consultations",
 )
 
-
-
-#appendix(
-  <activity_doctor>,
-  image(
-    "../images/ActivityDoctor.drawio.svg",
-  ),
-  "Activity diagram for Doctors' dashboard",
-)
-
 == Backend architecture.
 
 === Booking backend
@@ -415,3 +405,6 @@ See @relational_database_er.
 
 = Conclusion
 
+#for i in range(1, 16) {
+  appendix(none, align(left, include "../logs/" + str(i) + ".typ"), "Meeting Log " + str(i))
+}

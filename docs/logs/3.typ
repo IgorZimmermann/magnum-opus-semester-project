@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: (),
   location: "SDU Alsion - J1.03",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: (..json("../team-members.json"), (name: "Riccardo Terrenzi")),
-)
+)[
 
 - We signed the Supervisor Contract.
 - We discussed our diagram made in the previous meeting and realised that it's a Application Layer diagram.
@@ -25,3 +25,5 @@
 - Igor created the base for the project proposal.
 - We went through the user flows.
 - We created a component diagram based on the user flow.
+
+]

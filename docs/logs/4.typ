@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: ((name: "Kristóf Ákos Koltai", method: "online"),),
   location: "SDU Løkken - 104",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: json("../team-members.json"),
-)
+)[
 
 - Team members contributions since last meeting:
   - *Örs*: Task in progress (`OPUS-7`), content has been written. Only has to copy to `project-proposal` file.
@@ -23,3 +23,5 @@
   - *Ákos*: Has started writing the text for both tasks (`OPUS-5`, `OPUS-6`).
 
 - Updated PR template to include point about moving task to `In Review` column.
+
+]

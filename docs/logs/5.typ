@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: ((name: "Örs Tomaj Jeney", method: "notified"),),
   location: "SDU Alsion - J1.18",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: (..json("../team-members.json"), (name: "Riccardo Terrenzi")),
-)
+)[
 
 - We merged all approved pull requests and closed the first sprint.
 - We analyzed a component-based design with our supervisor.
@@ -22,3 +22,5 @@
 - We split research tasks and put them in Jira.
 - We gave story points using Story Point Poker.
 - We distributed the issues and started a new sprint.
+
+]
