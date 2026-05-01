@@ -204,6 +204,213 @@ restarted, reducing downtime and improving overall reliability.
 = Implementation
 
 = Validation
+== Testing
+
+The project employs a carefully selected technology stack for quality assurance and validation across multiple components.
+
+=== Consultation Backend - ASP.NET
+
+As both backends are built using ASP.NET, we utilized xUnit as the primary testing framework, which is essential for testing asynchronous operations in the backend. Moq provides flexible mocking capabilities, allowing isolation of external dependencies (MongoDB, HTTP services, email services) during testing. This combination enables comprehensive service-level testing without requiring live instances of MongoDB or third-party APIs.
+
+*Consultation Service Tests*
+
+What is tested: 
+- The ability to retrieve consultation data and create new consultations
+- The ability to preserve all relevant metadata when creating a consultation record in MongoDB and assign a unique consultation ID.
+- The ability to retrieve consultation data and map it to the API response format, ensuring data integrity across relational and non-relational storage layers.
+
+*Transcript Service Tests*
+
+What is tested:
+- The ability to upload audio recordings to the speech-to-text service and retrieve accurate transcriptions, ensuring that the transcription process is correctly integrated and functional.
+- Ensuring stored transcriptions are accurately retrieved.
+
+*Summary Service Tests*
+
+What is tested:
+- Mocks the LLM service to verify that the service correctly passes the transcription to the language model.
+- Confirming that the service retrieves the most recent summary version, as multiple versions might exist.
+
+*Prescription Service Tests*
+
+What is tested:
+- Testing if the service correctly orchestrates between the summary and LLM service and if the output is correctly structured and tracked.
+- Ensuring the latest approved prescription is retrieved. 
+
+*Mocking Strategy*
+
+External dependencies are mocked to isolate business logic:
+
+- *ILLM Service*: Mocked to return controlled, realistic outputs such as structured medical recommendations
+- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing
+- *IPdf and IEmail Services*: Mocked to avoid side effects during testing
+- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database
+
+The use of callbacks captures documents during insertion, allowing tests to verify both that data was persisted and that the content is correct.
+
+#footnote[`docs/research/backend.typ`]
+
+=== Booking Backend - ASP.NET
+
+The Booking Backend utilizes the same testing framework as the Consultation Backend: xUnit with Moq. This consistency across backends enables shared testing patterns and allows both services to be validated using identical mocking and isolation strategies.
+
+The testing approach focuses on service-level unit tests that validate the business logic of core operations:
+
+*Appointment Service Tests*
+
+What is tested:
+- The ability to save appointments to the database with all metadata and generate a unique appointment ID.
+- The ability to persist appointment data to the relational database.
+- The automatic handling of email sending, including setting the `EmailSentAt` timestamp when emails are successfully sent to patients.
+- Confirming that the email contains relevant details such as the assigned doctor's name and appointment time.
+- The ability to retrieve all stored appointments and map them correctly to Data Transfer Objects for API responses.
+
+*Availability Service Tests*
+
+What is tested:
+- The ability to retrieve all doctors in the system along with their availability schedules.
+- The correct retrieval of all doctors when multiple doctors are present in the system.
+
+*Mocking Strategy*
+
+External dependencies are mocked to isolate business logic:
+
+- *IEmail Service*: Mocked to simulate email sending without actually dispatching emails, allowing tests to verify the email request content and success/failure handling without external dependencies.
+
+#footnote[`docs/research/backend.typ`]
+
+=== LLM Service - Liquid AI
+
+LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding, while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
+
+*Testing Strategy*
+ Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
+
+The testing approach focuses on two critical dimensions:
+1. Summary and suggestion quality for clinical accuracy
+2. Medical knowledge assessment against benchmark datasets
+
+*Summary & Suggestion Quality Assessment*
+
+What is tested:
+- The ability to generate accurate clinical summaries from consultation transcripts using ROUGE-1 metric, which measures individual word matches and validates that key clinical terms are preserved.
+- The model's contextual understanding of medical concepts using BERTScore F1 metric, which evaluates semantic similarity and ensures the generated summaries maintain clinical meaning.
+- Latency and token throughput to ensure the model operates efficiently for real-time clinical use, with tests run on transcripts ranging from 1 to 14 minutes.
+
+*Medical Knowledge Assessment (MedQA Benchmark)*
+
+What is tested:
+- The model's ability to correctly answer medical multiple-choice questions from the MedQA benchmark dataset, measuring medical knowledge accuracy.
+- Overall performance on 50 representative questions from the 1000+ question medical knowledge base.
+- Latency and token throughput during medical question answering to assess real-time diagnostic support feasibility.
+
+*Test Coverage and Results*
+
+*Summary Quality Results:*
+Liquid AI demonstrated superior performance for clinical summary generation:
+- ROUGE-1 average: 0.562 vs Gemma 4 at 0.487
+- BERTScore F1 average: 0.385 vs Gemma 4 at 0.341
+- Average latency: 110.40s vs Gemma 4 at 267.85s
+- Throughput: 13.38 tokens/sec vs Gemma 4 at 8.16 tokens/sec
+
+*Medical Knowledge Results:*
+Gemma 4 demonstrated superior accuracy on medical knowledge questions:
+- Accuracy: 74.0% vs Liquid AI at 48.0%
+- However, latency was significantly higher at 80.97s average vs 15.38s for Liquid AI
+
+#footnote[`docs/research/LLM-testing.typ`]
+
+=== Speech-to-text Service - Faster-Whisper
+
+The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must complete within acceptable timeframes for doctor-patient consultations.
+
+*Testing Strategy*
+
+The Speech-to-text Service validation employs stress testing and benchmark analysis to evaluate performance and reliability under varying loads.
+
+The testing approach employs four sequential test phases to establish performance characteristics:
+1. Baseline testing at low concurrency to establish normal operation
+2. Ramp stress testing with gradually increasing concurrency
+3. Peak stress testing at maximum expected load
+4. Recovery testing to verify the service restores to baseline performance
+
+*Test Methodology*
+
+What is tested:
+- The service's ability to process audio transcription requests at low concurrency (1-2 concurrent users) to establish baseline throughput and latency metrics.
+- Performance degradation under gradually increasing concurrent load (1-16 concurrent requests) to identify where performance begins to degrade.
+- Behavior under peak stress conditions (20-24 concurrent requests) to assess maximum capacity and failure rates.
+- Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
+
+The tests use the same audio file across all phases, which is a mash-up of audio files from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
+
+*Test Coverage and Results*
+
+*Baseline Performance (Concurrency 1-2):*
+- Concurrency 1: 0.401 requests/sec, 2.49s mean latency, 0% failure rate
+- Concurrency 2: 0.398 requests/sec, 4.94s mean latency, 0% failure rate
+
+*Ramp Stress Results (Concurrency 1-16):*
+- Throughput remained stable at ~0.420 requests/sec across all concurrency levels
+- Mean latency increased proportionally with concurrency:
+  - Concurrency 4: 9.38s latency
+  - Concurrency 8: 18.38s latency
+  - Concurrency 12: 26.93s latency
+  - Concurrency 16: 35.20s latency
+- Zero failures at all concurrency levels
+
+*Peak Stress Results (Concurrency 20-24):*
+- Concurrency 20: 0.420 requests/sec, 43.85s mean latency, 0% failure rate
+- Concurrency 24: 0.420 requests/sec, 51.64s mean latency, 0% failure rate
+
+*Recovery Test (Return to Concurrency 1):*
+- Mean latency: 2.41s (comparable to baseline 2.49s)
+- Throughput: 0.415 requests/sec (baseline was 0.401)
+- Failure rate: 0% (unchanged)
+
+*Performance Analysis*
+
+- *Stable Throughput:*
+ The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
+- *Linear Latency Scaling:*
+ Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
+- *Zero Failure Rate:*
+ No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
+- *Full Recovery:*
+ The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
+
+The service represents a strong baseline suitable for stable, low-concurrency operation typical of a single outpatient department.
+
+#footnote[`docs/research/STT-test.typ`]
+
+== Supporting Technologies
+
+*Auth0 for Authentication*
+
+Authentication is provided by Auth0, a third-party identity platform with medical SSO compliance. This choice eliminates the need for custom authentication testing while ensuring HIPAA and other healthcare standards are met through Auth0's certified compliance.
+
+#footnote[`docs/research/authentication.typ`]
+
+*Mailpit for Email Testing*
+
+Email functionality uses Mailpit for development and testing environments, allowing complete control over email delivery without external dependencies. Mailpit runs locally in Docker, enabling email integration testing without affecting external systems.
+
+#footnote[`docs/research/email.typ`]
+
+*Typst for PDF Generation*
+
+PDF prescriptions are generated using Typst, a markup-based document system that allows data-driven PDF generation. Typst's great customizability and data templating capabilities make it suitable for clinical prescription documents with structured, reusable formatting.
+
+#footnote[`docs/research/pdf.typ`]
+
+*Docker and Docker Compose*
+
+The entire system is containerized and orchestrated using Docker and Docker Compose, enabling consistent testing environments across development, CI/CD, and deployment stages. Each service runs in isolated containers.
+This containerization enables:
+
+- Reproducible testing environments independent of host machine configuration
+- Isolated service testing without cross-contamination between tests
+- Stress testing of individual services (e.g., STT service under load) in controlled conditions
 
 = Conclusion
 
