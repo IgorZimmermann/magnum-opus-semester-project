@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-15",
+  "jiraSummary": "research speech-to-text",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Koltai Ákos",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-02T13:08:48.653+0100",
+  "prNumber": 19,
+  "prTitle": "OPUS-15  Research Speech-to-text",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/19",
+  "prAuthor": "akos-koltai",
+  "prOpenedAt": "2026-03-07T23:56:40Z",
+  "prMergedAt": "2026-03-09T11:16:14Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-09T10:29:36Z"
+    },
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-09T11:15:58Z"
+    }
+  ]
+}

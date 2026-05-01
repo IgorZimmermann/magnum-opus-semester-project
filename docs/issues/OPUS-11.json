@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-11",
+  "jiraSummary": "write \"risks\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 2,
+  "jiraCreatedAt": "2026-02-23T12:50:52.051+0100",
+  "prNumber": 6,
+  "prTitle": "OPUS-11 Wrote the risks part in project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/6",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-02-27T18:16:29Z",
+  "prMergedAt": "2026-03-02T11:03:51Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T12:51:50Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-02T11:00:42Z"
+    }
+  ]
+}

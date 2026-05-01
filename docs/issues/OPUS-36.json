@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-36",
+  "jiraSummary": "consultation backend improvements",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-23T12:39:56.202+0100",
+  "prNumber": 35,
+  "prTitle": "OPUS-36 Updated consultation backend",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/35",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-03-24T07:50:15Z",
+  "prMergedAt": "2026-04-14T10:36:15Z",
+  "githubReviewers": [
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-26T23:24:12Z"
+    },
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-05T21:30:27Z"
+    }
+  ]
+}

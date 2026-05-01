@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-40",
+  "jiraSummary": "presentation slide 10-12",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": null,
+  "jiraCreatedAt": "2026-04-05T10:14:14.778+0200",
+  "prNumber": 44,
+  "prTitle": "OPUS-40 Presentation slides: Conclusion, Challenges",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/44",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-04-08T13:47:08Z",
+  "prMergedAt": "2026-04-08T20:25:03Z",
+  "githubReviewers": [
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-08T13:54:33Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-08T20:24:02Z"
+    }
+  ]
+}

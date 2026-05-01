@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-43",
+  "jiraSummary": "unit/functional testing for consultation back-end",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-04-15T13:27:55.719+0200",
+  "prNumber": 49,
+  "prTitle": "OPUS-43 Unit/functional testing for consultation back-end",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/49",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-04-18T17:30:12Z",
+  "prMergedAt": "2026-04-27T09:13:17Z",
+  "githubReviewers": [
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-20T13:22:27Z"
+    },
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-21T12:28:11Z"
+    }
+  ]
+}

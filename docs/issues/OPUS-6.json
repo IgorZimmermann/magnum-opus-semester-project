@@ -1,0 +1,22 @@
+{
+  "jiraKey": "OPUS-6",
+  "jiraSummary": "write \"aim\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Koltai Ákos",
+  "storyPoints": 2,
+  "jiraCreatedAt": "2026-02-23T12:49:30.907+0100",
+  "prNumber": 9,
+  "prTitle": "OPUS-6 write aim section of project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/9",
+  "prAuthor": "akos-koltai",
+  "prOpenedAt": "2026-02-28T20:16:54Z",
+  "prMergedAt": "2026-03-02T11:08:34Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-02T11:03:15Z"
+    }
+  ]
+}

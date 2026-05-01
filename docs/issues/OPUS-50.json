@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-50",
+  "jiraSummary": "write requirements in report",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-04-20T11:28:39.827+0200",
+  "prNumber": 58,
+  "prTitle": "OPUS-50 Write requirements in report",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/58",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-04-24T13:38:51Z",
+  "prMergedAt": "2026-04-30T10:56:32Z",
+  "githubReviewers": [
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T10:18:06Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T10:15:02Z"
+    }
+  ]
+}

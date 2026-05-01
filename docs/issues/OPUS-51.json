@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-51",
+  "jiraSummary": "write design in report",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-04-20T11:28:44.216+0200",
+  "prNumber": 57,
+  "prTitle": "OPUS-51 Write design in report",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/57",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-04-23T16:14:00Z",
+  "prMergedAt": "2026-04-30T13:13:22Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-28T10:10:27Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-29T14:17:17Z"
+    }
+  ]
+}

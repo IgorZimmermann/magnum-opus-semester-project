@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-49",
+  "jiraSummary": "write problem analysis in report",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Koltai Ákos",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-04-20T11:28:32.199+0200",
+  "prNumber": 59,
+  "prTitle": "OPUS-49 Write problem analysis in report",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/59",
+  "prAuthor": "akos-koltai",
+  "prOpenedAt": "2026-04-24T22:11:44Z",
+  "prMergedAt": "2026-04-27T10:21:09Z",
+  "githubReviewers": [
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T10:03:13Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T10:16:32Z"
+    }
+  ]
+}

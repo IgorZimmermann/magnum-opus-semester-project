@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-16",
+  "jiraSummary": "research backend",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-02T13:09:15.808+0100",
+  "prNumber": 17,
+  "prTitle": "OPUS-16 research backend",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/17",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-03-06T21:07:43Z",
+  "prMergedAt": "2026-03-09T11:09:02Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-09T06:43:30Z"
+    },
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-08T18:54:37Z"
+    }
+  ]
+}

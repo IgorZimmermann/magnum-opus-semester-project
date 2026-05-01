@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-7",
+  "jiraSummary": "write \"objectives\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-02-23T12:49:53.375+0100",
+  "prNumber": 8,
+  "prTitle": "OPUS-7 write \"objectives\" in project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/8",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-02-28T19:45:48Z",
+  "prMergedAt": "2026-03-02T11:08:18Z",
+  "githubReviewers": [
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T11:34:28Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T12:31:53Z"
+    }
+  ]
+}

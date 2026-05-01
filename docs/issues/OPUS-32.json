@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-32",
+  "jiraSummary": "containerise and add backends to docker-compose",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-23T11:05:24.807+0100",
+  "prNumber": 39,
+  "prTitle": "OPUS-32 Containerise and add backends to docker compose",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/39",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-04-02T12:51:06Z",
+  "prMergedAt": "2026-04-14T10:39:10Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-04T10:14:05Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-09T02:30:57Z"
+    }
+  ]
+}

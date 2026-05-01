@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-13",
+  "jiraSummary": "research secure email",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Denis Nedzhibov",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-02T13:06:30.664+0100",
+  "prNumber": 18,
+  "prTitle": "OPUS-13 Researched secure email options",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/18",
+  "prAuthor": "denis-nedret",
+  "prOpenedAt": "2026-03-07T16:01:47Z",
+  "prMergedAt": "2026-03-09T11:09:33Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-09T07:38:33Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-09T09:20:43Z"
+    }
+  ]
+}
