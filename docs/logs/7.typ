@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: (),
   location: "SDU Alsion - J1.01-C",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: (..json("../team-members.json"), (name: "Riccardo Terrenzi")),
-)
+)[
 
 - We showed the supervisor our progress and our new diagrams. Based on those he gave us the feedback that we should start implementing from the smallest components, building up to the biggest.
 - We went through our flow diagrams, so everyone understands how the application works.
@@ -26,3 +26,5 @@
   - PDF Generation: Typst
   - UI: Next.js
 - We split service development into tasks, gave story points and assigned tasks.
+
+]

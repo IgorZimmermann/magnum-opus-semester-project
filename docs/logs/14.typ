@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: ((name: "Dávid Borka", method: "online"),(name: "Örs Tomaj Jeney", method: "")),
   location: "SDU Alsion - J1.07",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: (..json("../team-members.json"), (name: "Riccardo Terrenzi")),
-)
+)[
 
 - We discussed issues between our front-ends and back-ends.
 - We discussed what needs to be included in the report, and what materials we can reuse for each one of them.
@@ -22,3 +22,5 @@
   - Make consultation UI have more functionality.
   - Use Bootstrap CI for LLM testing.
 - We played Party Poker to determine story point values.
+
+]

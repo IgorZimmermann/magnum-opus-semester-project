@@ -23,11 +23,6 @@
 
   show link: underline
 
-  set page(
-    paper: "a5",
-    numbering: "1",
-  )
-
   set heading(
     numbering: "1.",
   )

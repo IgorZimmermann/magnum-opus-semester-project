@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: ((name: "Örs Tomaj Jeney", method: "online"), (name: "Dávid Borka", method: "online"), (name: "Kristóf Ákos Koltai", method: "online")),
   location: "SDU Løkken - 104",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: json("../team-members.json"),
-)
+)[
 
 - Team members contributions since last meeting:
   - *Örs*: No contributions yet.
@@ -22,3 +22,4 @@
   - *Denis*: No contributions yet.
   - *Ákos*: No contributions yet.
 
+]

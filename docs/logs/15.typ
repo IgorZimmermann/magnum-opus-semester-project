@@ -1,7 +1,7 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
-  absentees: ((name: "Sean Larsen", method: "notified")),
+#meeting-log(
+  absentees: ((name: "Sean Larsen", method: "notified"),),
   location: "SDU Alsion - Software Room",
   date: datetime(
     day: 27,
@@ -12,9 +12,11 @@
     second: 0,
   ),
   members: (..json("../team-members.json"))
-)
+)[
 
 - We went through all open pull requests and discussed requested changes.
 - We completed missing pull requests.
 - We figured out new tasks.
 - We determined story point values using Story Point Poker.
+
+]
