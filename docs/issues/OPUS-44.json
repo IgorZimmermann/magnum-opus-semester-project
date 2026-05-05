@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-44",
+  "jiraSummary": "unit/functional testing for booking back-end",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Denis Nedzhibov",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-04-15T13:28:07.590+0200",
+  "prNumber": 54,
+  "prTitle": "OPUS-44 Unit Testing For Booking Backend",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/54",
+  "prAuthor": "denis-nedret",
+  "prOpenedAt": "2026-04-22T18:27:37Z",
+  "prMergedAt": "2026-04-27T10:21:23Z",
+  "githubReviewers": [
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-23T11:36:05Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T09:47:14Z"
+    }
+  ]
+}

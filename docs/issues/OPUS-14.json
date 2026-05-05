@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-14",
+  "jiraSummary": "research pdf generation",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-02T13:08:41.513+0100",
+  "prNumber": 14,
+  "prTitle": "OPUS-14 research pdf generation",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/14",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-03-06T11:13:09Z",
+  "prMergedAt": "2026-03-09T11:06:40Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-06T12:45:44Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-08T19:25:24Z"
+    }
+  ]
+}

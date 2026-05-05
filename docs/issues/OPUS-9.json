@@ -1,0 +1,32 @@
+{
+  "jiraKey": "OPUS-9",
+  "jiraSummary": "write \"methods\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-02-23T12:50:21.580+0100",
+  "prNumber": 5,
+  "prTitle": "OPUS-9 Wrote 'Methods' section of project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/5",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-02-27T15:37:32Z",
+  "prMergedAt": "2026-03-02T11:07:53Z",
+  "githubReviewers": [
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T11:36:53Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T18:28:48Z"
+    },
+    {
+      "login": "IgorZimmermann",
+      "state": "COMMENTED",
+      "reviewedAt": "2026-03-01T11:26:52Z"
+    }
+  ]
+}

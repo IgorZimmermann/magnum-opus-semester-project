@@ -1,0 +1,16 @@
+{
+  "jiraKey": "OPUS-55",
+  "jiraSummary": "write conclusion in report",
+  "jiraIssueType": "Task",
+  "jiraStatus": "In Review",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": 2,
+  "jiraCreatedAt": "2026-04-27T11:30:55.669+0200",
+  "prNumber": 62,
+  "prTitle": "OPUS-55 Write conclusion in the report",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/62",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-05-01T09:21:57Z",
+  "prMergedAt": null,
+  "githubReviewers": []
+}

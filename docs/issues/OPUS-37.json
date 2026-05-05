@@ -1,0 +1,32 @@
+{
+  "jiraKey": "OPUS-37",
+  "jiraSummary": "presentation slide 1-3",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": null,
+  "jiraCreatedAt": "2026-04-05T10:13:51.606+0200",
+  "prNumber": 43,
+  "prTitle": "OPUS-37 Slides 1-3 for midterm presentation",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/43",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-04-08T11:42:38Z",
+  "prMergedAt": "2026-04-08T20:26:58Z",
+  "githubReviewers": [
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-08T12:33:27Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-08T18:01:03Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "COMMENTED",
+      "reviewedAt": "2026-04-08T20:24:48Z"
+    }
+  ]
+}

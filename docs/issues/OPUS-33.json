@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-33",
+  "jiraSummary": "implement authentication/authorization in consultation",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Koltai Ákos",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-23T11:06:09.251+0100",
+  "prNumber": 37,
+  "prTitle": "OPUS-33 Implement authentication/authorization in consultation",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/37",
+  "prAuthor": "akos-koltai",
+  "prOpenedAt": "2026-03-31T21:57:46Z",
+  "prMergedAt": "2026-04-14T10:36:26Z",
+  "githubReviewers": [
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-05T20:52:12Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-08T18:31:36Z"
+    }
+  ]
+}

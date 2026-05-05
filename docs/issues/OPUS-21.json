@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-21",
+  "jiraSummary": "create llm service",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Denis Nedzhibov",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-09T13:01:22.054+0100",
+  "prNumber": 23,
+  "prTitle": "OPUS-21 Create LLM Service",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/23",
+  "prAuthor": "denis-nedret",
+  "prOpenedAt": "2026-03-12T20:36:20Z",
+  "prMergedAt": "2026-03-16T10:21:07Z",
+  "githubReviewers": [
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-15T13:07:16Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-16T02:50:07Z"
+    }
+  ]
+}

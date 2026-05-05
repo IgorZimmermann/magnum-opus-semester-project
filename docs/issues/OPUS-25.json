@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-25",
+  "jiraSummary": "create uml diagram",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-09T13:05:32.426+0100",
+  "prNumber": 21,
+  "prTitle": "OPUS-25 Added UML class diagram",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/21",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-03-10T20:13:50Z",
+  "prMergedAt": "2026-03-16T10:20:51Z",
+  "githubReviewers": [
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-11T10:08:53Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-12T13:57:24Z"
+    }
+  ]
+}

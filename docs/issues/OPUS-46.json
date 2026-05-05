@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-46",
+  "jiraSummary": "benchmark/stress testing for stt",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-04-15T13:28:35.310+0200",
+  "prNumber": 52,
+  "prTitle": "OPUS-46 Benchmark and stress test for STT",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/52",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-04-20T13:18:40Z",
+  "prMergedAt": "2026-04-27T09:11:52Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-21T16:36:16Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-23T11:48:08Z"
+    }
+  ]
+}
