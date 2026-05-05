@@ -1,40 +1,44 @@
 # Saga - PDF Generation
 
-## How to start container
+PDF generation service that takes prescription data as input and returns a generated PDF as a binary file.
 
-The container requires only a port expose to work. The internal port is 3000, map that to any desired port.
+---
 
-## How to add to a `docker-compose`
+## Tech Stack
 
-```yaml
-services:
-  api:
-    build: .
-    ports:
-      - "3000:3000"
+- **Language/Framework:** TypeScript / Hono
+- **Key libraries:** Typst
+
+---
+
+## Running with Docker
+
+```bash
+docker-compose up saga
 ```
 
-## Endpoints/Interface
+---
 
-## `GET /ping`
+## Endpoints / API
 
-Health check. Returns `pong` as plain text.
+| Method | Path       | Description                                      |
+|--------|------------|--------------------------------------------------|
+| GET    | /ping      | Health check. Returns `pong` as plain text.      |
+| POST   | /generate  | Generates a PDF and returns it as a binary file buffer. |
 
-## `POST /generate`
-
-Generates a PDF and returns it as a binary file buffer.
+---
 
 **Request body** (`application/json`):
 
-| Field | Type | Required |
-|---|---|---|
-| `doctor.name` | string | ✓ |
-| `doctor.id` | number | ✓ |
-| `patient.name` | string | ✓ |
-| `patient.id` | number | ✓ |
-| `diagnosis` | string | ✓ |
-| `description` | string | ✓ |
-| `advice_prescription` | string | ✓ |
+| Field                 | Type   | Required |
+|-----------------------|--------|----------|
+| `doctor.name`         | string | Yes      |
+| `doctor.id`           | number | Yes      |
+| `patient.name`        | string | Yes      |
+| `patient.id`          | number | Yes      |
+| `diagnosis`           | string | Yes      |
+| `description`         | string | Yes      |
+| `advice_prescription` | string | Yes      |
 
 **Responses:**
 

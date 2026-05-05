@@ -1,94 +1,74 @@
 # Janus - Booking Backend
 
-.NET Core 10 backend for Booking. It manages doctor availability, appointments and mail sending to patients.
+Backend API for managing doctor availability and patient appointments, with email notifications sent on booking.
 
+---
 
+## Tech Stack
 
-## Quick Start
-- During development I ran the needed components from the terminal, not from the compose file
+- **Language/Framework:** C# / ASP.NET Core (.NET 10)
+- **Key libraries:** Entity Framework Core, MailKit, Auth0
 
-### 1. Start services
+---
+
+## Running with Docker (Recommended)
 
 ```bash
-docker compose up -d
+docker-compose up janus
 ```
 
+---
 
-### 2. Configure environment
-
-Copy `.env.example` to `.env` and make sure db configuration matches
-
-I used the configurations found in mneme/README.md
-
-### 3. Run the backend
-
-Run the command in the project folder (janus/BookingBackend)
+## Running Locally
 
 ```bash
+cd BookingBackend
+dotnet restore
 dotnet run
 ```
+
+Swagger UI: `http://localhost:5050/swagger/index.html`.
+
+---
 
 ## Project Structure
 
 ```
 BookingBackend/
-├── Controllers/                    # HTTP endpoints / routes
-│   ├── AppointmentController.cs    
-│   ├── AvailabilityController.cs   
-│             
-├── Data/
-│   ├── BookingDbContext.cs         # EF Core context (PostgreSQL)
-│   └── Migrations/                 # EF Core migrations
-│       
-│       
-│       
-├── DTO/                            # Data Transfer Objects
-│   ├── AppointmentDTO.cs           
-│   ├── AvailabilityDTO.cs          
-│   └── Requests/
-│       ├── EmailAttachmentRequest.cs       
-│       └── EmailGenerateRequest.cs
-│
-│
-├── Interfaces/                     # Service contracts
-│   ├── IAppointment.cs             
-│   ├── IAvailability.cs            
-│   ├── IEmail.cs            
-│   └── IRelationalDb.cs            
-├── Models/                         # EF Core entities
-│   ├── Appointment.cs              
-│   ├── AppointmentStatus.cs        
-│   ├── Doctor.cs                   
-│   ├── Patient.cs                  
-│   └── WorksOn.cs                  
-├── Services/                       
-│   ├── AppointmentService.cs    
-│   ├── AvailabilityService.cs  
-│   └── Email.cs         
-├── Properties/
-│   └── launchSettings.json         
-├── appsettings.Development.json    
-├── appsettings.json                # Base configuration
-├── BookingBackend.csproj           # Project file / dependencies
-├── Program.cs                      # Application entry point & DI setup
-├── BookingBackend.http             
-└── bin/                            
-    └── Debug/
-        └── net10.0/                
+  Controllers/      API endpoint definitions
+  Services/         Business logic
+  Interfaces/       Service interface
+  Data/             DbContext, migrations & seeding
+  Models/           ORM
+  DTO/              Request and response DTOs
 ```
-## Endpoints
 
-### Availability
 ---
-**GET /api/availability/doctors** 
-- Returns all doctors with their weekly availability slots
 
-### Appointment
+## Endpoints / API
+
+**Availability** — `/api/availability`
+
+| Method | Path                        | Description                                  |
+|--------|-----------------------------|----------------------------------------------|
+| GET    | /api/availability/doctors   | Returns all doctors with their weekly availability slots |
+
+**Appointment** — `/api/appointment`
+
+| Method | Path               | Description                                                        |
+|--------|--------------------|--------------------------------------------------------------------|
+| GET    | /api/appointment   | Returns all appointments in the system                             |
+| POST   | /api/appointment   | Creates a new appointment and sends a confirmation email to the patient |
+
 ---
-**GET /api/appointment** 
-- Returns all appointments in the system
 
-**POST /api/appointment** 
-- Creates a new appointment (with docId, patId, date, time)
-- Once the appointment is made, an email is sent out with the details 
+## Environment Variables
 
+| Variable                          | Description                        | Example                |
+|-----------------------------------|------------------------------------|------------------------|
+| `POSTGRES_HOST`                   | PostgreSQL host                    | `magnum-postgres`      |
+| `POSTGRES_PORT`                   | PostgreSQL port                    | `5432`                 |
+| `POSTGRES_DB`                     | PostgreSQL database name           | `magnum`               |
+| `POSTGRES_USER`                   | PostgreSQL username                | `magnum_user`          |
+| `POSTGRES_PASSWORD`               | PostgreSQL password                | `changeme`             |
+| `Services__Email__BaseUrl`        | Base URL of the email service      | `http://hermes:8025`   |
