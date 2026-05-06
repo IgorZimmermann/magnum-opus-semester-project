@@ -86,7 +86,7 @@ Our project offers a solution for a clear gap: the need for simple AI tools that
 
 Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.#footnote[
   Beskrivelse af almen praksissektoren i Danmark (2016)
-  ]
+]
 
 == Aim
 
@@ -100,7 +100,7 @@ This modular design makes it easy to replace components while preserving privacy
 
 == Use cases
 
-=== Booking process 
+=== Booking process
 - *Primary actor:* Patient
 - *Preconditions:* Patient is registered in the system and has valid login credentials
 - *Goal:* Book a consultation with a doctor
@@ -202,55 +202,55 @@ restarted, reducing downtime and improving overall reliability.
 
 *MUST have*
 
-  - The system shall allow patients to create, view, and cancel bookings.
-  - Acceptance criteria:
-    - Creating a booking returns a booking identifier and status.
+- The system shall allow patients to create, view, and cancel bookings.
+- Acceptance criteria:
+  - Creating a booking returns a booking identifier and status.
 
-  - The system shall require authenticated access for patient and doctor workflows.
-  - Acceptance criteria:
-    - Protected API endpoints reject unauthenticated requests.
-    - Authenticated users can access only authorized workflow endpoints.
+- The system shall require authenticated access for patient and doctor workflows.
+- Acceptance criteria:
+  - Protected API endpoints reject unauthenticated requests.
+  - Authenticated users can access only authorized workflow endpoints.
 
-  - The system shall allow doctors to start and end consultations linked to valid bookings.
-  - Acceptance criteria:
-    - Start creates a consultation record with status InProgress.
-    - End sets consultation status to Completed.
+- The system shall allow doctors to start and end consultations linked to valid bookings.
+- Acceptance criteria:
+  - Start creates a consultation record with status InProgress.
+  - End sets consultation status to Completed.
 
-  - The system shall transcribe consultation audio locally using an open-source model.
-  - Acceptance criteria:
-    - Uploaded audio returns transcript text.
-    - No cloud STT endpoint is called during transcription.
+- The system shall transcribe consultation audio locally using an open-source model.
+- Acceptance criteria:
+  - Uploaded audio returns transcript text.
+  - No cloud STT endpoint is called during transcription.
 
-  - The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
-  - Acceptance criteria:
-    - Summary generation returns structured summary output.
-    - Prescription draft generation returns structured fields.
+- The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
+- Acceptance criteria:
+  - Summary generation returns structured summary output.
+  - Prescription draft generation returns structured fields.
 
-  - Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
-  - Acceptance criteria:
-    - Edit operations persist updated content.
-    - Approve operation marks status Approved.
-    - Reject operation marks status Rejected.
+- Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
+- Acceptance criteria:
+  - Edit operations persist updated content.
+  - Approve operation marks status Approved.
+  - Reject operation marks status Rejected.
 
-  - The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
-  - Acceptance criteria:
-    - Approval triggers PDF generation.
-    - Approved PDF is attached to outbound email.
-    - Delivery outcome is logged.
+- The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
+- Acceptance criteria:
+  - Approval triggers PDF generation.
+  - Approved PDF is attached to outbound email.
+  - Delivery outcome is logged.
 
-  - The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
-  - The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
+- The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
+- The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
 
 *SHOULD have*
 
-  - The system should allow searching and filtering doctors by availability and name/specialty.
-  - The system should log AI prompts and outputs for evaluation purposes.
+- The system should allow searching and filtering doctors by availability and name/specialty.
+- The system should log AI prompts and outputs for evaluation purposes.
 
 *COULD have*
 
-  - Doctors could upload diagnostic images to consultation records.
-  - The system could support runtime switching between local LLM models.
-  - The system could allow configurable instructions.
+- Doctors could upload diagnostic images to consultation records.
+- The system could support runtime switching between local LLM models.
+- The system could allow configurable instructions.
 
 *WON'T have*
 
@@ -412,8 +412,8 @@ As both backends are built using ASP.NET, we utilized xUnit as the primary testi
 
 *Consultation Service Tests*
 
-What is tested: 
-- The ability to retrieve consultation data and create new consultations
+What is tested:
+- The ability to retrieve consultation data and create new consultations.
 - The ability to preserve all relevant metadata when creating a consultation record in MongoDB and assign a unique consultation ID.
 - The ability to retrieve consultation data and map it to the API response format, ensuring data integrity across relational and non-relational storage layers.
 
@@ -427,24 +427,24 @@ What is tested:
 
 What is tested:
 - Mocks the LLM service to verify that the service correctly passes the transcription to the language model.
-- Confirming that the service retrieves the most recent summary version, as multiple versions might exist.
+- Confirming that the service retrieves the most recent summary version as multiple versions might exist.
 
 *Prescription Service Tests*
 
 What is tested:
 - Testing if the service correctly orchestrates between the summary and LLM service and if the output is correctly structured and tracked.
-- Ensuring the latest approved prescription is retrieved. 
+- Ensuring the latest approved prescription is retrieved.
 
 *Mocking Strategy*
 
 External dependencies are mocked to isolate business logic:
 
-- *ILLM Service*: Mocked to return controlled, realistic outputs such as structured medical recommendations
-- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing
-- *IPdf and IEmail Services*: Mocked to avoid side effects during testing
-- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database
+- *ILLM Service*: Mocked to return controlled and realistic outputs such as structured medical recommendations.
+- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing.
+- *IPdf and IEmail Services*: Mocked to avoid side effects during testing.
+- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database.
 
-The use of callbacks captures documents during insertion, allowing tests to verify both that data was persisted and that the content is correct.
+The use of callbacks captures documents during insertion, allowing tests to verify both that the data was stored and that the content is correct.
 
 #footnote[`docs/research/backend.typ`]
 
@@ -457,7 +457,7 @@ The testing approach focuses on service-level unit tests that validate the busin
 *Appointment Service Tests*
 
 What is tested:
-- The ability to save appointments to the database with all metadata and generate a unique appointment ID.
+- The ability to save appointments to the database with all metadata as well as generate a unique appointment ID.
 - The ability to persist appointment data to the relational database.
 - The automatic handling of email sending, including setting the `EmailSentAt` timestamp when emails are successfully sent to patients.
 - Confirming that the email contains relevant details such as the assigned doctor's name and appointment time.
@@ -479,14 +479,14 @@ External dependencies are mocked to isolate business logic:
 
 === LLM Service - Liquid AI
 
-LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding, while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
+LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
 
 *Testing Strategy*
- Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
+Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
 
 The testing approach focuses on two critical dimensions:
-1. Summary and suggestion quality for clinical accuracy
-2. Medical knowledge assessment against benchmark datasets
+1. Summary and suggestion quality for clinical accuracy.
+2. Medical knowledge assessment against benchmark datasets.
 
 *Summary & Suggestion Quality Assessment*
 
@@ -520,17 +520,17 @@ Gemma 4 demonstrated superior accuracy on medical knowledge questions:
 
 === Speech-to-text Service - Faster-Whisper
 
-The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must complete within acceptable timeframes for doctor-patient consultations.
+The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must be completed within acceptable timeframes for doctor-patient consultations.
 
 *Testing Strategy*
 
 The Speech-to-text Service validation employs stress testing and benchmark analysis to evaluate performance and reliability under varying loads.
 
 The testing approach employs four sequential test phases to establish performance characteristics:
-1. Baseline testing at low concurrency to establish normal operation
-2. Ramp stress testing with gradually increasing concurrency
-3. Peak stress testing at maximum expected load
-4. Recovery testing to verify the service restores to baseline performance
+1. Baseline testing at low concurrency to establish normal operation.
+2. Ramp stress testing with gradually increasing concurrency.
+3. Peak stress testing at maximum expected load.
+4. Recovery testing to verify the service restores to baseline performance.
 
 *Test Methodology*
 
@@ -540,7 +540,7 @@ What is tested:
 - Behavior under peak stress conditions (20-24 concurrent requests) to assess maximum capacity and failure rates.
 - Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
 
-The tests use the same audio file across all phases, which is a mash-up of audio files from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
+The tests use the same audio file across all phases. The file is a mash-up of audio clips from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
 
 *Test Coverage and Results*
 
@@ -549,7 +549,7 @@ The tests use the same audio file across all phases, which is a mash-up of audio
 - Concurrency 2: 0.398 requests/sec, 4.94s mean latency, 0% failure rate
 
 *Ramp Stress Results (Concurrency 1-16):*
-- Throughput remained stable at ~0.420 requests/sec across all concurrency levels
+- Throughput remained stable at \~0.420 requests/sec across all concurrency levels
 - Mean latency increased proportionally with concurrency:
   - Concurrency 4: 9.38s latency
   - Concurrency 8: 18.38s latency
@@ -569,13 +569,13 @@ The tests use the same audio file across all phases, which is a mash-up of audio
 *Performance Analysis*
 
 - *Stable Throughput:*
- The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
+  The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing, rather than parallelization, limits throughput.
 - *Linear Latency Scaling:*
- Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
+  Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
 - *Zero Failure Rate:*
- No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
+  No requests failed during any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
 - *Full Recovery:*
- The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
+  The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
 
 The service represents a strong baseline suitable for stable, low-concurrency operation typical of a single outpatient department.
 
@@ -612,17 +612,17 @@ This containerization enables:
 
 = Conclusion
 == Summary
-This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined by us and the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations, while the system is secure in terms of handling sensitive patient data on the clinic's network.
+This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations, while the system is secure in terms of handling sensitive patient data on the clinic's network.
 
 The system demonstrates the application of the knowledge gained throughout this semester's courses. It demonstrates the design of a component-based system and the use of a self-hosted large language model.
 == Future work
-There are many improvements, which can be implemented in the future to enhance the system. In terms of clinical capability, the LLM could be expanded, so it looks at past patient history to propose contraindications or warn about possible allergy-related side affects. We could also make the AI use reinforcement learning, where the Doctor can rate the AI's responses to fine-tune the local model over time. Furthermore, AI could help out to assist the Doctor not only with making mistakes and prescribing but also in differential diagnosis.
+There are many improvements which can be implemented in the future to enhance the system. In terms of clinical capability, the LLM could be expanded so it looks at past patient history to propose contraindications or warn about possible allergy-related side affects. We could also make the AI use reinforcement learning, where the Doctor can rate the AI's responses to fine-tune the local model over time. Furthermore, AI could assist the Doctor not only with making mistakes and prescribing but also in differential diagnosis.
 
-For the front-end part of our project, we did not spend so much time on making it a very accessible platform, as our project is not a Booking platform, it's an AI service. However, we could extend it to add past consultation summaries and prescriptions after the fact, appointment reminders via the email service and a preconsultation form that the patient can fill out with symptoms to feed into the LLM context.
+For the front-end part of our project, we did not spend a lot of time making it a very accessible platform, as our project is not a booking platform but an AI service. However, we could extend it to add past consultation summaries and prescriptions after the fact, appointment reminders via the email service and a preconsultation form that the patient can fill out with symptoms to feed into the LLM context.
 
-Furthermore, the speech-to-text (STT) component currently used in the system is not suited for horizontal scaling, because it cannot handle more than one audio file at the same time. We need to find a solution that is concurrent, either using a job queue or async transcriptions. This change would allow the parallel processing of the audio recordings making the waiting time less and the user experience smoother.
+Furthermore, the speech-to-text (STT) component currently used in the system is not suited for horizontal scaling, because it cannot handle more than one audio file at a time. We need to find a solution that is concurrent, either using a job queue or asynchronous transcriptions. This change would allow the parallel processing of the audio recordings, thus reducing the waiting time and making the user experience smoother.
 
-In conclusion, these improvements would greatly enhance user experience and the variety of features offered by our application and would make it one step closer to a real-world deployment.
+In conclusion, these improvements would greatly enhance user experience and the variety of features offered by our application and make it one step closer to a real-world deployment.
 
 // Meeting logs in appendix
 #for i in range(1, 16) {
