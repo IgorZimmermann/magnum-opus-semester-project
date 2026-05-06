@@ -407,7 +407,7 @@ See @relational_database_er.
 = Implementation
 
 == Containerization
-Docker Compose was utilized to containerize each component so as to keep the environment consistent. A single `docker-compose.yml` at the repository root is responsible for the orchestration of the entire system.
+Docker and Docker Compose were utilized to containerize each component so as to keep the environment consistent. A single `docker-compose.yml` at the repository root is responsible for the orchestration of the entire system.
 
 === Startup Order & Healthchecks
 Startup order is enforced through Docker's `depends_on` conditions. Four services expose healthcheck endpoints that Docker polls before marking them ready.
@@ -425,7 +425,7 @@ Startup order is enforced through Docker's `depends_on` conditions. Four service
 - *Odin* and *Hermes* use `condition: service_started` since both services do not expose a meaningful ready signal.
 
 === Environment Variables
-Database credentials are read from an `.env` file. Service-to-service URLs are injected as environment variables at the container level, using Docker Compose's internal DNS to resolve service names (e.g, `http://odin:11434`).
+Database credentials are read from an `.env` file. Service-to-service URLs are injected as environment variables at the container level, using Docker Compose's internal DNS to resolve service names (e.g., `http://odin:11434`).
 
 === Persistent Volumes
 Four named volumes ensure that container restarts do not delete data:
@@ -438,7 +438,7 @@ All services are configured with `restart: unless-stopped`, so the stack recover
 == Service-by-Service Implementation
 
 === Speech-to-Text Service (Echo)
-A single processing endpoint `POST /process` accepts an audio file as a request and returns a JSON response. The uploaded audio is written to be a temporary file and is deleted immediately after transcription.
+A single processing endpoint `POST /process` accepts an audio file as a request and returns a JSON response. The uploaded audio is written to a temporary file and is deleted immediately after transcription.
 A `GET /ping` endpoint serves as the health check that confirms the service is ready.
 
 === LLM Service (Odin)
@@ -448,11 +448,11 @@ Odin is called from Heimdall via the `POST /api/chat` endpoint, which accepts a 
 
 === PDF Generation Service (Saga)
 `POST /generate` accepts a JSON body with data of the doctor, patient, diagnosis, description, and prescription. With that information, a binary file buffer is created.
-Afterwards, the data is passed against the note template and a PDF file is created. The service reads the file into memory, sends ot back as the HTTP response, and deletes the file so it doesn't persist.
+Afterwards, the data is passed against the note template and a PDF file is created. The service reads the file into memory, sends it back as the HTTP response, and deletes the file so it doesn't persist.
 When Heimdall calls the service, the file gets attached to the email sent via Hermes.
 
 === Email Service (Hermes)
-Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations and cancelations. It uses the `axllent/mailpit` Docker image.
+Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations and cancellations. It uses the `axllent/mailpit` Docker image.
 `POST /api/v1/send` requests a PDF from the Typst service, then sends it to Hermes as an SMTP message with the PDF attached.
 
 
@@ -494,9 +494,9 @@ Iris's booking page displays the patient's existing bookings and allows creating
 
 === Consultation Frontend (Eir)
 There are four pages in this frontend:
-- The dashboard shows the authentication prompt and all appointments for the day before and after logging in respectively. (`eir/app/page.tsx`) (see @consultation_1)
-- Next up, the doctor can begin the consultation. (`eir/app/appointment/[id]/page.tsx`) (see @consultation_2)
-- Afterwards, the generated transcript is shown and ready for review. (`appointment/[id]/transcript/page.tsx`)
+- Firstly, the dashboard shows the authentication prompt and all appointments for the day before and after logging in respectively. (`eir/app/page.tsx`) (see @consultation_1)
+- Secondly, the doctor can begin the consultation. (`eir/app/appointment/[id]/page.tsx`) (see @consultation_2)
+- Thirdly, the generated transcript is shown and ready for review. (`appointment/[id]/transcript/page.tsx`)
 - Lastly, the prescription is up for editing and approval. (`appointment/[id]/note/page.tsx`)
 
 == Inter-Service Implementation
