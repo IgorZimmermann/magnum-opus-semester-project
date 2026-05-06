@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-10",
+  "jiraSummary": "write \"architecture\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-02-23T12:50:30.566+0100",
+  "prNumber": 3,
+  "prTitle": "OPUS-10 Wrote 'Architecture' section of project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/3",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-02-25T21:28:20Z",
+  "prMergedAt": "2026-03-02T11:07:39Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "DISMISSED",
+      "reviewedAt": "2026-02-26T12:36:05Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "DISMISSED",
+      "reviewedAt": "2026-02-26T12:41:13Z"
+    }
+  ]
+}

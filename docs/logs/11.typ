@@ -1,6 +1,6 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
-#show: meeting-log.with(
+#meeting-log(
   absentees: ((name: "Örs Tomaj Jeney", method: "notified"),(name: "Kristóf Ákos Koltai", method: "online")),
   location: "SDU Alsion - J1.07",
   date: datetime(
@@ -12,7 +12,7 @@
     second: 0,
   ),
   members: (..json("../team-members.json"), (name: "Riccardo Terrenzi")),
-)
+)[
 
 Current status of the project: we have currently created the two backends, and set up all the infrastructure.
 Both backends expose the relevant endpoints and have all PDF, email, LLM and Speech-to-text services connected and functioning.  
@@ -22,3 +22,5 @@ Both backends expose the relevant endpoints and have all PDF, email, LLM and Spe
 - We closed the sprint and came up with new tasks for the next one.
 - We decided on Story Point values using Story Point Poker.
 - We started the new sprint.
+
+]

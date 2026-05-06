@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-8",
+  "jiraSummary": "write \"initial requirements\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Denis Nedzhibov",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-02-23T12:50:11.476+0100",
+  "prNumber": 7,
+  "prTitle": "OPUS-8 Wrote the initial requirements part of the project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/7",
+  "prAuthor": "denis-nedret",
+  "prOpenedAt": "2026-02-28T13:20:26Z",
+  "prMergedAt": "2026-03-02T11:08:06Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-02-28T16:08:46Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T11:42:49Z"
+    }
+  ]
+}

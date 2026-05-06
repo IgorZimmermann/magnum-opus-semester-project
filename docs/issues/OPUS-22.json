@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-22",
+  "jiraSummary": "create speech-to-text service",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Koltai Ákos",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-09T13:04:54.866+0100",
+  "prNumber": 26,
+  "prTitle": "OPUS-22 Create speech-to-text service",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/26",
+  "prAuthor": "akos-koltai",
+  "prOpenedAt": "2026-03-15T03:45:05Z",
+  "prMergedAt": "2026-03-16T10:21:24Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-15T19:19:51Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-16T09:47:32Z"
+    }
+  ]
+}

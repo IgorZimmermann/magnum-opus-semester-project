@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-12",
+  "jiraSummary": "research llm",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-02T13:06:10.502+0100",
+  "prNumber": 16,
+  "prTitle": "OPUS-12 research llm",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/16",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-03-06T12:59:35Z",
+  "prMergedAt": "2026-03-09T11:08:25Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-08T15:45:27Z"
+    },
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-08T19:17:37Z"
+    }
+  ]
+}

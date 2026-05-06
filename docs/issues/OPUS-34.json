@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-34",
+  "jiraSummary": "implement authentication/authorization in booking",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Denis Nedzhibov",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-23T11:06:26.950+0100",
+  "prNumber": 41,
+  "prTitle": "OPUS-34 implement authentication/authorization in booking",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/41",
+  "prAuthor": "denis-nedret",
+  "prOpenedAt": "2026-04-05T01:18:33Z",
+  "prMergedAt": "2026-04-14T10:35:50Z",
+  "githubReviewers": [
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-07T11:32:13Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-08T08:38:34Z"
+    }
+  ]
+}

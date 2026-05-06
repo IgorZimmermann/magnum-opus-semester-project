@@ -36,6 +36,43 @@ A locally hosted LLM, served through Ollama, processes the transcript and produc
 
 
 = Methodology
+Before starting out on our project, we outlined a set of rules and methods which ensured that progression throughout the project will be smooth and continous.
+The methodology and tools used also ensured that every contribution made to the project was peer-reviewed.
+
+== Task tracking
+In order to ensure that none of the tasks get lost, we made every task (programming, diagramming, documenting) an issue on Jira.
+We completed these tasks during one-week-long Sprints, from one Monday to the next.
+Some exceptions were made with the length of the Sprints, for example around the spring break.
+On Mondays, we held meetings, where we both reflected on the Sprint ending that day, and planned the one coming up.
+On Thursdays we also regularly held stand-up meetings, where everyone gave an update on their issue(s).
+
+To ensure that tasks were distributed fairly, we assigned tasks not based on their sheer quantity, but based on the tasks' actual difficulty.
+We agreed collectively on an issue's story point value, using Story Point Poker.
+
+== Documents and Presentations
+To create our documentation and presentations, we chose #link("https://typst.app/")[Typst].
+As Typst is a text-based document markup language, this allowed us to version control and handle our documents as if they were code.
+We also made templates to create a uniform look for all of our reports and presentations.
+In order to keep track of our images and diagrams, we also decided to store them in the same repository as our documents and code.
+We also created a meeting log document during each meeting to keep everyone accountable and to allow team members to catch up, in case they were absent.
+
+== Repository
+To make sure code contributions are safe, each issue had its own branch, and pull requests had to be opened.
+Those pull requests had to be reviewed by at least two non-contributing.
+In order to allow for a rigorous and in-depth review of each contributions, we made it a rule that pull requests must be opened by Fridays, which left us the entire weekend for review and refactoring.
+To help the work of the reviewers and to guarantee a smooth workflow, a Pull Request Template has also been made, see @pr-template.
+We merged all pull requests together during our Monday meetings, so we can resolve possible merge conflicts with all contributors input.
+We also created a pipeline that sends a message to our Discord server about a new pull request, and by replying to that message, the PR owner tags the requested reviewers.
+
+#appendix(
+  <pr-template>,
+  image("../images/pull-request-template.png"),
+  "Pull Request Template",
+)
+
+All in all, these methods and rules helped us improve our productivity by a lot, compared to previous semesters.
+It also made the entire process, less of a hassle, and way more enjoyable.
+Our team completed every task within the deadlines, with time to review and discuss different opinions.
 
 = Problem analysis
 
@@ -161,12 +198,417 @@ restarted, reducing downtime and improving overall reliability.
 
 
 = Requirements
+== Functional Requirements
+
+*MUST have*
+
+  - The system shall allow patients to create, view, and cancel bookings.
+  - Acceptance criteria:
+    - Creating a booking returns a booking identifier and status.
+
+  - The system shall require authenticated access for patient and doctor workflows.
+  - Acceptance criteria:
+    - Protected API endpoints reject unauthenticated requests.
+    - Authenticated users can access only authorized workflow endpoints.
+
+  - The system shall allow doctors to start and end consultations linked to valid bookings.
+  - Acceptance criteria:
+    - Start creates a consultation record with status InProgress.
+    - End sets consultation status to Completed.
+
+  - The system shall transcribe consultation audio locally using an open-source model.
+  - Acceptance criteria:
+    - Uploaded audio returns transcript text.
+    - No cloud STT endpoint is called during transcription.
+
+  - The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
+  - Acceptance criteria:
+    - Summary generation returns structured summary output.
+    - Prescription draft generation returns structured fields.
+
+  - Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
+  - Acceptance criteria:
+    - Edit operations persist updated content.
+    - Approve operation marks status Approved.
+    - Reject operation marks status Rejected.
+
+  - The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
+  - Acceptance criteria:
+    - Approval triggers PDF generation.
+    - Approved PDF is attached to outbound email.
+    - Delivery outcome is logged.
+
+  - The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
+  - The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
+
+*SHOULD have*
+
+  - The system should allow searching and filtering doctors by availability and name/specialty.
+  - The system should log AI prompts and outputs for evaluation purposes.
+
+*COULD have*
+
+  - Doctors could upload diagnostic images to consultation records.
+  - The system could support runtime switching between local LLM models.
+  - The system could allow configurable instructions.
+
+*WON'T have*
+
+- The system will not use cloud-based AI services for core transcription or generation.
+- The system will not include a mobile application.
+
+== Non-Functional Requirements
+
+*Performance*
+- Transcription request returns within 30 seconds for a 5-minute audio sample on low-end hardware.
+- PDF generation and email dispatch complete within 5 seconds after approval under normal load (up to 20 concurrent users).
+- Booking API responses complete within 3 seconds at expected load.
+
+*Portability*
+- The system runs on Windows, Linux, and macOS through containerized deployment.
+- All core services are runnable with one orchestrated compose configuration.
+
+*Scalability / Capacity*
+- The system supports at least 5 concurrent consultations without service failure.
+
+*Maintainability / Modularity*
+- Core services are independently deployable and replaceable via stable APIs.
+- The architecture follows CBSE principles with clear component boundaries and interfaces.
+- Changes to one service should not require code changes in unrelated services.
+
+*Security*
+- Patient and consultation data in transit shall use encrypted channels in non-development environments.
+- Passwords and secrets shall never be stored in plaintext.
+- Role-based authorization rules shall enforce doctor vs patient access boundaries.
+- Security events (login failure, unauthorized access, approval actions) shall be auditable.
+
+*Reliability / Recoverability*
+- Services auto-recover from container-level failures.
+- No approved prescription or transcript shall be lost across restart events.
+- Relational and non-relational stores shall use persistent volumes.
+
+*Testability*
+- Core backend logic shall include unit and integration tests.
+- At least 80% coverage shall be achieved for core application logic.
 
 = Design
 
+== System architecture
+
+This semester's project was designed with layered architecture in mind, implementing a component-based system (CBS) design approach focusing on modularity, replaceability and reusability. Components communicate via REST calls, shared databases and services.
+
+=== Application layer diagram
+
+The original design remained largely unchanged from the initial architecture sketch, consisting of two frontends, two backends and two databases. Direct REST calls were chosen instead of introducing an additional API gateway layer. The diagram illustrates how the components are connected and how they map to the individual layers of the overall architecture.
+
+See @application_layer_diagram.
+#appendix(
+  <application_layer_diagram>,
+  image(
+    "../images/ApplicationDiagram.jpg",
+  ),
+  "Application Layer Diagram",
+)
+
+=== Two monolithic backend approaches
+
+At an early stage, a microservices architecture was evaluated as an alternative to a monolithic approach. Although microservices would align with the component-based design goals, the overall system scope and project size made a monolithic structure a better fit for this implementation. \
+
+In addition, two separate backends were defined for the two primary use cases. This separation improves reliability, since a failure in one backend does not necessarily affect the availability of the other.
+
+=== Component-Based System Diagram
+
+The Component-Based System (CBS), see @component_based_system_diagram, illustrates how the system is structured into modular components with exposed interfaces. It can be broken down into three main layers: frontend, backend, and services/databases. This design allows individual components to be independently developed and interchanged at runtime.
+
+#appendix(
+  <component_based_system_diagram>,
+  image(
+    "../images/CBSE2.drawio.svg",
+  ),
+  "Component-Based system diagram",
+)
+== Tech stack
+
+The choices we made were along the lines of: familiarity with a language, framework or model over technical suitability reduces the learning curve. However, we did research for each layer, and each member evaluated and made a choice based on which technology fits our group and project the best. Faster-Whisper came out as the most reliable in testing, with high transcription accuracy and acceptable speed, when compared to MedASR and NVIDIA Canary Qwen. For documentation, presentation and meeting logs, we used Typst, so it made for the perfect PDF generator. The LLM model was decided on with testing as well; with LFM2 from LiquidAI, it was faster and a better fit overall compared to Qwen3, Phi-3.5 and Medgemma.
+
+#table(
+  columns: 3,
+  align: left,
+  stroke: 0.5pt,
+  inset: 6pt,
+
+  [*Layer*], [*Technology*], [*Purpose*],
+
+  [Frontend], [Next.js / TypeScript], [User/Doctor interface],
+  [Backend], [C\# - ASP.NET], [Orchestration & business logic],
+  [Speech-to-Text], [Faster-Whisper], [Audio transcription],
+  [LLM Runtime], [Ollama + LLM models], [Local AI],
+  [PDF Generator], [Typst], [PDF generation],
+  [Email], [Mailpit], [Email sending],
+  [Data], [PostgreSQL + MongoDB], [Un/structured storage],
+  [Deployment], [Docker Compose], [Containerized services & networking],
+)
+
+Application tech stack
+
+== Frontend
+
+The frontend design was based on the user flows; see @activity_booking and @activity_doctor. We decided not to go into detail with the frontend, as the requirements were flexible regarding styling. There are two different frontends with two separate authentications and backends. This was done separation of concerns and independent deployability in mind.
+
+
+#appendix(
+  <activity_booking>,
+  image(
+    "../images/ActivityBooking.drawio.svg",
+  ),
+  "Activity diagram for booking consultations",
+)
+
+== Backend architecture.
+
+=== Booking backend
+
+The booking backend was designed as a small ASP.NET service. The architecture is organised into layers: controllers, services, interfaces for the services and the data layer. The controllers only handle HTTP requests, and the actual business logic is being handled by separate services. This backend only uses the relational database for straightforward relational queries. We landed on this structure because of the abstraction it provides using interfaces and APIs, which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
+
+See the @uml_booking_backend.
+
+#appendix(
+  <uml_booking_backend>,
+  image(
+    "../images/UMLv2.drawio.svg",
+    width: 100%,
+  ),
+  "UML diagram of the booking backend",
+)
+
+=== Consultation backend
+
+The consultation database, nicknamed Heimdall, generally uses the same principle, going through the whole user flow from starting a consultation, then summarising, and finally outputting a PDF sent by email. It also separates the HTTP calls, business logic and the data layer. However, in contrast to the previously mentioned backend, it uses two databases: a relational one for structured data and a non-relational one for document-style data. The matching of each storage type and also the integrations behind interfaces make this backend easier to extend or replace in the future
+
+
+== Database design
+
+#appendix(
+  <relational_database_er>,
+  image(
+    "../images/relational_database.drawio.svg",
+  ),
+  "Relational database Entity Relationship Diagram",
+)
+
+As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured data and the non-relational, MongoDB, for the document-style data. We decided to go with this design so that PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
+
+See @relational_database_er.
 = Implementation
 
 = Validation
+== Testing
+
+The project employs a carefully selected technology stack for quality assurance and validation across multiple components.
+
+=== Consultation Backend - ASP.NET
+
+As both backends are built using ASP.NET, we utilized xUnit as the primary testing framework, which is essential for testing asynchronous operations in the backend. Moq provides flexible mocking capabilities, allowing isolation of external dependencies (MongoDB, HTTP services, email services) during testing. This combination enables comprehensive service-level testing without requiring live instances of MongoDB or third-party APIs.
+
+*Consultation Service Tests*
+
+What is tested: 
+- The ability to retrieve consultation data and create new consultations
+- The ability to preserve all relevant metadata when creating a consultation record in MongoDB and assign a unique consultation ID.
+- The ability to retrieve consultation data and map it to the API response format, ensuring data integrity across relational and non-relational storage layers.
+
+*Transcript Service Tests*
+
+What is tested:
+- The ability to upload audio recordings to the speech-to-text service and retrieve accurate transcriptions, ensuring that the transcription process is correctly integrated and functional.
+- Ensuring stored transcriptions are accurately retrieved.
+
+*Summary Service Tests*
+
+What is tested:
+- Mocks the LLM service to verify that the service correctly passes the transcription to the language model.
+- Confirming that the service retrieves the most recent summary version, as multiple versions might exist.
+
+*Prescription Service Tests*
+
+What is tested:
+- Testing if the service correctly orchestrates between the summary and LLM service and if the output is correctly structured and tracked.
+- Ensuring the latest approved prescription is retrieved. 
+
+*Mocking Strategy*
+
+External dependencies are mocked to isolate business logic:
+
+- *ILLM Service*: Mocked to return controlled, realistic outputs such as structured medical recommendations
+- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing
+- *IPdf and IEmail Services*: Mocked to avoid side effects during testing
+- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database
+
+The use of callbacks captures documents during insertion, allowing tests to verify both that data was persisted and that the content is correct.
+
+#footnote[`docs/research/backend.typ`]
+
+=== Booking Backend - ASP.NET
+
+The Booking Backend utilizes the same testing framework as the Consultation Backend: xUnit with Moq. This consistency across backends enables shared testing patterns and allows both services to be validated using identical mocking and isolation strategies.
+
+The testing approach focuses on service-level unit tests that validate the business logic of core operations:
+
+*Appointment Service Tests*
+
+What is tested:
+- The ability to save appointments to the database with all metadata and generate a unique appointment ID.
+- The ability to persist appointment data to the relational database.
+- The automatic handling of email sending, including setting the `EmailSentAt` timestamp when emails are successfully sent to patients.
+- Confirming that the email contains relevant details such as the assigned doctor's name and appointment time.
+- The ability to retrieve all stored appointments and map them correctly to Data Transfer Objects for API responses.
+
+*Availability Service Tests*
+
+What is tested:
+- The ability to retrieve all doctors in the system along with their availability schedules.
+- The correct retrieval of all doctors when multiple doctors are present in the system.
+
+*Mocking Strategy*
+
+External dependencies are mocked to isolate business logic:
+
+- *IEmail Service*: Mocked to simulate email sending without actually dispatching emails, allowing tests to verify the email request content and success/failure handling without external dependencies.
+
+#footnote[`docs/research/backend.typ`]
+
+=== LLM Service - Liquid AI
+
+LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding, while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
+
+*Testing Strategy*
+ Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
+
+The testing approach focuses on two critical dimensions:
+1. Summary and suggestion quality for clinical accuracy
+2. Medical knowledge assessment against benchmark datasets
+
+*Summary & Suggestion Quality Assessment*
+
+What is tested:
+- The ability to generate accurate clinical summaries from consultation transcripts using ROUGE-1 metric, which measures individual word matches and validates that key clinical terms are preserved.
+- The model's contextual understanding of medical concepts using BERTScore F1 metric, which evaluates semantic similarity and ensures the generated summaries maintain clinical meaning.
+- Latency and token throughput to ensure the model operates efficiently for real-time clinical use, with tests run on transcripts ranging from 1 to 14 minutes.
+
+*Medical Knowledge Assessment (MedQA Benchmark)*
+
+What is tested:
+- The model's ability to correctly answer medical multiple-choice questions from the MedQA benchmark dataset, measuring medical knowledge accuracy.
+- Overall performance on 50 representative questions from the 1000+ question medical knowledge base.
+- Latency and token throughput during medical question answering to assess real-time diagnostic support feasibility.
+
+*Test Coverage and Results*
+
+*Summary Quality Results:*
+Liquid AI demonstrated superior performance for clinical summary generation:
+- ROUGE-1 average: 0.562 vs Gemma 4 at 0.487
+- BERTScore F1 average: 0.385 vs Gemma 4 at 0.341
+- Average latency: 110.40s vs Gemma 4 at 267.85s
+- Throughput: 13.38 tokens/sec vs Gemma 4 at 8.16 tokens/sec
+
+*Medical Knowledge Results:*
+Gemma 4 demonstrated superior accuracy on medical knowledge questions:
+- Accuracy: 74.0% vs Liquid AI at 48.0%
+- However, latency was significantly higher at 80.97s average vs 15.38s for Liquid AI
+
+#footnote[`docs/research/LLM-testing.typ`]
+
+=== Speech-to-text Service - Faster-Whisper
+
+The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must complete within acceptable timeframes for doctor-patient consultations.
+
+*Testing Strategy*
+
+The Speech-to-text Service validation employs stress testing and benchmark analysis to evaluate performance and reliability under varying loads.
+
+The testing approach employs four sequential test phases to establish performance characteristics:
+1. Baseline testing at low concurrency to establish normal operation
+2. Ramp stress testing with gradually increasing concurrency
+3. Peak stress testing at maximum expected load
+4. Recovery testing to verify the service restores to baseline performance
+
+*Test Methodology*
+
+What is tested:
+- The service's ability to process audio transcription requests at low concurrency (1-2 concurrent users) to establish baseline throughput and latency metrics.
+- Performance degradation under gradually increasing concurrent load (1-16 concurrent requests) to identify where performance begins to degrade.
+- Behavior under peak stress conditions (20-24 concurrent requests) to assess maximum capacity and failure rates.
+- Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
+
+The tests use the same audio file across all phases, which is a mash-up of audio files from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
+
+*Test Coverage and Results*
+
+*Baseline Performance (Concurrency 1-2):*
+- Concurrency 1: 0.401 requests/sec, 2.49s mean latency, 0% failure rate
+- Concurrency 2: 0.398 requests/sec, 4.94s mean latency, 0% failure rate
+
+*Ramp Stress Results (Concurrency 1-16):*
+- Throughput remained stable at ~0.420 requests/sec across all concurrency levels
+- Mean latency increased proportionally with concurrency:
+  - Concurrency 4: 9.38s latency
+  - Concurrency 8: 18.38s latency
+  - Concurrency 12: 26.93s latency
+  - Concurrency 16: 35.20s latency
+- Zero failures at all concurrency levels
+
+*Peak Stress Results (Concurrency 20-24):*
+- Concurrency 20: 0.420 requests/sec, 43.85s mean latency, 0% failure rate
+- Concurrency 24: 0.420 requests/sec, 51.64s mean latency, 0% failure rate
+
+*Recovery Test (Return to Concurrency 1):*
+- Mean latency: 2.41s (comparable to baseline 2.49s)
+- Throughput: 0.415 requests/sec (baseline was 0.401)
+- Failure rate: 0% (unchanged)
+
+*Performance Analysis*
+
+- *Stable Throughput:*
+ The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
+- *Linear Latency Scaling:*
+ Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
+- *Zero Failure Rate:*
+ No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
+- *Full Recovery:*
+ The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
+
+The service represents a strong baseline suitable for stable, low-concurrency operation typical of a single outpatient department.
+
+#footnote[`docs/research/STT-test.typ`]
+
+== Supporting Technologies
+
+*Auth0 for Authentication*
+
+Authentication is provided by Auth0, a third-party identity platform with medical SSO compliance. This choice eliminates the need for custom authentication testing while ensuring HIPAA and other healthcare standards are met through Auth0's certified compliance.
+
+#footnote[`docs/research/authentication.typ`]
+
+*Mailpit for Email Testing*
+
+Email functionality uses Mailpit for development and testing environments, allowing complete control over email delivery without external dependencies. Mailpit runs locally in Docker, enabling email integration testing without affecting external systems.
+
+#footnote[`docs/research/email.typ`]
+
+*Typst for PDF Generation*
+
+PDF prescriptions are generated using Typst, a markup-based document system that allows data-driven PDF generation. Typst's great customizability and data templating capabilities make it suitable for clinical prescription documents with structured, reusable formatting.
+
+#footnote[`docs/research/pdf.typ`]
+
+*Docker and Docker Compose*
+
+The entire system is containerized and orchestrated using Docker and Docker Compose, enabling consistent testing environments across development, CI/CD, and deployment stages. Each service runs in isolated containers.
+This containerization enables:
+
+- Reproducible testing environments independent of host machine configuration
+- Isolated service testing without cross-contamination between tests
+- Stress testing of individual services (e.g., STT service under load) in controlled conditions
 
 = Conclusion
 == Summary
@@ -181,3 +623,8 @@ For the front-end part of our project, we did not spend so much time on making i
 Furthermore, the speech-to-text (STT) component currently used in the system is not suited for horizontal scaling, because it cannot handle more than one audio file at the same time. We need to find a solution that is concurrent, either using a job queue or async transcriptions. This change would allow the parallel processing of the audio recordings making the waiting time less and the user experience smoother.
 
 In conclusion, these improvements would greatly enhance user experience and the variety of features offered by our application and would make it one step closer to a real-world deployment.
+
+// Meeting logs in appendix
+#for i in range(1, 16) {
+  appendix(none, align(left, include "../logs/" + str(i) + ".typ"), "Meeting Log " + str(i))
+}

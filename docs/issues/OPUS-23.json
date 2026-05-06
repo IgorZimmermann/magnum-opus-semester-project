@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-23",
+  "jiraSummary": "create database service and schema",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Örs Tomaj Jeney",
+  "storyPoints": 8,
+  "jiraCreatedAt": "2026-03-09T13:05:17.175+0100",
+  "prNumber": 27,
+  "prTitle": "OPUS-23 create database service and schema",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/27",
+  "prAuthor": "jeney",
+  "prOpenedAt": "2026-03-15T18:24:55Z",
+  "prMergedAt": "2026-03-16T19:26:21Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-16T15:42:04Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-16T19:25:59Z"
+    }
+  ]
+}

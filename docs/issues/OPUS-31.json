@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-31",
+  "jiraSummary": "standardise backends",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-23T11:04:02.933+0100",
+  "prNumber": 40,
+  "prTitle": "OPUS-31 standardise backends",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/40",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-04-03T21:17:28Z",
+  "prMergedAt": "2026-04-15T11:03:30Z",
+  "githubReviewers": [
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-15T11:03:19Z"
+    },
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-15T11:02:58Z"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-30",
+  "jiraSummary": "create booking backend",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 8,
+  "jiraCreatedAt": "2026-03-16T12:34:50.836+0100",
+  "prNumber": 32,
+  "prTitle": "OPUS-30 create booking backend",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/32",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-03-20T21:10:44Z",
+  "prMergedAt": "2026-03-23T10:37:52Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-23T10:37:13Z"
+    },
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-23T10:37:33Z"
+    }
+  ]
+}

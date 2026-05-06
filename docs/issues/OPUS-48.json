@@ -1,0 +1,32 @@
+{
+  "jiraKey": "OPUS-48",
+  "jiraSummary": "write methodology in report",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-04-20T11:28:20.399+0200",
+  "prNumber": 55,
+  "prTitle": "OPUS-48 Write methodology in report",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/55",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-04-23T12:10:12Z",
+  "prMergedAt": "2026-04-28T10:09:56Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T12:10:52Z"
+    },
+    {
+      "login": "IgorZimmermann",
+      "state": "COMMENTED",
+      "reviewedAt": "2026-04-24T11:53:24Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-27T09:37:28Z"
+    }
+  ]
+}

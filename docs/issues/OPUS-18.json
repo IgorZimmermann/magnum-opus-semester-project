@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-18",
+  "jiraSummary": "finalise project proposal and diagrams",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-02T13:09:38.879+0100",
+  "prNumber": 12,
+  "prTitle": "OPUS-18 updated project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/12",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-03-03T19:38:11Z",
+  "prMergedAt": "2026-03-05T09:34:48Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-04T18:36:46Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-05T08:32:27Z"
+    }
+  ]
+}

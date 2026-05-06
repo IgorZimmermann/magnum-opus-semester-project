@@ -1,53 +1,49 @@
-# ECHO - Speech-to-text
+# ECHO - Speech-to-Text
 
-## How to start container
+Speech-to-text service that runs faster-whisper from a Python script. Takes audio as input and transcribes it as text as output.
 
-The container requires only a port expose to work. The internal port is 3000, map that to any desired port.
+---
 
-```
-docker build -t echo .
-docker run -p 3000:3000 --name echo echo
-```
-## How to try it out
+## Tech Stack
 
-If you want to test how the transcription works, do the following:
-1. Open browser, go to `http://localhost:3000/ping` to check if container is running
-1. Add an audio recording to the echo folder wav format
-1. Name it test.wav
-1. Send a POST request with an audio file with the following:
-    ```
-    curl.exe -X POST http://localhost:3000/process -F "file=@test.wav;type=audio/wav"
-    ```
+- **Language/Framework:** Python, Docker
+- **Key libraries:** faster_whisper, fastapi
 
+---
 
-## How to add to a `docker-compose`
-```yaml
-services:
-  echo:
-    build: .
-    ports:
-      - "3000:3000"
+## Running with Docker 
+
+```bash
+docker-compose up echo
 ```
 
-## Endpoints/Interface
+---
 
-## `GET /ping`
+## Project Structure
 
-Health check. Returns `pong` as plain text.
+```
+src/
+  main.py         contains Python script that pulls the faster_whisper model
+requirements.txt  model config file
+```
 
-## `GET /doc`
+---
 
-Returns the OpenAPI specification.
+## Endpoints / API
 
-## `POST /process`
+| Method | Path     | Description                                                              |
+|--------|----------|--------------------------------------------------------------------------|
+| GET    | /ping    | Health check. Returns `pong` as plain text.                              |
+| GET    | /doc     | Returns the OpenAPI specification.                                       |
+| POST   | /process | Transcribes an audio file and returns the transcription as text.         |
 
-Transcribes an audio file and returns the transcription as text.
+---
 
 **Request body** (`multipart/form-data`):
 
-| Field | Type | Required |
-|---|---|---|
-| `file` | audio file | Yes |
+| Field  | Type       | Required |
+|--------|------------|----------|
+| `file` | audio file | Yes      |
 
 **Supported formats:** anything labeled `audio/*` (mp3, wav, m4a, aac, etc.)
 

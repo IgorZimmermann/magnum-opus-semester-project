@@ -13,11 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 var postgresConnectionString = builder.Configuration.GetConnectionString("Postgres");
 builder.Services.AddAuth0ApiAuthentication(options =>
 {
-	options.Domain = builder.Configuration["Auth0:Domain"];
-	options.JwtBearerOptions = new JwtBearerOptions
-	{
-		Audience = builder.Configuration["Auth0:Audience"]
-	};
+    options.Domain = builder.Configuration["Auth0:Domain"];
+    options.JwtBearerOptions = new JwtBearerOptions
+    {
+        Audience = builder.Configuration["Auth0:Audience"]
+    };
 });
 
 builder.Services.AddAuthorization();
@@ -85,7 +85,17 @@ builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddHostedService<ConsultationBackend.Data.Seed.StartupSeeder>();
 
 
-// Add services to the container.
+// Add services to the container & allows for orval to work
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:3002")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -102,6 +112,7 @@ if (app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 

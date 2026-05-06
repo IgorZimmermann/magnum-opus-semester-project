@@ -1,47 +1,34 @@
 # ODIN - LLM
 
-## How to start container
+LLM service running Ollama with a LFM2 model, exposed as an HTTP JSON API for use by other services.
 
-The container runs a custom image built from `odin/Dockerfile`.
+---
 
-The Ollama API is available on port `11434`. Docker maps host port `11434` to container port `11434`.
+## Tech Stack
 
-The volume `ollama_data` is mounted to `/root/.ollama/` for downloaded models to persist.
+- **Image:** Ollama 
+- **Model:** sam860/LFM2:2.6b
 
-The container is started with:
+---
+
+## Running with Docker
 
 ```bash
-docker compose up -d
+docker-compose up odin
 ```
 
-On startup, the entrypoint automatically checks whether the required model `sam860/LFM2:2.6b` is present and pulls it if missing:
+Ollama in mounted to `ollama_data` thus downloaded models will persist across restarts. 
+---
 
-Because `/root/.ollama` is mounted to the `ollama_data` volume, the model is persisted and only needs to be pulled once.
+## Endpoints / API
 
-## How to add to a `docker-compose`
+The API is exposed through Ollama on port `11434`.
 
-```yaml
-services:
-  ollama:
-    build:
-      context: ./odin
-      dockerfile: Dockerfile
-    volumes:
-      - ollama_data:/root/.ollama
-    ports:
-      - "11434:11434"
+| Method | Path       | Description                                      |
+|--------|------------|--------------------------------------------------|
+| POST   | /api/chat  | Send messages to the model and get a response    |
 
-volumes:
-  ollama_data:
-```
-
-## Endpoints/Interface
-
-The interface is the **HTTP JSON API** that is exposed through Ollama.
-
-The primary endpoint is `POST /api/chat`, which accepts a JSON request body containing the model and input messages and returns the generated response.
-
-JSON example below:
+**Request body example:**
 
 ```json
 {

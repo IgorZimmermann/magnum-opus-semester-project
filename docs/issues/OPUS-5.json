@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-5",
+  "jiraSummary": "write \"background/motivation\" in project proposal",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Koltai Ákos",
+  "storyPoints": 2,
+  "jiraCreatedAt": "2026-02-23T12:49:23.410+0100",
+  "prNumber": 10,
+  "prTitle": "OPUS-5 write background and motivation section in project proposal",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/10",
+  "prAuthor": "akos-koltai",
+  "prOpenedAt": "2026-02-28T21:20:38Z",
+  "prMergedAt": "2026-03-02T11:08:48Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T12:17:54Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-01T11:47:35Z"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "jiraKey": "OPUS-20",
+  "jiraSummary": "create email service",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Dávid Borka",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-09T13:01:12.221+0100",
+  "prNumber": 25,
+  "prTitle": "OPUS-20 Create Email Service",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/25",
+  "prAuthor": "Valami98",
+  "prOpenedAt": "2026-03-13T18:48:56Z",
+  "prMergedAt": "2026-03-16T10:55:25Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-16T10:29:25Z"
+    },
+    {
+      "login": "jeney",
+      "state": "DISMISSED",
+      "reviewedAt": "2026-03-15T18:31:33Z"
+    },
+    {
+      "login": "denis-nedret",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-16T10:30:25Z"
+    }
+  ]
+}

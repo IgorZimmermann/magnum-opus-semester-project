@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-52",
+  "jiraSummary": "connect front-ends and apis together",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-04-20T11:28:57.892+0200",
+  "prNumber": 56,
+  "prTitle": "OPUS-52 Connect front ends and apis together",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/56",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-04-23T13:08:15Z",
+  "prMergedAt": "2026-04-29T13:57:59Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-29T06:10:26Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-29T12:39:31Z"
+    }
+  ]
+}

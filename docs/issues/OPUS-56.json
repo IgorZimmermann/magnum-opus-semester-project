@@ -1,0 +1,16 @@
+{
+  "jiraKey": "OPUS-56",
+  "jiraSummary": "connect booking front-end to apis and auth",
+  "jiraIssueType": "Task",
+  "jiraStatus": "In Review",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-04-27T12:29:38.194+0200",
+  "prNumber": 61,
+  "prTitle": "OPUS-56 connect booking front end to apis and auth",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/61",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-04-30T10:36:46Z",
+  "prMergedAt": null,
+  "githubReviewers": []
+}

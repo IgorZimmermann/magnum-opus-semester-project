@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-17",
+  "jiraSummary": "research authentication",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": 3,
+  "jiraCreatedAt": "2026-03-02T13:09:24.130+0100",
+  "prNumber": 15,
+  "prTitle": "OPUS-17 research authentication",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/15",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-03-06T11:42:18Z",
+  "prMergedAt": "2026-03-09T11:07:33Z",
+  "githubReviewers": [
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-06T13:12:51Z"
+    },
+    {
+      "login": "akos-koltai",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-08T22:01:17Z"
+    }
+  ]
+}

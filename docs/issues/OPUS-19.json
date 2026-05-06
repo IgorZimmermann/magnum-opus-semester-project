@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-19",
+  "jiraSummary": "create pdf service",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Igor Zimmermann",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-03-09T13:00:22.584+0100",
+  "prNumber": 24,
+  "prTitle": "OPUS-19 Create PDF service",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/24",
+  "prAuthor": "IgorZimmermann",
+  "prOpenedAt": "2026-03-13T12:27:37Z",
+  "prMergedAt": "2026-03-16T10:21:16Z",
+  "githubReviewers": [
+    {
+      "login": "seala2005",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-15T13:36:26Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-15T18:26:18Z"
+    }
+  ]
+}

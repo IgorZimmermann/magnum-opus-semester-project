@@ -1,0 +1,32 @@
+{
+  "jiraKey": "OPUS-47",
+  "jiraSummary": "write introduction in report",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Denis Nedzhibov",
+  "storyPoints": 2,
+  "jiraCreatedAt": "2026-04-20T11:28:13.422+0200",
+  "prNumber": 53,
+  "prTitle": "OPUS-47 Add Introduction",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/53",
+  "prAuthor": "denis-nedret",
+  "prOpenedAt": "2026-04-21T15:17:40Z",
+  "prMergedAt": "2026-04-27T09:11:27Z",
+  "githubReviewers": [
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-26T17:27:30Z"
+    },
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-26T16:57:16Z"
+    },
+    {
+      "login": "denis-nedret",
+      "state": "COMMENTED",
+      "reviewedAt": "2026-04-24T18:32:43Z"
+    }
+  ]
+}

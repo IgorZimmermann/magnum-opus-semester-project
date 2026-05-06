@@ -1,0 +1,27 @@
+{
+  "jiraKey": "OPUS-45",
+  "jiraSummary": "benchmark/stress testing for llm",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 5,
+  "jiraCreatedAt": "2026-04-15T13:28:28.449+0200",
+  "prNumber": 47,
+  "prTitle": "OPUS-45 Benchmark & Stress Testing for LLM",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/47",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-04-18T14:00:24Z",
+  "prMergedAt": "2026-04-20T14:28:26Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-20T09:50:29Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-04-20T13:20:10Z"
+    }
+  ]
+}

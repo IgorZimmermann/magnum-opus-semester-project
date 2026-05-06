@@ -1,0 +1,37 @@
+{
+  "jiraKey": "OPUS-27",
+  "jiraSummary": "create consultation backend",
+  "jiraIssueType": "Task",
+  "jiraStatus": "Done",
+  "jiraAssignee": "Sean Larsen",
+  "storyPoints": 8,
+  "jiraCreatedAt": "2026-03-16T12:26:44.619+0100",
+  "prNumber": 31,
+  "prTitle": "OPUS-27 create consulation backend",
+  "prUrl": "https://github.com/IgorZimmermann/magnum-opus-semester-project/pull/31",
+  "prAuthor": "seala2005",
+  "prOpenedAt": "2026-03-20T14:40:52Z",
+  "prMergedAt": "2026-03-23T07:57:42Z",
+  "githubReviewers": [
+    {
+      "login": "IgorZimmermann",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-22T18:44:57Z"
+    },
+    {
+      "login": "seala2005",
+      "state": "COMMENTED",
+      "reviewedAt": "2026-03-21T12:09:29Z"
+    },
+    {
+      "login": "Valami98",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-22T21:15:01Z"
+    },
+    {
+      "login": "jeney",
+      "state": "APPROVED",
+      "reviewedAt": "2026-03-22T22:23:07Z"
+    }
+  ]
+}

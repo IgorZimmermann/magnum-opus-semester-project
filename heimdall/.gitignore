@@ -18,3 +18,5 @@ appsettings.*.local.json
 
 .DS_Store
 Thumbs.db
+
+package-lock.json
