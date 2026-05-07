@@ -86,7 +86,7 @@ Our project offers a solution for a clear gap: the need for simple AI tools that
 
 Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.#footnote[
   Beskrivelse af almen praksissektoren i Danmark (2016)
-  ]
+]
 
 == Aim
 
@@ -100,7 +100,7 @@ This modular design makes it easy to replace components while preserving privacy
 
 == Use cases
 
-=== Booking process 
+=== Booking process
 - *Primary actor:* Patient
 - *Preconditions:* Patient is registered in the system and has valid login credentials
 - *Goal:* Book a consultation with a doctor
@@ -146,13 +146,6 @@ This modular design makes it easy to replace components while preserving privacy
 + The system waits until the user ends the consultation
 + Audio recording is stopped and sent to the speech-to-text component for transcription
 
-#appendix(
-  <activity_doctor>,
-  image(
-    "../images/ActivityDoctor.drawio.svg",
-  ),
-  "Activity Diagram - Doctor Workflow",
-)
 
 === Review and send doctor's note to patient
 - *Primary actor:* Doctor
@@ -202,55 +195,55 @@ restarted, reducing downtime and improving overall reliability.
 
 *MUST have*
 
-  - The system shall allow patients to create, view, and cancel bookings.
-  - Acceptance criteria:
-    - Creating a booking returns a booking identifier and status.
+- The system shall allow patients to create, view, and cancel bookings.
+- Acceptance criteria:
+  - Creating a booking returns a booking identifier and status.
 
-  - The system shall require authenticated access for patient and doctor workflows.
-  - Acceptance criteria:
-    - Protected API endpoints reject unauthenticated requests.
-    - Authenticated users can access only authorized workflow endpoints.
+- The system shall require authenticated access for patient and doctor workflows.
+- Acceptance criteria:
+  - Protected API endpoints reject unauthenticated requests.
+  - Authenticated users can access only authorized workflow endpoints.
 
-  - The system shall allow doctors to start and end consultations linked to valid bookings.
-  - Acceptance criteria:
-    - Start creates a consultation record with status InProgress.
-    - End sets consultation status to Completed.
+- The system shall allow doctors to start and end consultations linked to valid bookings.
+- Acceptance criteria:
+  - Start creates a consultation record with status InProgress.
+  - End sets consultation status to Completed.
 
-  - The system shall transcribe consultation audio locally using an open-source model.
-  - Acceptance criteria:
-    - Uploaded audio returns transcript text.
-    - No cloud STT endpoint is called during transcription.
+- The system shall transcribe consultation audio locally using an open-source model.
+- Acceptance criteria:
+  - Uploaded audio returns transcript text.
+  - No cloud STT endpoint is called during transcription.
 
-  - The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
-  - Acceptance criteria:
-    - Summary generation returns structured summary output.
-    - Prescription draft generation returns structured fields.
+- The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
+- Acceptance criteria:
+  - Summary generation returns structured summary output.
+  - Prescription draft generation returns structured fields.
 
-  - Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
-  - Acceptance criteria:
-    - Edit operations persist updated content.
-    - Approve operation marks status Approved.
-    - Reject operation marks status Rejected.
+- Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
+- Acceptance criteria:
+  - Edit operations persist updated content.
+  - Approve operation marks status Approved.
+  - Reject operation marks status Rejected.
 
-  - The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
-  - Acceptance criteria:
-    - Approval triggers PDF generation.
-    - Approved PDF is attached to outbound email.
-    - Delivery outcome is logged.
+- The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
+- Acceptance criteria:
+  - Approval triggers PDF generation.
+  - Approved PDF is attached to outbound email.
+  - Delivery outcome is logged.
 
-  - The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
-  - The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
+- The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
+- The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
 
 *SHOULD have*
 
-  - The system should allow searching and filtering doctors by availability and name/specialty.
-  - The system should log AI prompts and outputs for evaluation purposes.
+- The system should allow searching and filtering doctors by availability and name/specialty.
+- The system should log AI prompts and outputs for evaluation purposes.
 
 *COULD have*
 
-  - Doctors could upload diagnostic images to consultation records.
-  - The system could support runtime switching between local LLM models.
-  - The system could allow configurable instructions.
+- Doctors could upload diagnostic images to consultation records.
+- The system could support runtime switching between local LLM models.
+- The system could allow configurable instructions.
 
 *WON'T have*
 
@@ -399,7 +392,165 @@ The consultation database, nicknamed Heimdall, generally uses the same principle
 As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured data and the non-relational, MongoDB, for the document-style data. We decided to go with this design so that PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
 
 See @relational_database_er.
+
+
 = Implementation
+
+== Containerization
+Docker and Docker Compose were utilized to containerize each component so as to keep the environment consistent. A single `docker-compose.yml` at the repository root is responsible for the orchestration of the entire system.
+
+=== Startup Order & Healthchecks
+Startup order is enforced through Docker's `depends_on` conditions. Four services expose healthcheck endpoints that Docker polls before marking them ready.
+
+- *PostgreSQL's* `pg_isready` confirms the database accepts connections. (see @postgres_image)
+
+- *MongoDB's* `mongosh` makes sure that the document store is responsive.
+
+- *Echo's* Python `urllib` request ensures that the STT service's model has loaded.
+
+- *Saga's* `curl` request confirms the PDF service is ready.
+
+- *Heimdall* and *Janus* declare `condition: service_healthy` for these four dependencies, ensuring neither backend starts before its data stores and other services have become fully available.
+
+- *Odin* and *Hermes* use `condition: service_started` since both services do not expose a meaningful ready signal.
+
+=== Environment Variables
+Database credentials are read from an `.env` file. Service-to-service URLs are injected as environment variables at the container level, using Docker Compose's internal DNS to resolve service names (e.g., `http://odin:11434`).
+
+=== Persistent Volumes
+Four named volumes ensure that container restarts do not delete data:
+- `pgdata` - PostgreSQL database files. (see @postgres_image)
+- `mongodata` - MongoDB database files.
+- `ollama_data` - Downloaded LLM model weights, so the model is not re-pulled on every restart.
+- `hermes_data` - Mailpit's email database.
+All services are configured with `restart: unless-stopped`, so the stack recovers automatically from individual container failures with no need of manual intervention.
+
+== Service-by-Service Implementation
+
+=== Speech-to-Text Service (Echo)
+A single processing endpoint `POST /process` accepts an audio file as a request and returns a JSON response. The uploaded audio is written to a temporary file and is deleted immediately after transcription.
+A `GET /ping` endpoint serves as the health check that confirms the service is ready.
+
+=== LLM Service (Odin)
+On container startup, `entrypoint.sh` checks whether the required model `sam860/LFM2:2.6b` is present and pulls it if missing.
+Since `/root/.ollama` is mounted to the `ollama_data` volume, the model is persisted and only needs to be pulled once.
+Odin is called from Heimdall via the `POST /api/chat` endpoint, which accepts a JSON request body containing the model and input messages and returns the generated response.
+
+=== PDF Generation Service (Saga)
+`POST /generate` accepts a JSON body with data of the doctor, patient, diagnosis, description, and prescription. With that information, a binary file buffer is created.
+Afterwards, the data is passed against the note template and a PDF file is created. The service reads the file into memory, sends it back as the HTTP response, and deletes the file so it doesn't persist.
+When Heimdall calls the service, the file gets attached to the email sent via Hermes.
+
+=== Email Service (Hermes)
+Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations and cancellations. It uses the `axllent/mailpit` Docker image.
+`POST /api/v1/send` requests a PDF from the Typst service, then sends it to Hermes as an SMTP message with the PDF attached.
+
+
+
+=== Booking Backend (Janus)
+This backend has two controllers:
+- `AppointmentController` -
+-- `POST /api/appointment` creates a booking and triggers a confirmation email via Hermes; `GET /api/appointment` returns the user's appointments. (see @appointment_controller)
+- `AvailabilityController` -
+-- `GET /api/availability/doctors` returns all doctors and their available time slots.
+
+
+`AppointmentService` calls `IEmail` after saving the appointment and updates `EmailSentAt` once the email is sent.
+
+
+=== Consultation Backend (Heimdall)
+The consultation backend has four controllers:
+- ConsultationController -
+-- `POST /api/consultation/StartConsultation` creates a consultation record in MongoDB tied to an existing appointment.
+
+- TranscriptController -
+-- `POST /api/transcript/GenerateTranscript` accepts the audio file, forwards it to Echo and stores the result in `raw_transcipts`.
+
+- SummaryController -
+-- `POST /api/summary/GenerateSummary` sends the transcript to Odin and stores the output in `summaries`.
+
+`PUT /api/summary/EditSummary` allows the doctor to edit the generated summary.
+
+- PrescriptionController -
+-- `POST /api/prescription/GeneratePrescription` sends the summary to Odin again and stores the prescription and suggestions in `summaries`. (see @generate_prescription)
+
+-- `PUT /api/prescription/EditPrescription` allows the doctor to rewrite the prescription.
+
+-- `POST /api/prescription/ApprovePrescription` triggers Saga for PDF generation then Hermes to email it to the patient.
+
+=== Booking Frontend (Iris)
+The first page contains the authentication prompt. (`iris/app/page.tsx`)
+Iris's booking page displays the patient's existing bookings and allows creating a new one through a form with doctor selection and date/time picker. (`iris/app/booking/page.tsx`) (see @booking_1 and @booking_2)
+
+=== Consultation Frontend (Eir)
+There are four pages in this frontend:
+- Firstly, the dashboard shows the authentication prompt and all appointments for the day before and after logging in respectively. (`eir/app/page.tsx`) (see @consultation_1)
+- Secondly, the doctor can begin the consultation. (`eir/app/appointment/[id]/page.tsx`) (see @consultation_2)
+- Thirdly, the generated transcript is shown and ready for review. (`appointment/[id]/transcript/page.tsx`)
+- Lastly, the prescription is up for editing and approval. (`appointment/[id]/note/page.tsx`)
+
+== Inter-Service Implementation
+Each external service is registered in Program.cs as a typed HttpClient (see @Heimdall_DI). Each has an interface (`ILLM`, `IPdf`, etc.) and is implemented in `Infrastructure/`.
+
+== Authentication & Authorization
+Both backends use Auth0 JWT Bearer authentication, configured in Program.cs via AddAuth0ApiAuthentication with domain and audience read from appsettings.json.
+
+Each backend has its own Auth0 tenant and audience — Heimdall expects https://consultation-api and Janus expects https://booking-api.
+
+[Authorize] is applied at the controller class level in both backends, so every endpoint requires a valid token by default.
+
+Both frontends use Auth0 to handle the login flow. It exposes an /api/access-token route that the client calls to retrieve the token, which is then forwarded to Heimdall with each request.
+
+
+
+
+#appendix(
+  <postgres_image>,
+  image("../images/PostgresImage.png"),
+  "PostgreSQL Docker Compose Snippet",
+)
+
+#appendix(
+  <appointment_controller>,
+  image("../images/AppointmentController.png"),
+  "Appointment Controller",
+)
+
+#appendix(
+  <generate_prescription>,
+  image("../images/GeneratePrescription.png"),
+  "Generate Prescription",
+)
+
+#appendix(
+  <booking_1>,
+  image("../images/Booking1.png"),
+  "Iris - Bookings List",
+)
+
+#appendix(
+  <booking_2>,
+  image("../images/Booking2.png"),
+  "Iris - New Booking Form",
+)
+
+#appendix(
+  <consultation_1>,
+  image("../images/Consultation1.png"),
+  "Eir - Dashboard",
+)
+
+#appendix(
+  <consultation_2>,
+  image("../images/Consultation2.png"),
+  "Eir - Consultation Start",
+)
+
+#appendix(
+  <Heimdall_DI>,
+  image("../images/HeimdallDI.png"),
+  "Heimdall Dependency Injection",
+)
 
 = Validation
 == Testing
