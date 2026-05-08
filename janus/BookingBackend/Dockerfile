@@ -11,7 +11,6 @@ COPY . BookingBackend/
 WORKDIR /src/BookingBackend
 RUN dotnet publish "BookingBackend.csproj" \
     --configuration Release \
-    --no-restore \
     --output /app/publish
 
 # ── Runtime stage ───────────────────────────────────────────────────────────────

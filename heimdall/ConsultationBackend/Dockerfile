@@ -11,7 +11,6 @@ COPY . ConsultationBackend/
 WORKDIR /src/ConsultationBackend
 RUN dotnet publish "ConsultationBackend.csproj" \
     --configuration Release \
-    --no-restore \
     --output /app/publish
 
 # ── Runtime stage ───────────────────────────────────────────────────────────────
