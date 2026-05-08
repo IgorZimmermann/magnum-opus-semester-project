@@ -113,6 +113,46 @@ services:
       retries: 5
       start_period: 15s
 
+  eir:
+    build:
+      context: ./eir
+      dockerfile: Dockerfile
+    container_name: eir_frontend
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    env_file: .env
+    environment:
+      - APP_BASE_URL=http://localhost:3002
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_BASE_URL=http://localhost:3002
+    depends_on:
+      heimdall:
+        condition: service_started
+      odin:
+        condition: service_started
+
+  iris:
+    build:
+      context: ./iris
+      dockerfile: Dockerfile
+    container_name: iris_frontend
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    env_file: .env
+    environment:
+      - APP_BASE_URL=http://localhost:3003
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_BASE_URL=http://localhost:3003
+    depends_on:
+      janus:
+        condition: service_started
+      odin:
+        condition: service_started
+
   postgres:
     image: postgres:16
     container_name: postgres
