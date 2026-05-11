@@ -383,6 +383,24 @@ As previously mentioned, we have two different kinds of databases. One of them i
 
 = Implementation
 
+== Naming conventions
+
+To make the naming conventions clear in the system architecture, we assigned each component a distinct name to make service boundaries easier to identify.
+
+#table(
+  columns: 2,
+  [*Name*], [*Function*],
+  [Echo], [Speech-to-text],
+  [Heimdall], [Consultation Backend],
+  [Hermes], [Email],
+  [Mneme], [Database],
+  [Odin], [LLM],
+  [Saga], [PDF Generation],
+  [Janus], [Booking Backend],
+  [Eir], [Consultation Frontend],
+  [Iris], [Booking Frontend],
+)
+
 == Containerization
 Docker and Docker Compose were utilized to containerize each component so as to keep the environment consistent. A single `docker-compose.yml` at the repository root is responsible for the orchestration of the entire system.
 
@@ -550,7 +568,7 @@ As both backends are built using ASP.NET, we utilized xUnit as the primary testi
 
 *Consultation Service Tests*
 
-What is tested: 
+What is tested:
 - The ability to retrieve consultation data and create new consultations
 - The ability to preserve all relevant metadata when creating a consultation record in MongoDB and assign a unique consultation ID.
 - The ability to retrieve consultation data and map it to the API response format, ensuring data integrity across relational and non-relational storage layers.
@@ -571,7 +589,7 @@ What is tested:
 
 What is tested:
 - Testing if the service correctly orchestrates between the summary and LLM service and if the output is correctly structured and tracked.
-- Ensuring the latest approved prescription is retrieved. 
+- Ensuring the latest approved prescription is retrieved.
 
 *Mocking Strategy*
 
@@ -620,7 +638,7 @@ External dependencies are mocked to isolate business logic:
 LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding, while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
 
 *Testing Strategy*
- Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
+Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
 
 The testing approach focuses on two critical dimensions:
 1. Summary and suggestion quality for clinical accuracy
@@ -707,13 +725,13 @@ The tests use the same audio file across all phases, which is a mash-up of audio
 *Performance Analysis*
 
 - *Stable Throughput:*
- The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
+  The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
 - *Linear Latency Scaling:*
- Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
+  Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
 - *Zero Failure Rate:*
- No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
+  No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
 - *Full Recovery:*
- The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
+  The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
 
 The service represents a strong baseline suitable for stable, low-concurrency operation typical of a single outpatient department.
 
