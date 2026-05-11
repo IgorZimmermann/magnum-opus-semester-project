@@ -92,7 +92,7 @@ Danish General Practitioners (GPs) have contact with around 49 patients per day 
 
 The aim of this project is to provide a privacy-preserving, locally hosted OPD management system that automates the workflow from consultation to digital prescription, using open-source speech-to-text and large language models, with a "safety net" of suggestive alerts.
 
-Managing such such a worklfow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. Therefore the technical aim of our project is to tackle this challenge through component-based architecture by implementing multiple independent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation. These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components.
+Managing such a workflow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. Therefore the technical aim of our project is to tackle this challenge through component-based architecture by implementing multiple independent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation. These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components.
 
 The system follows a privacy-first design, as dealing with sensitive health data requires strict precautions. To achieve this, only locally hosted open-source models are used, so that patient data never leaves the hospital's network.
 
@@ -127,6 +127,14 @@ This modular design makes it easy to replace components while preserving privacy
     "../images/ActivityBooking.drawio.svg",
   ),
   "Activity Diagram - Booking",
+)
+
+#appendix(
+  <activity_doctor>,
+  image(
+    "../images/ActivityDoctor.drawio.svg",
+  ),
+  "Activity Diagram - Doctor",
 )
 
 === Consultation process
