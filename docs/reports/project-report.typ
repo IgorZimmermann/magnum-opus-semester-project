@@ -584,7 +584,7 @@ As both backends are built using ASP.NET, we utilized xUnit as the primary testi
 *Consultation Service Tests*
 
 What is tested:
-- The ability to retrieve consultation data and create new consultations
+- The ability to retrieve consultation data and create new consultations.
 - The ability to preserve all relevant metadata when creating a consultation record in MongoDB and assign a unique consultation ID.
 - The ability to retrieve consultation data and map it to the API response format, ensuring data integrity across relational and non-relational storage layers.
 
@@ -598,7 +598,7 @@ What is tested:
 
 What is tested:
 - Mocks the LLM service to verify that the service correctly passes the transcription to the language model.
-- Confirming that the service retrieves the most recent summary version, as multiple versions might exist.
+- Confirming that the service retrieves the most recent summary version as multiple versions might exist.
 
 *Prescription Service Tests*
 
@@ -610,12 +610,12 @@ What is tested:
 
 External dependencies are mocked to isolate business logic:
 
-- *ILLM Service*: Mocked to return controlled, realistic outputs such as structured medical recommendations
-- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing
-- *IPdf and IEmail Services*: Mocked to avoid side effects during testing
-- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database
+- *ILLM Service*: Mocked to return controlled and realistic outputs such as structured medical recommendations.
+- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing.
+- *IPdf and IEmail Services*: Mocked to avoid side effects during testing.
+- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database.
 
-The use of callbacks captures documents during insertion, allowing tests to verify both that data was persisted and that the content is correct.
+The use of callbacks captures documents during insertion, allowing tests to verify both that the data was stored and that the content is correct.
 
 #footnote[`docs/research/backend.typ`]
 
@@ -628,7 +628,7 @@ The testing approach focuses on service-level unit tests that validate the busin
 *Appointment Service Tests*
 
 What is tested:
-- The ability to save appointments to the database with all metadata and generate a unique appointment ID.
+- The ability to save appointments to the database with all metadata as well as generate a unique appointment ID.
 - The ability to persist appointment data to the relational database.
 - The automatic handling of email sending, including setting the `EmailSentAt` timestamp when emails are successfully sent to patients.
 - Confirming that the email contains relevant details such as the assigned doctor's name and appointment time.
@@ -650,14 +650,14 @@ External dependencies are mocked to isolate business logic:
 
 === LLM Service - Liquid AI
 
-LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding, while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
+LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
 
 *Testing Strategy*
 Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
 
 The testing approach focuses on two critical dimensions:
-1. Summary and suggestion quality for clinical accuracy
-2. Medical knowledge assessment against benchmark datasets
+1. Summary and suggestion quality for clinical accuracy.
+2. Medical knowledge assessment against benchmark datasets.
 
 *Summary & Suggestion Quality Assessment*
 
@@ -691,17 +691,17 @@ Gemma 4 demonstrated superior accuracy on medical knowledge questions:
 
 === Speech-to-text Service - Faster-Whisper
 
-The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must complete within acceptable timeframes for doctor-patient consultations.
+The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must be completed within acceptable timeframes for doctor-patient consultations.
 
 *Testing Strategy*
 
 The Speech-to-text Service validation employs stress testing and benchmark analysis to evaluate performance and reliability under varying loads.
 
 The testing approach employs four sequential test phases to establish performance characteristics:
-1. Baseline testing at low concurrency to establish normal operation
-2. Ramp stress testing with gradually increasing concurrency
-3. Peak stress testing at maximum expected load
-4. Recovery testing to verify the service restores to baseline performance
+1. Baseline testing at low concurrency to establish normal operation.
+2. Ramp stress testing with gradually increasing concurrency.
+3. Peak stress testing at maximum expected load.
+4. Recovery testing to verify the service restores to baseline performance.
 
 *Test Methodology*
 
@@ -711,7 +711,7 @@ What is tested:
 - Behavior under peak stress conditions (20-24 concurrent requests) to assess maximum capacity and failure rates.
 - Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
 
-The tests use the same audio file across all phases, which is a mash-up of audio files from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
+The tests use the same audio file across all phases. The file is a mash-up of audio clips from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
 
 *Test Coverage and Results*
 
@@ -720,7 +720,7 @@ The tests use the same audio file across all phases, which is a mash-up of audio
 - Concurrency 2: 0.398 requests/sec, 4.94s mean latency, 0% failure rate
 
 *Ramp Stress Results (Concurrency 1-16):*
-- Throughput remained stable at ~0.420 requests/sec across all concurrency levels
+- Throughput remained stable at \~0.420 requests/sec across all concurrency levels
 - Mean latency increased proportionally with concurrency:
   - Concurrency 4: 9.38s latency
   - Concurrency 8: 18.38s latency
@@ -740,11 +740,11 @@ The tests use the same audio file across all phases, which is a mash-up of audio
 *Performance Analysis*
 
 - *Stable Throughput:*
-  The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
+  The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing, rather than parallelization, limits throughput.
 - *Linear Latency Scaling:*
   Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
 - *Zero Failure Rate:*
-  No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
+  No requests failed during any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
 - *Full Recovery:*
   The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
 
@@ -782,10 +782,12 @@ This containerization enables:
 - Stress testing of individual services (e.g., STT service under load) in controlled conditions
 
 = Conclusion
+
 == Summary
 This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined by us and the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations, while the system is secure in terms of handling sensitive patient data on the clinic's network.
 
 The system demonstrates the application of the knowledge gained throughout this semester's courses. It demonstrates the design of a component-based system and the use of a self-hosted large language model.
+
 == Future work
 There are many improvements, which can be implemented in the future to enhance the system. In terms of clinical capability, the LLM could be expanded, so it looks at past patient history to propose contraindications or warn about possible allergy-related side affects. We could also make the AI use reinforcement learning, where the Doctor can rate the AI's responses to fine-tune the local model over time. Furthermore, AI could help out to assist the Doctor not only with making mistakes and prescribing but also in differential diagnosis.
 
