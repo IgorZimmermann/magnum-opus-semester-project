@@ -86,7 +86,7 @@ Our project offers a solution for a clear gap: the need for simple AI tools that
 
 Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.#footnote[
   Beskrivelse af almen praksissektoren i Danmark (2016)
-  ]
+]
 
 == Aim
 
@@ -100,7 +100,7 @@ This modular design makes it easy to replace components while preserving privacy
 
 == Use cases
 
-=== Booking process 
+=== Booking process
 - *Primary actor:* Patient
 - *Preconditions:* Patient is registered in the system and has valid login credentials
 - *Goal:* Book a consultation with a doctor
@@ -146,13 +146,6 @@ This modular design makes it easy to replace components while preserving privacy
 + The system waits until the user ends the consultation
 + Audio recording is stopped and sent to the speech-to-text component for transcription
 
-#appendix(
-  <activity_doctor>,
-  image(
-    "../images/ActivityDoctor.drawio.svg",
-  ),
-  "Activity Diagram - Doctor Workflow",
-)
 
 === Review and send doctor's note to patient
 - *Primary actor:* Doctor
@@ -202,56 +195,55 @@ restarted, reducing downtime and improving overall reliability.
 == Functional Requirements
 
 *MUST have*
+- The system shall allow patients to create, view, and cancel bookings.
+  - Acceptance criteria:
+    - Creating a booking returns a booking identifier and status.
 
-  - The system shall allow patients to create, view, and cancel bookings.
-    - Acceptance criteria:
-      - Creating a booking returns a booking identifier and status.
+- The system shall require authenticated access for patient and doctor workflows.
+  - Acceptance criteria:
+    - Protected API endpoints reject unauthenticated requests.
+    - Authenticated users can access only authorized workflow endpoints.
 
-  - The system shall require authenticated access for patient and doctor workflows.
-    - Acceptance criteria:
-      - Protected API endpoints reject unauthenticated requests.
-      - Authenticated users can access only authorized workflow endpoints.
+- The system shall allow doctors to start and end consultations linked to valid bookings.
+  - Acceptance criteria:
+    - Start creates a consultation record with status _In Progress_.
+    - End sets consultation status to _Completed_.
 
-  - The system shall allow doctors to start and end consultations linked to valid bookings.
-    - Acceptance criteria:
-      - Start creates a consultation record with status _In Progress_.
-      - End sets consultation status to _Completed_.
+- The system shall transcribe consultation audio locally using an open-source model.
+  - Acceptance criteria:
+    - Uploading audio returns transcript text.
+    - No cloud Speech-to-Text service is called during transcription.
 
-  - The system shall transcribe consultation audio locally using an open-source model.
-    - Acceptance criteria:
-      - Uploading audio returns transcript text.
-      - No cloud Speech-to-Text service is called during transcription.
+- The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
+  - Acceptance criteria:
+    - Summary generation returns structured summary output.
+    - Prescription draft generation returns structured fields.
 
-  - The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
-    - Acceptance criteria:
-      - Summary generation returns structured summary output.
-      - Prescription draft generation returns structured fields.
+- Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
+  - Acceptance criteria:
+    - Edit operations persist updated content.
+    - Approve operation marks status Approved.
+    - Reject operation marks status Rejected.
 
-  - Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
-    - Acceptance criteria:
-      - Edit operations persist updated content.
-      - Approve operation marks status Approved.
-      - Reject operation marks status Rejected.
+- The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
+  - Acceptance criteria:
+    - Approval triggers PDF generation.
+    - Approved PDF is attached to outbound email.
+    - Delivery outcome is logged.
 
-  - The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
-    - Acceptance criteria:
-      - Approval triggers PDF generation.
-      - Approved PDF is attached to outbound email.
-      - Delivery outcome is logged.
-
-  - The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
+- The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
   - The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
 
 *SHOULD have*
 
-  - The system should allow searching and filtering doctors by availability and name/specialty.
-  - The system should log AI prompts and outputs for evaluation purposes.
+- The system should allow searching and filtering doctors by availability and name/specialty.
+- The system should log AI prompts and outputs for evaluation purposes.
 
 *COULD have*
 
-  - Doctors could upload diagnostic images to consultation records.
-  - The system could support runtime switching between local LLM models.
-  - The system could allow configurable instructions.
+- Doctors could upload diagnostic images to consultation records.
+- The system could support runtime switching between local LLM models.
+- The system could allow configurable instructions.
 
 *WON'T have*
 
@@ -391,10 +383,386 @@ As previously mentioned, we have two different kinds of databases. One of them i
 
 = Implementation
 
+== Containerization
+Docker and Docker Compose were utilized to containerize each component so as to keep the environment consistent. A single `docker-compose.yml` at the repository root is responsible for the orchestration of the entire system.
+
+=== Startup Order & Healthchecks
+Startup order is enforced through Docker's `depends_on` conditions. Four services expose healthcheck endpoints that Docker polls before marking them ready.
+
+- *PostgreSQL's* `pg_isready` confirms the database accepts connections. (see @postgres_image)
+
+- *MongoDB's* `mongosh` makes sure that the document store is responsive.
+
+- *Echo's* Python `urllib` request ensures that the STT service's model has loaded.
+
+- *Saga's* `curl` request confirms the PDF service is ready.
+
+- *Heimdall* and *Janus* declare `condition: service_healthy` for these four dependencies, ensuring neither backend starts before its data stores and other services have become fully available.
+
+- *Odin* and *Hermes* use `condition: service_started` since both services do not expose a meaningful ready signal.
+
+=== Environment Variables
+Database credentials are read from an `.env` file. Service-to-service URLs are injected as environment variables at the container level, using Docker Compose's internal DNS to resolve service names (e.g., `http://odin:11434`).
+
+=== Persistent Volumes
+Four named volumes ensure that container restarts do not delete data:
+- `pgdata` - PostgreSQL database files. (see @postgres_image)
+- `mongodata` - MongoDB database files.
+- `ollama_data` - Downloaded LLM model weights, so the model is not re-pulled on every restart.
+- `hermes_data` - Mailpit's email database.
+All services are configured with `restart: unless-stopped`, so the stack recovers automatically from individual container failures with no need of manual intervention.
+
+== Service-by-Service Implementation
+
+=== Speech-to-Text Service (Echo)
+A single processing endpoint `POST /process` accepts an audio file as a request and returns a JSON response. The uploaded audio is written to a temporary file and is deleted immediately after transcription.
+A `GET /ping` endpoint serves as the health check that confirms the service is ready.
+
+=== LLM Service (Odin)
+On container startup, `entrypoint.sh` checks whether the required model `sam860/LFM2:2.6b` is present and pulls it if missing.
+Since `/root/.ollama` is mounted to the `ollama_data` volume, the model is persisted and only needs to be pulled once.
+Odin is called from Heimdall via the `POST /api/chat` endpoint, which accepts a JSON request body containing the model and input messages and returns the generated response.
+
+=== PDF Generation Service (Saga)
+`POST /generate` accepts a JSON body with data of the doctor, patient, diagnosis, description, and prescription. With that information, a binary file buffer is created.
+Afterwards, the data is passed against the note template and a PDF file is created. The service reads the file into memory, sends it back as the HTTP response, and deletes the file so it doesn't persist.
+When Heimdall calls the service, the file gets attached to the email sent via Hermes.
+
+=== Email Service (Hermes)
+Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations and cancellations. It uses the `axllent/mailpit` Docker image.
+`POST /api/v1/send` requests a PDF from the Typst service, then sends it to Hermes as an SMTP message with the PDF attached.
+
+
+
+=== Booking Backend (Janus)
+This backend has two controllers:
+- `AppointmentController` -
+-- `POST /api/appointment` creates a booking and triggers a confirmation email via Hermes; `GET /api/appointment` returns the user's appointments. (see @appointment_controller)
+- `AvailabilityController` -
+-- `GET /api/availability/doctors` returns all doctors and their available time slots.
+
+
+`AppointmentService` calls `IEmail` after saving the appointment and updates `EmailSentAt` once the email is sent.
+
+
+=== Consultation Backend (Heimdall)
+The consultation backend has four controllers:
+- ConsultationController -
+-- `POST /api/consultation/StartConsultation` creates a consultation record in MongoDB tied to an existing appointment.
+
+- TranscriptController -
+-- `POST /api/transcript/GenerateTranscript` accepts the audio file, forwards it to Echo and stores the result in `raw_transcipts`.
+
+- SummaryController -
+-- `POST /api/summary/GenerateSummary` sends the transcript to Odin and stores the output in `summaries`.
+
+`PUT /api/summary/EditSummary` allows the doctor to edit the generated summary.
+
+- PrescriptionController -
+-- `POST /api/prescription/GeneratePrescription` sends the summary to Odin again and stores the prescription and suggestions in `summaries`. (see @generate_prescription)
+
+-- `PUT /api/prescription/EditPrescription` allows the doctor to rewrite the prescription.
+
+-- `POST /api/prescription/ApprovePrescription` triggers Saga for PDF generation then Hermes to email it to the patient.
+
+=== Booking Frontend (Iris)
+The first page contains the authentication prompt. (`iris/app/page.tsx`)
+Iris's booking page displays the patient's existing bookings and allows creating a new one through a form with doctor selection and date/time picker. (`iris/app/booking/page.tsx`) (see @booking_1 and @booking_2)
+
+=== Consultation Frontend (Eir)
+There are four pages in this frontend:
+- Firstly, the dashboard shows the authentication prompt and all appointments for the day before and after logging in respectively. (`eir/app/page.tsx`) (see @consultation_1)
+- Secondly, the doctor can begin the consultation. (`eir/app/appointment/[id]/page.tsx`) (see @consultation_2)
+- Thirdly, the generated transcript is shown and ready for review. (`appointment/[id]/transcript/page.tsx`)
+- Lastly, the prescription is up for editing and approval. (`appointment/[id]/note/page.tsx`)
+
+== Inter-Service Implementation
+Each external service is registered in Program.cs as a typed HttpClient (see @Heimdall_DI). Each has an interface (`ILLM`, `IPdf`, etc.) and is implemented in `Infrastructure/`.
+
+== Authentication & Authorization
+Both backends use Auth0 JWT Bearer authentication, configured in Program.cs via AddAuth0ApiAuthentication with domain and audience read from appsettings.json.
+
+Each backend has its own Auth0 tenant and audience — Heimdall expects https://consultation-api and Janus expects https://booking-api.
+
+[Authorize] is applied at the controller class level in both backends, so every endpoint requires a valid token by default.
+
+Both frontends use Auth0 to handle the login flow. It exposes an /api/access-token route that the client calls to retrieve the token, which is then forwarded to Heimdall with each request.
+
+
+
+
+#appendix(
+  <postgres_image>,
+  image("../images/PostgresImage.png"),
+  "PostgreSQL Docker Compose Snippet",
+)
+
+#appendix(
+  <appointment_controller>,
+  image("../images/AppointmentController.png"),
+  "Appointment Controller",
+)
+
+#appendix(
+  <generate_prescription>,
+  image("../images/GeneratePrescription.png"),
+  "Generate Prescription",
+)
+
+#appendix(
+  <booking_1>,
+  image("../images/Booking1.png"),
+  "Iris - Bookings List",
+)
+
+#appendix(
+  <booking_2>,
+  image("../images/Booking2.png"),
+  "Iris - New Booking Form",
+)
+
+#appendix(
+  <consultation_1>,
+  image("../images/Consultation1.png"),
+  "Eir - Dashboard",
+)
+
+#appendix(
+  <consultation_2>,
+  image("../images/Consultation2.png"),
+  "Eir - Consultation Start",
+)
+
+#appendix(
+  <Heimdall_DI>,
+  image("../images/HeimdallDI.png"),
+  "Heimdall Dependency Injection",
+)
+
 = Validation
+== Testing
+
+The project employs a carefully selected technology stack for quality assurance and validation across multiple components.
+
+=== Consultation Backend - ASP.NET
+
+As both backends are built using ASP.NET, we utilized xUnit as the primary testing framework, which is essential for testing asynchronous operations in the backend. Moq provides flexible mocking capabilities, allowing isolation of external dependencies (MongoDB, HTTP services, email services) during testing. This combination enables comprehensive service-level testing without requiring live instances of MongoDB or third-party APIs.
+
+*Consultation Service Tests*
+
+What is tested: 
+- The ability to retrieve consultation data and create new consultations
+- The ability to preserve all relevant metadata when creating a consultation record in MongoDB and assign a unique consultation ID.
+- The ability to retrieve consultation data and map it to the API response format, ensuring data integrity across relational and non-relational storage layers.
+
+*Transcript Service Tests*
+
+What is tested:
+- The ability to upload audio recordings to the speech-to-text service and retrieve accurate transcriptions, ensuring that the transcription process is correctly integrated and functional.
+- Ensuring stored transcriptions are accurately retrieved.
+
+*Summary Service Tests*
+
+What is tested:
+- Mocks the LLM service to verify that the service correctly passes the transcription to the language model.
+- Confirming that the service retrieves the most recent summary version, as multiple versions might exist.
+
+*Prescription Service Tests*
+
+What is tested:
+- Testing if the service correctly orchestrates between the summary and LLM service and if the output is correctly structured and tracked.
+- Ensuring the latest approved prescription is retrieved. 
+
+*Mocking Strategy*
+
+External dependencies are mocked to isolate business logic:
+
+- *ILLM Service*: Mocked to return controlled, realistic outputs such as structured medical recommendations
+- *ISpeechToText Service*: Mocked to simulate transcription without requiring actual audio processing
+- *IPdf and IEmail Services*: Mocked to avoid side effects during testing
+- *MongoDB Collections*: Mocked using Moq to capture inserted documents and verify persistence without requiring a live database
+
+The use of callbacks captures documents during insertion, allowing tests to verify both that data was persisted and that the content is correct.
+
+#footnote[`docs/research/backend.typ`]
+
+=== Booking Backend - ASP.NET
+
+The Booking Backend utilizes the same testing framework as the Consultation Backend: xUnit with Moq. This consistency across backends enables shared testing patterns and allows both services to be validated using identical mocking and isolation strategies.
+
+The testing approach focuses on service-level unit tests that validate the business logic of core operations:
+
+*Appointment Service Tests*
+
+What is tested:
+- The ability to save appointments to the database with all metadata and generate a unique appointment ID.
+- The ability to persist appointment data to the relational database.
+- The automatic handling of email sending, including setting the `EmailSentAt` timestamp when emails are successfully sent to patients.
+- Confirming that the email contains relevant details such as the assigned doctor's name and appointment time.
+- The ability to retrieve all stored appointments and map them correctly to Data Transfer Objects for API responses.
+
+*Availability Service Tests*
+
+What is tested:
+- The ability to retrieve all doctors in the system along with their availability schedules.
+- The correct retrieval of all doctors when multiple doctors are present in the system.
+
+*Mocking Strategy*
+
+External dependencies are mocked to isolate business logic:
+
+- *IEmail Service*: Mocked to simulate email sending without actually dispatching emails, allowing tests to verify the email request content and success/failure handling without external dependencies.
+
+#footnote[`docs/research/backend.typ`]
+
+=== LLM Service - Liquid AI
+
+LLM model selection involved comparative benchmarking using two evaluation approaches. The Summary and Suggestion quality assessment employed ROUGE-1 and BERTScore metrics to measure output accuracy and semantic understanding, while the MedQA benchmark assessed medical knowledge accuracy on a standardized dataset of 50 medical multiple-choice questions. This dual-metric approach ensured the selected model (Liquid AI LFM2) balanced both clinical relevance and real-time performance requirements.
+
+*Testing Strategy*
+ Rather than unit tests, this section uses benchmark metrics to assess output quality and operational performance characteristics. Two models were evaluated: Liquid AI (LFM2 2.6B parameters) and Gemma 4 (4B parameters).
+
+The testing approach focuses on two critical dimensions:
+1. Summary and suggestion quality for clinical accuracy
+2. Medical knowledge assessment against benchmark datasets
+
+*Summary & Suggestion Quality Assessment*
+
+What is tested:
+- The ability to generate accurate clinical summaries from consultation transcripts using ROUGE-1 metric, which measures individual word matches and validates that key clinical terms are preserved.
+- The model's contextual understanding of medical concepts using BERTScore F1 metric, which evaluates semantic similarity and ensures the generated summaries maintain clinical meaning.
+- Latency and token throughput to ensure the model operates efficiently for real-time clinical use, with tests run on transcripts ranging from 1 to 14 minutes.
+
+*Medical Knowledge Assessment (MedQA Benchmark)*
+
+What is tested:
+- The model's ability to correctly answer medical multiple-choice questions from the MedQA benchmark dataset, measuring medical knowledge accuracy.
+- Overall performance on 50 representative questions from the 1000+ question medical knowledge base.
+- Latency and token throughput during medical question answering to assess real-time diagnostic support feasibility.
+
+*Test Coverage and Results*
+
+*Summary Quality Results:*
+Liquid AI demonstrated superior performance for clinical summary generation:
+- ROUGE-1 average: 0.562 vs Gemma 4 at 0.487
+- BERTScore F1 average: 0.385 vs Gemma 4 at 0.341
+- Average latency: 110.40s vs Gemma 4 at 267.85s
+- Throughput: 13.38 tokens/sec vs Gemma 4 at 8.16 tokens/sec
+
+*Medical Knowledge Results:*
+Gemma 4 demonstrated superior accuracy on medical knowledge questions:
+- Accuracy: 74.0% vs Liquid AI at 48.0%
+- However, latency was significantly higher at 80.97s average vs 15.38s for Liquid AI
+
+#footnote[`docs/research/LLM-testing.typ`]
+
+=== Speech-to-text Service - Faster-Whisper
+
+The Speech-to-Text service runs Faster-Whisper, an optimized implementation of OpenAI's Whisper model for speech recognition. Performance validation employs custom benchmark tooling that measures throughput, latency, and failure rates under varying concurrent loads. This benchmarking approach was used to validate that the service meets our requirements, where transcription must complete within acceptable timeframes for doctor-patient consultations.
+
+*Testing Strategy*
+
+The Speech-to-text Service validation employs stress testing and benchmark analysis to evaluate performance and reliability under varying loads.
+
+The testing approach employs four sequential test phases to establish performance characteristics:
+1. Baseline testing at low concurrency to establish normal operation
+2. Ramp stress testing with gradually increasing concurrency
+3. Peak stress testing at maximum expected load
+4. Recovery testing to verify the service restores to baseline performance
+
+*Test Methodology*
+
+What is tested:
+- The service's ability to process audio transcription requests at low concurrency (1-2 concurrent users) to establish baseline throughput and latency metrics.
+- Performance degradation under gradually increasing concurrent load (1-16 concurrent requests) to identify where performance begins to degrade.
+- Behavior under peak stress conditions (20-24 concurrent requests) to assess maximum capacity and failure rates.
+- Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
+
+The tests use the same audio file across all phases, which is a mash-up of audio files from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
+
+*Test Coverage and Results*
+
+*Baseline Performance (Concurrency 1-2):*
+- Concurrency 1: 0.401 requests/sec, 2.49s mean latency, 0% failure rate
+- Concurrency 2: 0.398 requests/sec, 4.94s mean latency, 0% failure rate
+
+*Ramp Stress Results (Concurrency 1-16):*
+- Throughput remained stable at ~0.420 requests/sec across all concurrency levels
+- Mean latency increased proportionally with concurrency:
+  - Concurrency 4: 9.38s latency
+  - Concurrency 8: 18.38s latency
+  - Concurrency 12: 26.93s latency
+  - Concurrency 16: 35.20s latency
+- Zero failures at all concurrency levels
+
+*Peak Stress Results (Concurrency 20-24):*
+- Concurrency 20: 0.420 requests/sec, 43.85s mean latency, 0% failure rate
+- Concurrency 24: 0.420 requests/sec, 51.64s mean latency, 0% failure rate
+
+*Recovery Test (Return to Concurrency 1):*
+- Mean latency: 2.41s (comparable to baseline 2.49s)
+- Throughput: 0.415 requests/sec (baseline was 0.401)
+- Failure rate: 0% (unchanged)
+
+*Performance Analysis*
+
+- *Stable Throughput:*
+ The service maintains approximately 0.42 requests/sec regardless of concurrency level, indicating that request processing is sequential and request queuing rather than parallelization limits throughput.
+- *Linear Latency Scaling:*
+ Mean latency increases linearly with concurrency, which is expected when requests are queued. With stable throughput and proportional latency, the system remains predictable and reliable.
+- *Zero Failure Rate:*
+ No requests failed across any test phase, including peak stress conditions, demonstrating robust error handling and no resource exhaustion at the tested concurrency levels.
+- *Full Recovery:*
+ The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
+
+The service represents a strong baseline suitable for stable, low-concurrency operation typical of a single outpatient department.
+
+#footnote[`docs/research/STT-test.typ`]
+
+== Supporting Technologies
+
+*Auth0 for Authentication*
+
+Authentication is provided by Auth0, a third-party identity platform with medical SSO compliance. This choice eliminates the need for custom authentication testing while ensuring HIPAA and other healthcare standards are met through Auth0's certified compliance.
+
+#footnote[`docs/research/authentication.typ`]
+
+*Mailpit for Email Testing*
+
+Email functionality uses Mailpit for development and testing environments, allowing complete control over email delivery without external dependencies. Mailpit runs locally in Docker, enabling email integration testing without affecting external systems.
+
+#footnote[`docs/research/email.typ`]
+
+*Typst for PDF Generation*
+
+PDF prescriptions are generated using Typst, a markup-based document system that allows data-driven PDF generation. Typst's great customizability and data templating capabilities make it suitable for clinical prescription documents with structured, reusable formatting.
+
+#footnote[`docs/research/pdf.typ`]
+
+*Docker and Docker Compose*
+
+The entire system is containerized and orchestrated using Docker and Docker Compose, enabling consistent testing environments across development, CI/CD, and deployment stages. Each service runs in isolated containers.
+This containerization enables:
+
+- Reproducible testing environments independent of host machine configuration
+- Isolated service testing without cross-contamination between tests
+- Stress testing of individual services (e.g., STT service under load) in controlled conditions
 
 = Conclusion
+== Summary
+This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined by us and the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations, while the system is secure in terms of handling sensitive patient data on the clinic's network.
 
+The system demonstrates the application of the knowledge gained throughout this semester's courses. It demonstrates the design of a component-based system and the use of a self-hosted large language model.
+== Future work
+There are many improvements, which can be implemented in the future to enhance the system. In terms of clinical capability, the LLM could be expanded, so it looks at past patient history to propose contraindications or warn about possible allergy-related side affects. We could also make the AI use reinforcement learning, where the Doctor can rate the AI's responses to fine-tune the local model over time. Furthermore, AI could help out to assist the Doctor not only with making mistakes and prescribing but also in differential diagnosis.
+
+For the front-end part of our project, we did not spend so much time on making it a very accessible platform, as our project is not a Booking platform, it's an AI service. However, we could extend it to add past consultation summaries and prescriptions after the fact, appointment reminders via the email service and a preconsultation form that the patient can fill out with symptoms to feed into the LLM context.
+
+Furthermore, the speech-to-text (STT) component currently used in the system is not suited for horizontal scaling, because it cannot handle more than one audio file at the same time. We need to find a solution that is concurrent, either using a job queue or async transcriptions. This change would allow the parallel processing of the audio recordings making the waiting time less and the user experience smoother.
+
+In conclusion, these improvements would greatly enhance user experience and the variety of features offered by our application and would make it one step closer to a real-world deployment.
+
+// Meeting logs in appendix
 #for i in range(1, 16) {
   appendix(none, align(left, include "../logs/" + str(i) + ".typ"), "Meeting Log " + str(i))
 }
