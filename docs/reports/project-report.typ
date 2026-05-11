@@ -191,48 +191,48 @@ restarted, reducing downtime and improving overall reliability.
 
 
 = Requirements
+
 == Functional Requirements
 
 *MUST have*
-
 - The system shall allow patients to create, view, and cancel bookings.
-- Acceptance criteria:
-  - Creating a booking returns a booking identifier and status.
+  - Acceptance criteria:
+    - Creating a booking returns a booking identifier and status.
 
 - The system shall require authenticated access for patient and doctor workflows.
-- Acceptance criteria:
-  - Protected API endpoints reject unauthenticated requests.
-  - Authenticated users can access only authorized workflow endpoints.
+  - Acceptance criteria:
+    - Protected API endpoints reject unauthenticated requests.
+    - Authenticated users can access only authorized workflow endpoints.
 
 - The system shall allow doctors to start and end consultations linked to valid bookings.
-- Acceptance criteria:
-  - Start creates a consultation record with status InProgress.
-  - End sets consultation status to Completed.
+  - Acceptance criteria:
+    - Start creates a consultation record with status _In Progress_.
+    - End sets consultation status to _Completed_.
 
 - The system shall transcribe consultation audio locally using an open-source model.
-- Acceptance criteria:
-  - Uploaded audio returns transcript text.
-  - No cloud STT endpoint is called during transcription.
+  - Acceptance criteria:
+    - Uploading audio returns transcript text.
+    - No cloud Speech-to-Text service is called during transcription.
 
 - The system shall generate a structured clinical summary and prescription draft using a locally hosted open-source LLM.
-- Acceptance criteria:
-  - Summary generation returns structured summary output.
-  - Prescription draft generation returns structured fields.
+  - Acceptance criteria:
+    - Summary generation returns structured summary output.
+    - Prescription draft generation returns structured fields.
 
 - Doctors shall be able to review, edit, approve, and reject AI-generated summary and prescription outputs.
-- Acceptance criteria:
-  - Edit operations persist updated content.
-  - Approve operation marks status Approved.
-  - Reject operation marks status Rejected.
+  - Acceptance criteria:
+    - Edit operations persist updated content.
+    - Approve operation marks status Approved.
+    - Reject operation marks status Rejected.
 
 - The system shall generate a PDF prescription after doctor approval and send it to the patient via email.
-- Acceptance criteria:
-  - Approval triggers PDF generation.
-  - Approved PDF is attached to outbound email.
-  - Delivery outcome is logged.
+  - Acceptance criteria:
+    - Approval triggers PDF generation.
+    - Approved PDF is attached to outbound email.
+    - Delivery outcome is logged.
 
 - The system shall store structured operational data (users, doctors, patients, bookings) in a relational database.
-- The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
+  - The system shall store transcript and AI-generated consultation artifacts in a non-relational database.
 
 *SHOULD have*
 
@@ -271,8 +271,8 @@ restarted, reducing downtime and improving overall reliability.
 
 *Security*
 - Patient and consultation data in transit shall use encrypted channels in non-development environments.
-- Passwords and secrets shall never be stored in plaintext.
-- Role-based authorization rules shall enforce doctor vs patient access boundaries.
+- Passwords and secrets shall never be stored in plain text.
+- Role-based authorization rules shall enforce doctor and patient access boundaries.
 - Security events (login failure, unauthorized access, approval actions) shall be auditable.
 
 *Reliability / Recoverability*
@@ -288,13 +288,12 @@ restarted, reducing downtime and improving overall reliability.
 
 == System architecture
 
-This semester's project was designed with layered architecture in mind, implementing a component-based system (CBS) design approach focusing on modularity, replaceability and reusability. Components communicate via REST calls, shared databases and services.
+This semester's project was designed with layered architecture in mind, implementing a component-based system (CBS) design approach focusing on modularity, replaceability and reusability. Components communicate via RESTful API calls, shared databases and services.
 
 === Application layer diagram
 
-The original design remained largely unchanged from the initial architecture sketch, consisting of two frontends, two backends and two databases. Direct REST calls were chosen instead of introducing an additional API gateway layer. The diagram illustrates how the components are connected and how they map to the individual layers of the overall architecture.
+The original design remained largely unchanged from the initial architecture sketch, consisting of two frontends, two backends and two databases. Direct REST calls were chosen instead of introducing an additional API gateway layer. @application_layer_diagram illustrates how the components are connected and how they map to the individual layers of the overall architecture.
 
-See @application_layer_diagram.
 #appendix(
   <application_layer_diagram>,
   image(
@@ -305,7 +304,7 @@ See @application_layer_diagram.
 
 === Two monolithic backend approaches
 
-At an early stage, a microservices architecture was evaluated as an alternative to a monolithic approach. Although microservices would align with the component-based design goals, the overall system scope and project size made a monolithic structure a better fit for this implementation. \
+At an early stage, a microservices architecture was evaluated as an alternative to a monolithic approach. Although a microservices architecture would align with the component-based design goals, the overall system scope and project size made a monolithic structure a better fit for this implementation. \
 
 In addition, two separate backends were defined for the two primary use cases. This separation improves reliability, since a failure in one backend does not necessarily affect the availability of the other.
 
@@ -322,48 +321,39 @@ The Component-Based System (CBS), see @component_based_system_diagram, illustrat
 )
 == Tech stack
 
-The choices we made were along the lines of: familiarity with a language, framework or model over technical suitability reduces the learning curve. However, we did research for each layer, and each member evaluated and made a choice based on which technology fits our group and project the best. Faster-Whisper came out as the most reliable in testing, with high transcription accuracy and acceptable speed, when compared to MedASR and NVIDIA Canary Qwen. For documentation, presentation and meeting logs, we used Typst, so it made for the perfect PDF generator. The LLM model was decided on with testing as well; with LFM2 from LiquidAI, it was faster and a better fit overall compared to Qwen3, Phi-3.5 and Medgemma.
+The choices were made with the following in mind: familiarity with a language, framework or model over technical suitability reduces the learning curve. However, we did research for each layer, and each member evaluated and made a choice based on which technology fits our group and project the best. Faster-Whisper came out as the most reliable in testing, with high transcription accuracy and acceptable speed, when compared to MedASR and NVIDIA Canary Qwen. For documentation, presentation and meeting logs, we used Typst, so it made for the perfect PDF generator. The LLM model was selected with testing as well; with LFM2 from LiquidAI, it was faster and a better fit overall compared to Qwen3, Phi-3.5 and Medgemma.
 
-#table(
-  columns: 3,
-  align: left,
-  stroke: 0.5pt,
-  inset: 6pt,
+#figure(
+  table(
+    columns: 3,
+    align: left,
+    stroke: 0.5pt,
+    inset: 6pt,
 
-  [*Layer*], [*Technology*], [*Purpose*],
+    [*Layer*], [*Technology*], [*Purpose*],
 
-  [Frontend], [Next.js / TypeScript], [User/Doctor interface],
-  [Backend], [C\# - ASP.NET], [Orchestration & business logic],
-  [Speech-to-Text], [Faster-Whisper], [Audio transcription],
-  [LLM Runtime], [Ollama + LLM models], [Local AI],
-  [PDF Generator], [Typst], [PDF generation],
-  [Email], [Mailpit], [Email sending],
-  [Data], [PostgreSQL + MongoDB], [Un/structured storage],
-  [Deployment], [Docker Compose], [Containerized services & networking],
+    [Frontend], [Next.js / TypeScript], [User/Doctor interface],
+    [Backend], [C\# - ASP.NET], [Orchestration & business logic],
+    [Speech-to-Text], [Faster-Whisper], [Audio transcription],
+    [LLM Runtime], [Ollama + LLM models], [Local AI],
+    [PDF Generator], [Typst], [PDF generation],
+    [Email], [Mailpit], [Email sending],
+    [Data], [PostgreSQL + MongoDB], [Un/structured storage],
+    [Deployment], [Docker Compose], [Containerized services & networking],
+  ),
+  caption: "Application tech stack"
 )
-
-Application tech stack
 
 == Frontend
 
-The frontend design was based on the user flows; see @activity_booking and @activity_doctor. We decided not to go into detail with the frontend, as the requirements were flexible regarding styling. There are two different frontends with two separate authentications and backends. This was done separation of concerns and independent deployability in mind.
+The frontend design was based on the user flows (see @activity_bookings and @activity_doctor). We decided to keep the frontend very minimal, as the requirements were flexible regarding styling. There are two different frontends with two separate authentications and backends. This was done with separation of concerns and independent deployability in mind.
 
-
-#appendix(
-  <activity_booking>,
-  image(
-    "../images/ActivityBooking.drawio.svg",
-  ),
-  "Activity diagram for booking consultations",
-)
-
-== Backend architecture.
+== Backend architecture
 
 === Booking backend
 
-The booking backend was designed as a small ASP.NET service. The architecture is organised into layers: controllers, services, interfaces for the services and the data layer. The controllers only handle HTTP requests, and the actual business logic is being handled by separate services. This backend only uses the relational database for straightforward relational queries. We landed on this structure because of the abstraction it provides using interfaces and APIs, which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
-
-See the @uml_booking_backend.
+The booking backend was designed as a small ASP.NET service. The architecture is organised into layers: controllers, services, interfaces for the services and the data layer. The controllers only handle HTTP requests, and the actual business logic is being handled by separate services. This backend only uses the relational database for relational queries. We landed on this structure because of the abstraction it provides using interfaces and APIs, which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
+@uml_booking_backend shows the UML diagram for the booking backend.
 
 #appendix(
   <uml_booking_backend>,
@@ -376,8 +366,7 @@ See the @uml_booking_backend.
 
 === Consultation backend
 
-The consultation database, nicknamed Heimdall, generally uses the same principle, going through the whole user flow from starting a consultation, then summarising, and finally outputting a PDF sent by email. It also separates the HTTP calls, business logic and the data layer. However, in contrast to the previously mentioned backend, it uses two databases: a relational one for structured data and a non-relational one for document-style data. The matching of each storage type and also the integrations behind interfaces make this backend easier to extend or replace in the future
-
+The consultation backend generally uses the same principle as booking, going through the whole user flow from starting a consultation, then summarising, and finally outputting a PDF sent via email. It also separates the HTTP calls, business logic and the data layer. However, in contrast to the previously mentioned backend, it uses two databases: a relational one for structured data and a non-relational one for storing documents. The matching of each storage type and also the integrations behind interfaces make this backend easier to extend or replace in the future.
 
 == Database design
 
@@ -389,10 +378,8 @@ The consultation database, nicknamed Heimdall, generally uses the same principle
   "Relational database Entity Relationship Diagram",
 )
 
-As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured data and the non-relational, MongoDB, for the document-style data. We decided to go with this design so that PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
-
-See @relational_database_er.
-
+As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured data and the non-relational, MongoDB, for storing documents. We decided to go with this design, because PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
+@relational_database_er shows our entity relationship diagram.
 
 = Implementation
 
