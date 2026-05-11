@@ -10,20 +10,20 @@ This report documents the work of this semester's project, a privacy-preserving 
 
 The system consists of a web application that lets patients handle appointment booking and allows doctors to control the consultation workflow: audio recording, transcription, AI-generated summary and suggestions, and finally, delivery of the doctor's note via email.
 
-Components are connected through well-defined interfaces, and the locally run AI model guarantees that no patient data ever leaves the clinic's network. The project showcases how a component-based design, a local LLM, and a containerized infrastructure can work together in a privacy-sensitive environment.
+Components are connected through well-defined interfaces, and the locally run AI models guarantee that no patient data ever leaves the clinic's network. The project showcases how a component-based design, a local LLM, and a containerized infrastructure can work together in a privacy-sensitive environment.
 == Motivation
-Outpatient departments spend the majority of their time on administrative work rather than focusing on patient care. Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools all contribute to staff burnout. As a consequence, patients suffer from longer waits and less focused consultations.
+Staff in outpatient departments spend the majority of their time on administrative work rather than focusing on patient care. Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools all contribute to staff burnout. As a consequence, patients suffer from longer waits and less focused consultations.
 
 AI-based tools can be used to ease this workload. However, the solution must not rely on cloud services. Since patient records are sensitive by nature, regulations require that they stay under the control of the facility that holds them.
 
 This project addresses these problems by creating a system that automates the entire clinical workflow from appointment booking to digital prescription while everything is kept local.
 == Objective
-The project's aim is to deliver a working OPD management system that supports patients' and doctors' everyday workflows. The system's design lets patients easily book and manage appointments with the help of a simple interface, as well as providing doctors a way to record consultations, and easily create a prescription with the locally stored data without it ever leaving the clinic's infrastructure.
+The project's aim is to deliver a working OPD management system that supports patients' and doctors' everyday workflows. The system's design lets patients easily book and manage appointments through a simple interface, as well as providing doctors a way to record consultations and easily create prescriptions, ensuring that data never leaves the clinic's infrastructure.
 
 To achieve this, the project provides the following core capabilities:
 
 *Appointment Management:*
-Patients are able to register, log in, search for doctors, and create or cancel bookings.
+Patients are able to register, log in, choose from doctors, and create or cancel bookings.
 
 *Audio Recording and Transcription:*
 Doctors begin and conclude consultations from their portal. The system records the audio and passes it to a local speech-to-text service for transcription.
@@ -31,37 +31,37 @@ Doctors begin and conclude consultations from their portal. The system records t
 *Summary Generation:*
 A locally hosted LLM, served through Ollama, processes the transcript and produces a structured consultation summary. The summary is then manually checked for accuracy before finalization.
 
-*Prescription Review and Delivery*: Upon summary validation, a prescription is generated along with suggestions such as overlooked medications and/or referrals. Doctors can then revise the prescription if needed and finally export it as a PDF and send it to patients via email.
+*Prescription Review and Delivery:* Upon summary validation, a prescription is generated along with suggestions such as overlooked medications or referrals, or both. Doctors can then revise the prescription if needed and finally export it as a PDF and send it to patients via email.
 
 
 
 = Methodology
-Before starting out on our project, we outlined a set of rules and methods which ensured that progression throughout the project will be smooth and continous.
+Before starting out on our project, we outlined a set of rules and methods that ensured that progression throughout the project would be smooth and continuous.
 The methodology and tools used also ensured that every contribution made to the project was peer-reviewed.
 
 == Task tracking
 In order to ensure that none of the tasks get lost, we made every task (programming, diagramming, documenting) an issue on Jira.
 We completed these tasks during one-week-long Sprints, from one Monday to the next.
 Some exceptions were made with the length of the Sprints, for example around the spring break.
-On Mondays, we held meetings, where we both reflected on the Sprint ending that day, and planned the one coming up.
-On Thursdays we also regularly held stand-up meetings, where everyone gave an update on their issue(s).
+On Mondays, we held meetings, where we both reflected on the Sprint ending that day and planned the one coming up.
+On Thursdays, we also held stand-up meetings, where everyone gave an update on their issue(s).
 
-To ensure that tasks were distributed fairly, we assigned tasks not based on their sheer quantity, but based on the tasks' actual difficulty.
-We agreed collectively on an issue's story point value, using Story Point Poker.
+To ensure that tasks were distributed fairly, we assigned tasks not based on their sheer quantity, but on actual difficulty.
+We agreed collectively on an issue's story point value using Story Point Poker.
 
 == Documents and Presentations
 To create our documentation and presentations, we chose #link("https://typst.app/")[Typst].
 As Typst is a text-based document markup language, this allowed us to version control and handle our documents as if they were code.
-We also made templates to create a uniform look for all of our reports and presentations.
+We also created templates to create a uniform look for all of our reports and presentations.
 In order to keep track of our images and diagrams, we also decided to store them in the same repository as our documents and code.
-We also created a meeting log document during each meeting to keep everyone accountable and to allow team members to catch up, in case they were absent.
+We also created a meeting log document during each meeting to keep everyone accountable and to allow team members to catch up in case they were absent.
 
 == Repository
-To make sure code contributions are safe, each issue had its own branch, and pull requests had to be opened.
-Those pull requests had to be reviewed by at least two non-contributing.
-In order to allow for a rigorous and in-depth review of each contributions, we made it a rule that pull requests must be opened by Fridays, which left us the entire weekend for review and refactoring.
-To help the work of the reviewers and to guarantee a smooth workflow, a Pull Request Template has also been made, see @pr-template.
-We merged all pull requests together during our Monday meetings, so we can resolve possible merge conflicts with all contributors input.
+To ensure code contributions are safe, each issue had its own branch, and pull requests had to be opened.
+Those pull requests had to be reviewed by at least two non-contributing members.
+In order to allow for a rigorous and in-depth review of each contribution, we made it a rule that pull requests must be opened by Fridays, which left us the entire weekend for review and refactoring.
+To support reviewers and to guarantee a smooth workflow, a Pull Request Template has also been made, see @pr-template.
+We merged all pull requests together during our Monday meetings, so we can resolve possible merge conflicts with all contributors' input.
 We also created a pipeline that sends a message to our Discord server about a new pull request, and by replying to that message, the PR owner tags the requested reviewers.
 
 #appendix(
@@ -71,7 +71,7 @@ We also created a pipeline that sends a message to our Discord server about a ne
 )
 
 All in all, these methods and rules helped us improve our productivity by a lot, compared to previous semesters.
-It also made the entire process, less of a hassle, and way more enjoyable.
+It also made the entire process less of a hassle, and way more enjoyable.
 Our team completed every task within the deadlines, with time to review and discuss different opinions.
 
 = Problem analysis
@@ -146,6 +146,13 @@ This modular design makes it easy to replace components while preserving privacy
 + The system waits until the user ends the consultation
 + Audio recording is stopped and sent to the speech-to-text component for transcription
 
+#appendix(
+  <activity_doctor>,
+  image(
+    "../images/ActivityDoctor.drawio.svg",
+  ),
+  "Activity Diagram - Doctor",
+)
 
 === Review and send doctor's note to patient
 - *Primary actor:* Doctor
