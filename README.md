@@ -24,9 +24,16 @@ This project is the work of this semester's project, a privacy-preserving OPD (O
 docker-compose up -d
 ```
 
-### OAuth Login (Seeded Doctor Account using Auth0)
+### OAuth Login (Seeded Accounts using Auth0)
 
+#### Doctor
 | Field    | Value                    |
 |----------|--------------------------|
 | Email    | alice.carter@example.com |
 | Password | Acarter123!              |
+
+#### Patient
+| Field    | Value                |
+|----------|----------------------|
+| Email    | john.doe@example.com |
+| Password | Jdoe123!             |

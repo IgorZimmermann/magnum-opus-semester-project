@@ -50,9 +50,12 @@ services:
         condition: service_started
       hermes:
         condition: service_started
+    env_file: .env
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Services__Email__BaseUrl=http://hermes:8025
+      - Auth0__Domain=${AUTH0_DOMAIN}
+      - Auth0__Audience=${BOOKING_AUTH0_AUDIENCE}
 
   odin:
     build:
@@ -144,7 +147,7 @@ services:
     env_file: .env
     environment:
       - APP_BASE_URL=http://localhost:3003
-      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_AUDIENCE=${BOOKING_AUTH0_AUDIENCE}
       - AUTH0_DOMAIN=${AUTH0_DOMAIN}
       - AUTH0_BASE_URL=http://localhost:3003
     depends_on:
