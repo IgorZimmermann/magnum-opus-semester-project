@@ -22,14 +22,17 @@ namespace BookingBackend.Data
 
             // Doctor
             modelBuilder.Entity<Doctor>()
+                .ToTable("doctors")
                 .HasKey(d => d.DocId);
 
             // Patient
             modelBuilder.Entity<Patient>()
+                .ToTable("patients")
                 .HasKey(p => p.PatId);
 
             // WorksOn (composite key)
             modelBuilder.Entity<WorksOn>()
+                .ToTable("workson")
                 .HasKey(w => new { w.DocId, w.DayOfTheWeek });
 
             modelBuilder.Entity<WorksOn>()
@@ -40,6 +43,7 @@ namespace BookingBackend.Data
 
             // Appointment
             modelBuilder.Entity<Appointment>()
+                .ToTable("appointments")
                 .HasKey(a => a.AppointmentId);
 
             modelBuilder.Entity<Appointment>()
@@ -59,9 +63,10 @@ namespace BookingBackend.Data
                 .HasIndex(a => new { a.DocId, a.AppointmentDate, a.AppointmentTime })
                 .IsUnique();
 
-            // Status enum as string
+            // Status enum as string — column is named AppointmentStatus in the shared DB
             modelBuilder.Entity<Appointment>()
                 .Property(a => a.Status)
+                .HasColumnName("AppointmentStatus")
                 .HasConversion<string>();
         }
     }

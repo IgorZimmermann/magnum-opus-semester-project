@@ -17,7 +17,7 @@ import type {
 } from './model'
 import { customFetch } from './customFetch'
 
-const BASE = 'http://localhost:5001'
+const BASE = 'http://localhost:5000'
 
 // ─── Consultation ─────────────────────────────────────────────────────────────
 
