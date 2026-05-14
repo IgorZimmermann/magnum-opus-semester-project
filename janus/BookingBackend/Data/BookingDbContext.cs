@@ -68,6 +68,17 @@ namespace BookingBackend.Data
                 .Property(a => a.Status)
                 .HasColumnName("AppointmentStatus")
                 .HasConversion<string>();
+
+            var docAliceId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            modelBuilder.Entity<WorksOn>().HasData(
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 0, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 1, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 2, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 3, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 4, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 5, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 6, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) }
+            );
         }
     }
 }

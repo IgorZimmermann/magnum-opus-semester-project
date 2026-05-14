@@ -72,12 +72,20 @@ public class AppDbContext : DbContext
                 .HasForeignKey(a => a.PatId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
-        var docAliceId = Guid.Parse("11111111-1111-1111-1111-111111111111");
-        var docBenId   = Guid.Parse("22222222-2222-2222-2222-222222222222");
-        var patJohnId  = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-        var patJaneId  = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
-        var appt1Id    = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc");
-        var appt2Id    = Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddddd");
+        var docAliceId   = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        var docBenId     = Guid.Parse("22222222-2222-2222-2222-222222222222");
+        var patJohnId    = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        var patJaneId    = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
+        var patBobId     = Guid.Parse("33333333-3333-3333-3333-333333333333");
+        var patCarolId   = Guid.Parse("44444444-4444-4444-4444-444444444444");
+        var patDavidId   = Guid.Parse("55555555-5555-5555-5555-555555555555");
+        var patEmilyId   = Guid.Parse("66666666-6666-6666-6666-666666666666");
+        var appt1Id      = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc");
+        var appt2Id      = Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddddd");
+        var appt3Id      = Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee");
+        var appt4Id      = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
+        var appt5Id      = Guid.Parse("aaaaaaaa-1111-1111-1111-111111111111");
+        var appt6Id      = Guid.Parse("bbbbbbbb-1111-1111-1111-111111111111");
 
         modelBuilder.Entity<Doctor>().HasData(
             new Doctor { DocId = docAliceId, Name = "Dr. Alice Carter", Email = "alice.carter@example.com" },
@@ -85,8 +93,12 @@ public class AppDbContext : DbContext
         );
 
         modelBuilder.Entity<Patient>().HasData(
-            new Patient { PatId = patJohnId, Name = "John Doe",  Email = "john.doe@example.com" },
-            new Patient { PatId = patJaneId, Name = "Jane Smith", Email = "jane.smith@example.com" }
+            new Patient { PatId = patJohnId,  Name = "John Doe",       Email = "john.doe@example.com" },
+            new Patient { PatId = patJaneId,  Name = "Jane Smith",     Email = "jane.smith@example.com" },
+            new Patient { PatId = patBobId,   Name = "Bob Johnson",    Email = "bob.johnson@example.com" },
+            new Patient { PatId = patCarolId, Name = "Carol Williams", Email = "carol.williams@example.com" },
+            new Patient { PatId = patDavidId, Name = "David Brown",    Email = "david.brown@example.com" },
+            new Patient { PatId = patEmilyId, Name = "Emily Davis",    Email = "emily.davis@example.com" }
         );
 
         modelBuilder.Entity<Appointment>().HasData(
@@ -112,6 +124,50 @@ public class AppDbContext : DbContext
                 EmailSentAt = new DateTime(2026, 1, 10, 8, 0, 0, DateTimeKind.Utc),
                 CreatedAt = new DateTime(2026, 1, 5, 12, 0, 0, DateTimeKind.Utc),
                 AppointmentStatus = AppointmentStatus.Completed
+            },
+            new Appointment
+            {
+                AppointmentId = appt3Id,
+                DocId = docAliceId,
+                PatId = patBobId,
+                AppointmentDate = new DateOnly(2026, 1, 15),
+                AppointmentTime = new TimeOnly(10, 0),
+                EmailConfirmationSent = false,
+                CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc),
+                AppointmentStatus = AppointmentStatus.Confirmed
+            },
+            new Appointment
+            {
+                AppointmentId = appt4Id,
+                DocId = docAliceId,
+                PatId = patCarolId,
+                AppointmentDate = new DateOnly(2026, 1, 15),
+                AppointmentTime = new TimeOnly(11, 0),
+                EmailConfirmationSent = false,
+                CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc),
+                AppointmentStatus = AppointmentStatus.Confirmed
+            },
+            new Appointment
+            {
+                AppointmentId = appt5Id,
+                DocId = docAliceId,
+                PatId = patDavidId,
+                AppointmentDate = new DateOnly(2026, 1, 15),
+                AppointmentTime = new TimeOnly(13, 0),
+                EmailConfirmationSent = false,
+                CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc),
+                AppointmentStatus = AppointmentStatus.Confirmed
+            },
+            new Appointment
+            {
+                AppointmentId = appt6Id,
+                DocId = docAliceId,
+                PatId = patEmilyId,
+                AppointmentDate = new DateOnly(2026, 1, 15),
+                AppointmentTime = new TimeOnly(14, 0),
+                EmailConfirmationSent = false,
+                CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc),
+                AppointmentStatus = AppointmentStatus.Confirmed
             }
         );
 
