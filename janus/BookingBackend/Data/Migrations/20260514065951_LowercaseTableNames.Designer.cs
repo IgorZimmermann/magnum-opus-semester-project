@@ -3,6 +3,7 @@ using System;
 using BookingBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookingBackend.Data.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    partial class BookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514065951_LowercaseTableNames")]
+    partial class LowercaseTableNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +51,7 @@ namespace BookingBackend.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("AppointmentStatus");
+                        .HasColumnType("text");
 
                     b.HasKey("AppointmentId");
 
@@ -116,57 +118,6 @@ namespace BookingBackend.Data.Migrations
                     b.HasKey("DocId", "DayOfTheWeek");
 
                     b.ToTable("workson", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 0,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 1,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 2,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 3,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 4,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 5,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            DayOfTheWeek = 6,
-                            EndsAt = new TimeOnly(23, 59, 0),
-                            StartsFrom = new TimeOnly(0, 0, 0)
-                        });
                 });
 
             modelBuilder.Entity("BookingBackend.Models.Appointment", b =>
