@@ -5,6 +5,7 @@
   authors: json("../team-members.json"),
 )
 
+
 = Introduction
 This report documents the work of this semester's project, a privacy-preserving OPD (Outpatient Department) management system. The project relies on skills gathered from this semester's subjects to provide a working solution for managing consultations in clinical environments, from booking to AI-assisted prescription.
 
@@ -40,9 +41,10 @@ Before starting out on our project, we outlined a set of rules and methods that 
 The methodology and tools used also ensured that every contribution made to the project was peer-reviewed.
 
 == Task tracking
-In order to ensure that none of the tasks get lost, we made every task (programming, diagramming, documenting) an issue on Jira.
+In order to ensure all of the tasks are accounted for, we made every task (programming, diagramming, documenting) an issue on Jira.
 We completed these tasks during one-week-long Sprints, from one Monday to the next.
 Some exceptions were made with the length of the Sprints, for example around the spring break.
+
 On Mondays, we held meetings, where we both reflected on the Sprint ending that day and planned the one coming up.
 On Thursdays, we also held stand-up meetings, where everyone gave an update on their issue(s).
 
@@ -60,6 +62,7 @@ We also created a meeting log document during each meeting to keep everyone acco
 To ensure code contributions are safe, each issue had its own branch, and pull requests had to be opened.
 Those pull requests had to be reviewed by at least two non-contributing members.
 In order to allow for a rigorous and in-depth review of each contribution, we made it a rule that pull requests must be opened by Fridays, which left us the entire weekend for review and refactoring.
+
 To support reviewers and to guarantee a smooth workflow, a Pull Request Template has also been made, see @pr-template.
 We merged all pull requests together during our Monday meetings, so we can resolve possible merge conflicts with all contributors' input.
 We also created a pipeline that sends a message to our Discord server about a new pull request, and by replying to that message, the PR owner tags the requested reviewers.
@@ -92,7 +95,9 @@ Danish General Practitioners (GPs) have contact with around 49 patients per day 
 
 The aim of this project is to provide a privacy-preserving, locally hosted OPD management system that automates the workflow from consultation to digital prescription, using open-source speech-to-text and large language models, with a "safety net" of suggestive alerts.
 
-Managing such a workflow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. Therefore the technical aim of our project is to tackle this challenge through component-based architecture by implementing multiple independent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation. These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components.
+Managing such workflow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. Therefore the technical aim of our project is to tackle this challenge through component-based architecture by implementing multiple independent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation.
+
+These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components.
 
 The system follows a privacy-first design, as dealing with sensitive health data requires strict precautions. To achieve this, only locally hosted open-source models are used, so that patient data never leaves the hospital's network.
 
@@ -147,20 +152,13 @@ This modular design makes it easy to replace components while preserving privacy
   - The system internally processes the audio and transcribes the consultation
 
 *Flow* _(see @activity_doctor)_
-+ User navigates to the doctor website and logs in
-+ The system displays a dashboard with the day's appointments
++ Doctor navigates to the consultation website and logs in
++ The system displays a dashboard with the day's appointments for the doctor
 + The user selects the appropriate appointment and starts consultation
 + The system begins audio recording
 + The system waits until the user ends the consultation
 + Audio recording is stopped and sent to the speech-to-text component for transcription
-
-#appendix(
-  <activity_doctor>,
-  image(
-    "../images/ActivityDoctor.drawio.svg",
-  ),
-  "Activity Diagram - Doctor",
-)
++ The Doctor validates transcription and can update any mistakes or missing information
 
 === Review and send doctor's note to patient
 - *Primary actor:* Doctor
@@ -170,7 +168,7 @@ This modular design makes it easy to replace components while preserving privacy
 *Flow* _(see @activity_doctor)_
 + The system generates a summary based on the transcription and displays it to the doctor
 + The doctor can either edit or accept the summary
-+ When the summary is accepted, the system generates suggestions and a draft prescription
++ When the summary is accepted, the system generates a draft prescription along with suggestions
 + The doctor reviews, edits and approves the final prescription
 + The system exports the prescription as a PDF and emails it to the patient
 
@@ -319,9 +317,9 @@ The original design remained largely unchanged from the initial architecture ske
 
 === Two monolithic backend approaches
 
-At an early stage, a microservices architecture was evaluated as an alternative to a monolithic approach. Although a microservices architecture would align with the component-based design goals, the overall system scope and project size made a monolithic structure a better fit for this implementation. \
+At an early stage, a microservices architecture was evaluated as an alternative to a monolithic approach. Although a microservices architecture would align with the component-based design goals, the overall system scope and project size made a monolithic structure a better fit for this implementation.
 
-In addition, two separate backends were defined for the two primary use cases. This separation improves reliability, since a failure in one backend does not necessarily affect the availability of the other.
+In addition, two separate backends were defined for the two primary use cases. This separation improves reliability, since a failure in one backend does not necessarily affect the availability of the other. Addtionally by keeping the two system seperate, it allows the booking system independent of any connection to Patient sensitive data and allows the Doctors consultation backend to be hosted locally.
 
 === Component-Based System Diagram
 
@@ -356,7 +354,7 @@ The choices were made with the following in mind: familiarity with a language, f
     [Data], [PostgreSQL + MongoDB], [Un/structured storage],
     [Deployment], [Docker Compose], [Containerized services & networking],
   ),
-  caption: "Application tech stack"
+  caption: "Application tech stack",
 )
 
 == Frontend
@@ -367,7 +365,9 @@ The frontend design was based on the user flows (see @activity_bookings and @act
 
 === Booking backend
 
-The booking backend was designed as a small ASP.NET service. The architecture is organised into layers: controllers, services, interfaces for the services and the data layer. The controllers only handle HTTP requests, and the actual business logic is being handled by separate services. This backend only uses the relational database for relational queries. We landed on this structure because of the abstraction it provides using interfaces and APIs, which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
+The booking backend was designed as a small ASP.NET service. The architecture is organised into layers: controllers, services, interfaces for the services and the data layer. The controllers only handle HTTP requests, and the actual business logic is being handled by separate services.
+
+This backend only uses the relational database for relational queries. We landed on this structure because of the abstraction it provides using interfaces and APIs, which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
 @uml_booking_backend shows the UML diagram for the booking backend.
 
 #appendix(
@@ -393,7 +393,7 @@ The consultation backend generally uses the same principle as booking, going thr
   "Relational database Entity Relationship Diagram",
 )
 
-As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured data and the non-relational, MongoDB, for storing documents. We decided to go with this design, because PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
+As previously mentioned, we have two different kinds of databases. One of them is the relational database, PostgreSQL in our case, for the structured booking data and the non-relational for patient health data, MongoDB, for storing documents. We decided to go with this design, because PostgreSQL can handle transactional records where consistency, relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries, all the while being faster and more flexible than its relational counterpart.
 @relational_database_er shows our entity relationship diagram.
 
 = Implementation
@@ -798,6 +798,6 @@ Furthermore, the speech-to-text (STT) component currently used in the system is 
 In conclusion, these improvements would greatly enhance user experience and the variety of features offered by our application and would make it one step closer to a real-world deployment.
 
 // Meeting logs in appendix
-#for i in range(1, 16) {
+#for i in range(1, 17) {
   appendix(none, align(left, include "../logs/" + str(i) + ".typ"), "Meeting Log " + str(i))
 }

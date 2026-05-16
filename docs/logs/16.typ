@@ -1,7 +1,7 @@
 #import "../templates/meeting-logs.typ": meeting-log
 
 #meeting-log(
-  absentees: ((name: "Örs Tomaj Jeney", method: "")),
+  absentees: ((name: "Örs Tomaj Jeney", method: ""),),
   location: "SDU Alsion - J1.07",
   date: datetime(
     day: 4,
