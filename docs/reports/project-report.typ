@@ -7,22 +7,30 @@
 
 
 = Introduction
-This report documents the work of this semester's project, a privacy-preserving OPD (Outpatient Department) management system. The project relies on skills gathered from this semester's subjects to provide a working solution for managing consultations in clinical environments, from booking to AI-assisted prescription.
+Outpatient departments face an ever increasing load and pressure to maintain high patient volumes while maintaining quality patient care, often relying on outdated systems.
 
-The system consists of a web application that lets patients handle appointment booking and allows doctors to control the consultation workflow: audio recording, transcription, AI-generated summary and suggestions, and finally, delivery of the doctor's note via email.
+This report documents the work of this semester's project, a privacy-preserving OPD (Outpatient Department) management system. The project applies skills gathered from this semester's subjects to provide a working solution for managing consultations in clinical environments, from appointment bookings to AI-assisted prescriptions.
 
-Components are connected through well-defined interfaces, and the locally run AI models guarantee that no patient data ever leaves the clinic's network. The project showcases how a component-based design, a local LLM, and a containerized infrastructure can work together in a privacy-sensitive environment.
+The system consists of a web application that lets patients handle appointments and allows doctors full control over the consultation workflow which can be broken down into the following: audio recording, transcription, AI-generated summary, AI-generated medical suggestions, and finally, delivery of the doctor's note via email to the patient.
+
+This project follows a component-based architecture, where components are connected through well-defined interfaces for an easily maintanable system. Additionally, to ensure better data security and privacy, the AI models are hosted locally to guarantee that no patient data ever leaves the clinic's network.
+
+
 == Motivation
-Staff in outpatient departments spend the majority of their time on administrative work rather than focusing on patient care. Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools all contribute to staff burnout. As a consequence, patients suffer from longer waits and less focused consultations.
 
-AI-based tools can be used to ease this workload. However, the solution must not rely on cloud services. Since patient records are sensitive by nature, regulations require that they stay under the control of the facility that holds them.
+Danish GPs see an average of 49 patients per day, leaving little to no time for patient care by the administrative overhead. Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools, all contributing to staff burnout. As a consequence, patients suffer from longer wait times, shorter consultation time due to lack of time and doctors losing work hours on paperwork.
 
-This project addresses these problems by creating a system that automates the entire clinical workflow from appointment booking to digital prescription while everything is kept local.
+To address these problems, AI-based tools can be used to ease this workload by automating the creation of prescriptions, managing doctor's appointments and providing AI-suggested second opinions. Given the sensitivity of medical records / health data and the strict data protection requirements, all of these tools are locally hosted, ensuring patient data never leaves the clinic's network. This was a priority throughout the design and implementation of this project.
+
+
 == Objective
-The project's aim is to deliver a working OPD management system that supports patients' and doctors' everyday workflows. The system's design lets patients easily book and manage appointments through a simple interface, as well as providing doctors a way to record consultations and easily create prescriptions, ensuring that data never leaves the clinic's infrastructure.
+The project's aim is to deliver a working OPD management system that supports doctors' everyday workflows. The system's design provides doctors with a user-friendly interface to record and manage consultations and easily create prescriptions along with AI suggested medical advice.
+
+
+The booking system serves as a proof of concept to simulate how a full patient-to-doctor workflow would look like in a production like environment. This also provides the system with patient email needed to send the doctors note to complete the full consultation workflow
 
 To achieve this, the project provides the following core capabilities:
-
+// TO DO: Does it cancel bookings?
 *Appointment Management:*
 Patients are able to register, log in, choose from doctors, and create or cancel bookings.
 
@@ -30,9 +38,12 @@ Patients are able to register, log in, choose from doctors, and create or cancel
 Doctors begin and conclude consultations from their portal. The system records the audio and passes it to a local speech-to-text service for transcription.
 
 *Summary Generation:*
-A locally hosted LLM, served through Ollama, processes the transcript and produces a structured consultation summary. The summary is then manually checked for accuracy before finalization.
+A locally hosted LLM, served through Ollama, processes the transcript and produces a structured consultation summary to cut down irrelevant non-medical transcript. The summary is then manually checked by the doctor for accuracy before finalization.
 
-*Prescription Review and Delivery:* Upon summary validation, a prescription is generated along with suggestions such as overlooked medications or referrals, or both. Doctors can then revise the prescription if needed and finally export it as a PDF and send it to patients via email.
+*Prescription Review and Delivery:* Upon summary validation, a prescription is generated along with AI generated suggestions such as overlooked medications or referrals which act as a second opinion. Doctors can then revise the prescription if needed and finally export it as a PDF and send it to patients via email.
+
+
+This report covers the methodology that shaped the structure in the way we work this project, the problem analysis and the requirements to set boundaries and limitations of our objective, followed by a implementation and design of each component to achieve this motivation. Concluding this report with testing and validation used to verify the set limitations and functions.
 
 
 
