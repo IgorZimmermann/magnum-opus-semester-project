@@ -70,6 +70,7 @@ namespace BookingBackend.Data
                 .HasConversion<string>();
 
             var docAliceId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            var docBenId = Guid.Parse("22222222-2222-2222-2222-222222222222");
             modelBuilder.Entity<WorksOn>().HasData(
                 new WorksOn { DocId = docAliceId, DayOfTheWeek = 0, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
                 new WorksOn { DocId = docAliceId, DayOfTheWeek = 1, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
@@ -77,7 +78,13 @@ namespace BookingBackend.Data
                 new WorksOn { DocId = docAliceId, DayOfTheWeek = 3, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
                 new WorksOn { DocId = docAliceId, DayOfTheWeek = 4, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
                 new WorksOn { DocId = docAliceId, DayOfTheWeek = 5, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
-                new WorksOn { DocId = docAliceId, DayOfTheWeek = 6, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) }
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 6, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 1, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 2, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 3, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 4, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 5, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 6, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) }
             );
         }
     }
