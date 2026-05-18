@@ -3,11 +3,14 @@
 import { Button } from '@/components/ui/button'
 import { postApiSummaryGenerateSummary, useGetApiTranscriptGetTranscript } from '@/src/api/heimdell'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 
 export default function Page() {
 	const { id } = useParams<{ id: string }>()
 	const router = useRouter()
 	const consultationId = useSearchParams().get('consultationId') ?? undefined
+
+	const [buttonLoading, setButtonLoading] = useState<boolean>(false)
 
 	const { data, isLoading } = useGetApiTranscriptGetTranscript(
 		{ consultationId },
@@ -28,11 +31,13 @@ export default function Page() {
 					{transcript}
 				</p>
 			)}
-			<Button onClick={async () => {
+			<Button disabled={buttonLoading} onClick={async () => {
+				setButtonLoading(true)
 				// generate summary before navigating
 				if (consultationId) await postApiSummaryGenerateSummary({ consultationId })
+				setButtonLoading(false)
 				router.push(`/appointment/${id}/note?consultationId=${consultationId}`)
-			}}>Analyse</Button>
+			}}>{buttonLoading ? "Analysing..." : "Analyse"}</Button>
 		</div>
 	)
 }
