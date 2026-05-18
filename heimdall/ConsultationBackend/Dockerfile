@@ -17,6 +17,9 @@ RUN dotnet publish "ConsultationBackend.csproj" \
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
+# curl is needed for the docker-compose healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
 # Run as a non-root user
 RUN groupadd --system appgroup && useradd --system --gid appgroup appuser
 USER appuser

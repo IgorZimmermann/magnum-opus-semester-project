@@ -6,26 +6,31 @@ services:
     container_name: consultation_backend
     restart: unless-stopped
     ports:
-        - "5000:8080"
+        - "5001:8080"
     environment:
       - ConnectionStrings__Postgres=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - MongoDbSettings__ConnectionString=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017
+      - MongoDbSettings__DatabaseName=${MONGO_DB}
       - Services__LLM__BaseUrl=http://odin:11434
       - Services__Pdf__BaseUrl=http://saga:3000
       - Services__Email__BaseUrl=http://hermes:8025
       - Services__SpeechToText__BaseUrl=http://echo:3000
     env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     depends_on:
       postgres:
         condition: service_healthy
       mongo:
         condition: service_healthy
       echo:
-        condition: service_healthy
+        condition: service_started
       saga:
         condition: service_healthy
-      odin:
-        condition: service_started
       hermes:
         condition: service_started
 
@@ -43,19 +48,17 @@ services:
       mongo:
         condition: service_healthy
       echo:
-        condition: service_healthy
+        condition: service_started
       saga:
         condition: service_healthy
-      odin:
-        condition: service_started
       hermes:
         condition: service_started
+      heimdall:
+        condition: service_healthy
     env_file: .env
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Services__Email__BaseUrl=http://hermes:8025
-      - Auth0__Domain=${AUTH0_DOMAIN}
-      - Auth0__Audience=${BOOKING_AUTH0_AUDIENCE}
 
   odin:
     build:
@@ -63,6 +66,7 @@ services:
       dockerfile: Dockerfile
     container_name: ollama
     restart: unless-stopped
+    profiles: [llm]
     volumes:
       - ollama_data:/root/.ollama
     ports:
@@ -95,10 +99,10 @@ services:
       - "3000:3000"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 15s
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
 
       
   saga:
@@ -124,16 +128,14 @@ services:
     restart: unless-stopped
     ports:
       - "3002:3000"
-    env_file: .env
+    env_file:
+      - .env
+      - ./eir/.env
     environment:
       - APP_BASE_URL=http://localhost:3002
-      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
-      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
       - AUTH0_BASE_URL=http://localhost:3002
     depends_on:
       heimdall:
-        condition: service_started
-      odin:
         condition: service_started
 
   iris:
@@ -144,16 +146,15 @@ services:
     restart: unless-stopped
     ports:
       - "3003:3000"
-    env_file: .env
+    env_file:
+      - .env
+      - ./iris/.env
     environment:
       - APP_BASE_URL=http://localhost:3003
       - AUTH0_AUDIENCE=${BOOKING_AUTH0_AUDIENCE}
-      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
       - AUTH0_BASE_URL=http://localhost:3003
     depends_on:
       janus:
-        condition: service_started
-      odin:
         condition: service_started
 
   postgres:

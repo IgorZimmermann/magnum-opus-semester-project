@@ -40,20 +40,21 @@ public class PrescriptionService : IPrescriptionService
         var summary = summaryDocs.OrderByDescending(d => d.CreatedAt).First();
 
         var prompt = $$"""
-            You are a medical assistant. Read the consultation summary and output a JSON object.
+            You are a clinical AI assistant. Read the consultation summary and output a JSON object.
 
             STRICT RULES:
             - Output ONLY the JSON object. No other text.
             - Do NOT use markdown, backticks, or code blocks.
             - Do NOT add extra fields or change field names.
             - Every field must be a plain string. No nested objects or arrays.
-            - If the summary does not mention a field, write "not mentioned".
+            - For symptoms, diagnosis, and description: if the summary does not mention the field, write "not mentioned".
+            - For advice_prescription: you MUST always generate a non-empty list — never write "not mentioned".
 
             FIELD DEFINITIONS:
             - "symptoms": comma-separated list of symptoms the patient reported (e.g. "headache, fever, sore throat")
             - "diagnosis": the doctor's diagnosis or most likely condition (e.g. "viral upper respiratory tract infection")
             - "description": one or two sentences describing the clinical case and key findings
-            - "advice_prescription": a combined, comma-separated list of ALL treatment recommendations and prescriptions from every source — include what the doctor prescribed or advised during the consultation AND any additional recommendations or suggestions made by the medical AI assistant; do not omit any recommendation regardless of its source (e.g. "rest for 3 days, paracetamol 500mg every 6 hours as needed, drink plenty of fluids, follow up in 1 week if symptoms persist")
+            - "advice_prescription": a specific, actionable, comma-separated list of treatment recommendations. First extract any prescriptions or advice the doctor explicitly gave in the summary. Then add your own evidence-based clinical recommendations appropriate for the diagnosis and symptoms — include specific medication names with dosages and durations where clinically appropriate. Always produce a complete list even if the summary is brief. (e.g. "Amoxicillin 500mg three times daily for 7 days, rest for 3 days, paracetamol 500mg every 6 hours as needed, increase fluid intake, follow up in 1 week if no improvement")
 
             Consultation Summary:
             {{summary.Output}}
