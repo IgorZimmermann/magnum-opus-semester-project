@@ -18,7 +18,9 @@ This project follows a component-based architecture, where components are connec
 
 == Motivation
 
-Danish GPs see an average of 49 patients per day, leaving little to no time for patient care by the administrative overhead. Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools, all contributing to staff burnout. As a consequence, patients suffer from longer wait times, shorter consultation time due to lack of time and doctors losing work hours on paperwork.
+Danish GPs see an average of 49 patients per day, leaving little to no time for patient care by the administrative overhead. Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools, all contributing to staff burnout. As a consequence, patients suffer from longer wait times, shorter consultation time due to lack of time and doctors losing work hours on paperwork. #footnote[
+  Beskrivelse af almen praksissektoren i Danmark (2016)
+]
 
 To address these problems, AI-based tools can be used to ease this workload by automating the creation of prescriptions, managing doctor's appointments and providing AI-suggested second opinions. Given the sensitivity of medical records / health data and the strict data protection requirements, all of these tools are locally hosted, ensuring patient data never leaves the clinic's network. This was a priority throughout the design and implementation of this project.
 
@@ -49,25 +51,26 @@ This report covers the methodology that shaped the structure in the way we work 
 
 = Methodology
 Before starting out on our project, we outlined a set of rules and methods that ensured that progression throughout the project would be smooth and continuous.
-The methodology and tools used also ensured that every contribution made to the project was peer-reviewed.
+The methodology and tools used ensured that every contribution made to the project was peer-reviewed which added accountability to each task.
 
 == Task tracking
 In order to ensure all of the tasks are accounted for, we made every task (programming, diagramming, documenting) an issue on Jira.
 We completed these tasks during one-week-long Sprints, from one Monday to the next.
 Some exceptions were made with the length of the Sprints, for example around the spring break.
+To see the velocity report chart of this project, see @velocity-report
 
-On Mondays, we held meetings, where we both reflected on the Sprint ending that day and planned the one coming up.
-On Thursdays, we also held stand-up meetings, where everyone gave an update on their issue(s).
+On Mondays, we held meetings, where we reflected on the Sprint ending that day and planned the one coming up by assigning tasks in the backlog.
+On Thursdays, we held stand-up meetings, where everyone gave an update on their issue(s) to track their progress.
 
 To ensure that tasks were distributed fairly, we assigned tasks not based on their sheer quantity, but on actual difficulty.
-We agreed collectively on an issue's story point value using Story Point Poker.
+We agreed collectively on an issue's story point value using Story Point Poker, see example @sprint-4-backlog.
 
 == Documents and Presentations
 To create our documentation and presentations, we chose #link("https://typst.app/")[Typst].
 As Typst is a text-based document markup language, this allowed us to version control and handle our documents as if they were code.
-We also created templates to create a uniform look for all of our reports and presentations.
-In order to keep track of our images and diagrams, we also decided to store them in the same repository as our documents and code.
-We also created a meeting log document during each meeting to keep everyone accountable and to allow team members to catch up in case they were absent.
+We have created templates to create a uniform look for all of our reports and presentations.
+In order to keep track of our images and diagrams, we have also decided to store them in the same repository as our documents and code.
+We have created a meeting log document during each meeting to keep everyone accountable and to allow team members to catch up in case they were absent.
 
 == Repository
 To ensure code contributions are safe, each issue had its own branch, and pull requests had to be opened.
@@ -76,7 +79,7 @@ In order to allow for a rigorous and in-depth review of each contribution, we ma
 
 To support reviewers and to guarantee a smooth workflow, a Pull Request Template has also been made, see @pr-template.
 We merged all pull requests together during our Monday meetings, so we can resolve possible merge conflicts with all contributors' input.
-We also created a pipeline that sends a message to our Discord server about a new pull request, and by replying to that message, the PR owner tags the requested reviewers.
+We have created a pipeline that sends a message to our Discord server about a new pull request, and by replying to that message, the PR owner tags the requested reviewers.
 
 #appendix(
   <pr-template>,
@@ -84,37 +87,58 @@ We also created a pipeline that sends a message to our Discord server about a ne
   "Pull Request Template",
 )
 
-All in all, these methods and rules helped us improve our productivity by a lot, compared to previous semesters.
-It also made the entire process less of a hassle, and way more enjoyable.
-Our team completed every task within the deadlines, with time to review and discuss different opinions.
+#appendix(
+  <velocity-report>,
+  image("../images/VelocityReport.png"),
+  "Velocity report chart - Jira",
+)
+
+#appendix(
+  <sprint-4-backlog>,
+  image("../images/Sprint4BackLock.png"),
+  "Sprint 4 backlog & Story point - Jira",
+)
+
+
+All in all, these methods and rules ensured consistent progress across all sprints and an even distribution of work with no missed deadlines, compared to previous semesters. With constant peer reviewing our codebase remained consistent and maintained quality.
 
 = Problem analysis
 
 == Background and Motivation
 
-Outpatient departments face outdated manual processes that drastically slow down operations and put a burden on both patients and medical staff. Doctors and nurses spend too much time on paper schedules, taking notes during consultations, and using separate systems for writing prescriptions. This causes long wait times, a poor patient experience due to disrupted doctor focus, errors, and burnout from extra administrative work. These issues also create serious privacy risks for patient data, which demand strict precautions and careful handling.
+As mentioned in the introduction outpatient departments face outdated manual processes that drastically slow down operations and put a burden on both patients and medical staff.
+One main cause of this problem is due to legacy IT infrastructure. Hospitals run old and outdated systems that are expensive and risky to replace during their constant operation. Additionally integrating new clinical tools require large amount of resources to transfer data, train staff, and follow data privacy compliances. This makes moving on from legacy systems costly and slow. Moreover, these old legacy systems are a large threat to cyber-attacks yet they contain highly sensitive patient health data.
 
-Our project offers a solution for a clear gap: the need for simple AI tools that run entirely locally using open-source models, keeping all sensitive health information secure within the clinic's network. By automating the full process from patient booking and real-time transcription to AI-generated clinical summaries, "safety-net" suggestions, and instant digital prescriptions, it helps healthcare facilities modernize quickly and affordably. This reduces mistakes, speeds up patient flow, and relieves medical staff of the burden of endless paperwork, allowing them to focus on delivering quality care and improving patient satisfaction.
+On top of that, GPs and physicians report spending between 10 and 20 hours per week on administrative tasks alone. #footnote[Medscape Physician Compensation Report (2018). American Medical Association.]
+This large overhead on top of the stress of patient care causes a large diagnostic errors, with 58% of diagnostic errors occurring during GP consultation. #footnote[Patient Claim Line, Medical Misdiagnosis Statistics (2024). https://www.patientclaimline.com/article/medical-misdiagnosis-statistics/]
+
+Commercial health systems like Epic does exist and is widely used however they are often cloud based. Sending patient data to external servers to process with AI tools creates a large GDPR compliance in risk of data breach. #footnote[GDPR Register, Navigating GDPR in Healthcare. https://gdprregister.eu/gdpr/healthcare-sector-gdpr]
+
+This highlights a need for a solution: a simple AI tools that run entirely locally using open-source models. Keeping all sensitive health information secure within the clinic's network, relieve medical administrative work and modernize facilities quickly and affordably.
 
 == Problem Statement
 
-Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.#footnote[
-  Beskrivelse af almen praksissektoren i Danmark (2016)
-]
+Danish GPs consult with around 49 patients per day on average.
+#footnote[Beskrivelse af almen praksissektoren i Danmark (2016)]
+Operating at this quantity and volume leaves little room for error, yet GPs and physicians report spending between 10 and 20 hours per week on administrative tasks alone.
+#footnote[Medscape Physician Compensation Report (2018). American Medical Association.]
+This administrative overhead impacts doctor to patient care quality, with 58% of diagnostic errors occurring during GP consultations in ODP environments
+#footnote[Patient Claim Line, Medical Misdiagnosis Statistics (2024). https://www.patientclaimline.com/article/medical-misdiagnosis-statistics/]
+and prescription errors ranging from 1% to 11% of all prescriptions written.#footnote[Wikipedia, Medical Error. https://en.wikipedia.org/wiki/Medical_error]
+
+These statistics clearly highlights a problem and a problem to solve. The current situation on administrative workload contributes to mistakes and affect pateint care outcomes on diagnosis and prescribing.
 
 == Aim
 
 The aim of this project is to provide a privacy-preserving, locally hosted OPD management system that automates the workflow from consultation to digital prescription, using open-source speech-to-text and large language models, with a "safety net" of suggestive alerts.
 
-Managing such workflow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. Therefore the technical aim of our project is to tackle this challenge through component-based architecture by implementing multiple independent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation.
+The aim is built on two main technical focus: component-based architecture and privacy first design. Managing such workflow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. At the same time, dealing with health data requires strict precautions, meaning only locally hosted open-source models are used, so that patient data never leaves the hospital's network.
 
-These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components.
-
-The system follows a privacy-first design, as dealing with sensitive health data requires strict precautions. To achieve this, only locally hosted open-source models are used, so that patient data never leaves the hospital's network.
-
-This modular design makes it easy to replace components while preserving privacy and supporting clinical workflow.
+To achieve this, the system is broken down into multiple indepent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation. These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components without affecting the rest of the system.
 
 == Use cases
+
+The following use cases follow the two primary user workflows: Doctor workflow for a consultation broken down into two segments, consultation and then review. Additionally, a booking workflow is included as part of the proof of concept. These following use cases outline the system behaviour and actor interactions.
 
 === Booking process
 - *Primary actor:* Patient
@@ -158,7 +182,7 @@ This modular design makes it easy to replace components while preserving privacy
 - *Secondary actor:* Patient
 - *Preconditions:* An appointment exists in the system and the doctor has valid credentials
 - *Goal*
-  - Doctor and patient discuss the issues
+  - Doctor and patient discuss their medical concerns
   - Doctor identifies symptoms, makes a diagnosis, and if necessary prescribes medicine and refers the patient to another department
   - The system internally processes the audio and transcribes the consultation
 
@@ -187,31 +211,40 @@ This modular design makes it easy to replace components while preserving privacy
 
 === Security
 
-The most significant risk in this project is the mishandling of sensitive patient data.
-To avoid this, the system is split into two separate, locally hosted backends: a
-booking service and a clinical workflow service. By keeping them separate, a request
-to the booking backend only ever touches booking data, ensuring that confidential
-medical information is never exposed through that path.
+TThe most significant risk in this project is the mishandling of sensitive patient data.
+To avoid this, the system is split into two separate locally hosted backends: a
+booking service and a clinical workflow service. By keeping them separate, the
+booking backend has zero access to clinical data, meaning even if the booking
+system is compromised, patient medical records remain unreachable.
+
+As this system handles sensitive EU patient health data data security was a priority throughout
+the design and implementation of this project. To reduce the risk of data breaches, all AI models
+are locally hosted ensuring no patient data is sent to external servers.
+
 
 Structured booking data is stored in a relational database, while sensitive clinical
 data (transcripts, summaries, and prescriptions) is stored in a separate
-non-relational database.
-The locally hosted LLM further reduces the risk of data breaches, as no data is sent
-to external servers. Role-based access control and token-based authentication
-prevent unauthorised access at the backend level.
+non-relational database. Role-based access control and token-based authentication
+prevent unauthorised access at the backend level, with doctors and patients
+having separate authentication tenants and access scopes. Data in transit is
+encrypted in non-development environments to further protect sensitive information.
+
 
 === Componentised Architecture
 
 A tightly coupled system would make individual failures spread across the entire
 application. By breaking the system into loosely coupled components with clearly
 defined interfaces, failures are isolated to the affected component while the rest of
-the system continues to function. This also simplifies debugging and makes
+the system continues to function. For example, if the LLM service goes down,
+only the summary and prescription generation is affected while the rest of the
+system continues to operate. This also simplifies debugging and makes
 individual components independently replaceable without affecting others.
 
 Docker containerisation is used to enforce isolation between services. Each
 component runs in its own container, which also enables independent scaling and
 automatic health checks. Containers that fail to respond can be automatically
-restarted, reducing downtime and improving overall reliability.
+restarted, meaning the system recovers from individual failures without any
+manual intervention, directly addressing the reliability requirements of the system.
 
 
 = Requirements
