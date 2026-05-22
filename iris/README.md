@@ -50,5 +50,5 @@ pnpm dev
 | `AUTH0_CLIENT_ID`     | Auth0 application client ID        | `abc123`                   |
 | `AUTH0_CLIENT_SECRET` | Auth0 application client secret    | `secret`                   |
 | `AUTH0_SECRET`        | Secret used to encrypt session     | `a-long-random-string`     |
-| `AUTH0_AUDIENCE`      | Auth0 API audience url             | `https://consultation-api` |
-| `APP_BASE_URL`        | Base URL of the app                | `http://localhost:3002`    |
+| `AUTH0_AUDIENCE`      | Auth0 API audience url for the booking backend | `https://booking-api` |
+| `APP_BASE_URL`        | Base URL of the app                | `http://localhost:3003`    |

@@ -3,6 +3,7 @@ using System;
 using BookingBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookingBackend.Data.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    partial class BookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514084921_SeedAliceSchedule")]
+    partial class SeedAliceSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,49 +169,6 @@ namespace BookingBackend.Data.Migrations
                             DayOfTheWeek = 6,
                             EndsAt = new TimeOnly(23, 59, 0),
                             StartsFrom = new TimeOnly(0, 0, 0)
-                        },
-                        // Ben: Mon–Sat, 09:00–17:00
-                        new
-                        {
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            DayOfTheWeek = 1,
-                            EndsAt = new TimeOnly(17, 0, 0),
-                            StartsFrom = new TimeOnly(9, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            DayOfTheWeek = 2,
-                            EndsAt = new TimeOnly(17, 0, 0),
-                            StartsFrom = new TimeOnly(9, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            DayOfTheWeek = 3,
-                            EndsAt = new TimeOnly(17, 0, 0),
-                            StartsFrom = new TimeOnly(9, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            DayOfTheWeek = 4,
-                            EndsAt = new TimeOnly(17, 0, 0),
-                            StartsFrom = new TimeOnly(9, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            DayOfTheWeek = 5,
-                            EndsAt = new TimeOnly(17, 0, 0),
-                            StartsFrom = new TimeOnly(9, 0, 0)
-                        },
-                        new
-                        {
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            DayOfTheWeek = 6,
-                            EndsAt = new TimeOnly(17, 0, 0),
-                            StartsFrom = new TimeOnly(9, 0, 0)
                         });
                 });
 

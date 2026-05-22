@@ -6,27 +6,35 @@ This project is the work of this semester's project, a privacy-preserving OPD (O
 
 ## Components
 
-| **Name** | **Function**   |
-| -------- | -------------- |
-| Echo     | Speech-to-text |
-| Heimdall | Consultation Backend  |
-| Hermes   | Email          |
-| Mneme    | Database       |
-| Odin     | LLM            |
-| Saga     | PDF Generation |
-| Janus    | Booking Backend|
-| Eir      | Consultation Frontend |
-| Iris     | Booking Frontend|
+| **Name** | **Function**          | **Port**        |
+| -------- | --------------------- | --------------- |
+| Echo     | Speech-to-text        | 3000            |
+| Heimdall | Consultation Backend  | 5000            |
+| Hermes   | Email (Web UI / SMTP) | 8025 / 1025     |
+| Mneme    | Database (Postgres / Mongo) | 5432 / 27017 |
+| Odin     | LLM                   | 11434           |
+| Saga     | PDF Generation        | 3001            |
+| Janus    | Booking Backend       | 5050            |
+| Eir      | Consultation Frontend | 3002            |
+| Iris     | Booking Frontend      | 3003            |
 
 ## Running with Docker
 
 ```bash
 docker-compose up -d
 ```
+If you are experiencing issues with opening either frontend during testing please open it in incognito or delete the browser data.
 
-### OAuth Login (Seeded Doctor Account using Auth0)
+### OAuth Login (Seeded Accounts using Auth0)
 
+#### Doctor
 | Field    | Value                    |
 |----------|--------------------------|
 | Email    | alice.carter@example.com |
 | Password | Acarter123!              |
+
+#### Patient
+| Field    | Value                |
+|----------|----------------------|
+| Email    | john.doe@example.com |
+| Password | Jdoe123!             |

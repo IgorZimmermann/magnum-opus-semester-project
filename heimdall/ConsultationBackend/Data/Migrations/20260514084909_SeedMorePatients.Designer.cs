@@ -3,6 +3,7 @@ using System;
 using ConsultationBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConsultationBackend.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514084909_SeedMorePatients")]
+    partial class SeedMorePatients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,59 +74,69 @@ namespace ConsultationBackend.Data.Migrations
                         new
                         {
                             AppointmentId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            AppointmentDate = new DateOnly(2026, 6, 10),
+                            AppointmentDate = new DateOnly(2026, 1, 15),
                             AppointmentStatus = "Confirmed",
                             AppointmentTime = new TimeOnly(9, 0, 0),
-                            CreatedAt = new DateTime(2026, 5, 16, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             DocId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            EmailConfirmationSent = true,
-                            EmailSentAt = new DateTime(2026, 5, 16, 8, 0, 0, 0, DateTimeKind.Utc),
+                            EmailConfirmationSent = false,
                             PatId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
                         },
                         new
                         {
+                            AppointmentId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
+                            AppointmentDate = new DateOnly(2026, 1, 16),
+                            AppointmentStatus = "Completed",
+                            AppointmentTime = new TimeOnly(10, 30, 0),
+                            CreatedAt = new DateTime(2026, 1, 5, 12, 0, 0, 0, DateTimeKind.Utc),
+                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            EmailConfirmationSent = true,
+                            EmailSentAt = new DateTime(2026, 1, 10, 8, 0, 0, 0, DateTimeKind.Utc),
+                            PatId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
+                        },
+                        new
+                        {
                             AppointmentId = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
-                            AppointmentDate = new DateOnly(2026, 6, 10),
+                            AppointmentDate = new DateOnly(2026, 1, 15),
                             AppointmentStatus = "Confirmed",
                             AppointmentTime = new TimeOnly(10, 0, 0),
-                            CreatedAt = new DateTime(2026, 5, 16, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             DocId = new Guid("11111111-1111-1111-1111-111111111111"),
                             EmailConfirmationSent = false,
                             PatId = new Guid("33333333-3333-3333-3333-333333333333")
                         },
                         new
                         {
-                            AppointmentId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            AppointmentDate = new DateOnly(2026, 6, 11),
+                            AppointmentId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+                            AppointmentDate = new DateOnly(2026, 1, 15),
                             AppointmentStatus = "Confirmed",
-                            AppointmentTime = new TimeOnly(10, 30, 0),
-                            CreatedAt = new DateTime(2026, 5, 16, 12, 0, 0, 0, DateTimeKind.Utc),
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            EmailConfirmationSent = true,
-                            EmailSentAt = new DateTime(2026, 5, 16, 8, 0, 0, 0, DateTimeKind.Utc),
-                            PatId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
-                        },
-                        new
-                        {
-                            AppointmentId = new Guid("11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            AppointmentDate = new DateOnly(2026, 6, 17),
-                            AppointmentStatus = "Confirmed",
-                            AppointmentTime = new TimeOnly(9, 0, 0),
-                            CreatedAt = new DateTime(2026, 5, 16, 12, 0, 0, 0, DateTimeKind.Utc),
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            EmailConfirmationSent = false,
-                            PatId = new Guid("33333333-3333-3333-3333-333333333333")
-                        },
-                        new
-                        {
-                            AppointmentId = new Guid("22222222-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            AppointmentDate = new DateOnly(2026, 6, 17),
-                            AppointmentStatus = "Confirmed",
-                            AppointmentTime = new TimeOnly(10, 30, 0),
-                            CreatedAt = new DateTime(2026, 5, 16, 12, 0, 0, 0, DateTimeKind.Utc),
-                            DocId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            AppointmentTime = new TimeOnly(11, 0, 0),
+                            CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
                             EmailConfirmationSent = false,
                             PatId = new Guid("44444444-4444-4444-4444-444444444444")
+                        },
+                        new
+                        {
+                            AppointmentId = new Guid("aaaaaaaa-1111-1111-1111-111111111111"),
+                            AppointmentDate = new DateOnly(2026, 1, 15),
+                            AppointmentStatus = "Confirmed",
+                            AppointmentTime = new TimeOnly(13, 0, 0),
+                            CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            EmailConfirmationSent = false,
+                            PatId = new Guid("55555555-5555-5555-5555-555555555555")
+                        },
+                        new
+                        {
+                            AppointmentId = new Guid("bbbbbbbb-1111-1111-1111-111111111111"),
+                            AppointmentDate = new DateOnly(2026, 1, 15),
+                            AppointmentStatus = "Confirmed",
+                            AppointmentTime = new TimeOnly(14, 0, 0),
+                            CreatedAt = new DateTime(2026, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            DocId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            EmailConfirmationSent = false,
+                            PatId = new Guid("66666666-6666-6666-6666-666666666666")
                         });
                 });
 

@@ -22,14 +22,17 @@ namespace BookingBackend.Data
 
             // Doctor
             modelBuilder.Entity<Doctor>()
+                .ToTable("doctors")
                 .HasKey(d => d.DocId);
 
             // Patient
             modelBuilder.Entity<Patient>()
+                .ToTable("patients")
                 .HasKey(p => p.PatId);
 
             // WorksOn (composite key)
             modelBuilder.Entity<WorksOn>()
+                .ToTable("workson")
                 .HasKey(w => new { w.DocId, w.DayOfTheWeek });
 
             modelBuilder.Entity<WorksOn>()
@@ -40,6 +43,7 @@ namespace BookingBackend.Data
 
             // Appointment
             modelBuilder.Entity<Appointment>()
+                .ToTable("appointments")
                 .HasKey(a => a.AppointmentId);
 
             modelBuilder.Entity<Appointment>()
@@ -59,10 +63,29 @@ namespace BookingBackend.Data
                 .HasIndex(a => new { a.DocId, a.AppointmentDate, a.AppointmentTime })
                 .IsUnique();
 
-            // Status enum as string
+            // Status enum as string — column is named AppointmentStatus in the shared DB
             modelBuilder.Entity<Appointment>()
                 .Property(a => a.Status)
+                .HasColumnName("AppointmentStatus")
                 .HasConversion<string>();
+
+            var docAliceId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            var docBenId = Guid.Parse("22222222-2222-2222-2222-222222222222");
+            modelBuilder.Entity<WorksOn>().HasData(
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 0, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 1, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 2, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 3, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 4, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 5, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docAliceId, DayOfTheWeek = 6, StartsFrom = new TimeOnly(0, 0), EndsAt = new TimeOnly(23, 59) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 1, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 2, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 3, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 4, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 5, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) },
+                new WorksOn { DocId = docBenId, DayOfTheWeek = 6, StartsFrom = new TimeOnly(9, 0), EndsAt = new TimeOnly(17, 0) }
+            );
         }
     }
 }

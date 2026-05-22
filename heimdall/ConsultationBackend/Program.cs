@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 var postgresConnectionString = builder.Configuration.GetConnectionString("Postgres");
+builder.Services.AddHealthChecks();
 builder.Services.AddAuth0ApiAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
@@ -116,6 +117,7 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHealthChecks("/health");
 app.MapControllers();
 
 // apply migrations on start up
