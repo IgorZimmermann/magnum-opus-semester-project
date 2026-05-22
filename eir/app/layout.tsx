@@ -5,6 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import { Auth0Provider } from "@auth0/nextjs-auth0";
+import { auth0 } from "@/lib/auth0";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -13,11 +14,12 @@ const fontMono = Geist_Mono({
 	variable: "--font-mono",
 })
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const session = await auth0.getSession()
 	return (
 		<html
 			lang="en"
@@ -25,7 +27,7 @@ export default function RootLayout({
 			className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
 		>
 			<body>
-				<Auth0Provider><Providers><ThemeProvider>{children}</ThemeProvider></Providers></Auth0Provider>
+				<Auth0Provider user={session?.user}><Providers><ThemeProvider>{children}</ThemeProvider></Providers></Auth0Provider>
 			</body>
 		</html>
 	)
