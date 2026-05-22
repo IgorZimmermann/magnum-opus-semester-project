@@ -19,10 +19,13 @@ namespace BookingBackend.Services.Implementations
 
         public async Task<AppointmentDTO> SaveAppointmentAsync(CreateAppointmentDTO dto)
         {
+            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Email == dto.PatId);
+            if (patient == null) throw new Exception($"Patient with email '{dto.PatId}' not found");
+
             var appointment = new Appointment
             {
                 DocId = dto.DocId,
-                PatId = dto.PatId,
+                PatId = patient.PatId,
                 AppointmentDate = dto.AppointmentDate,
                 AppointmentTime = dto.AppointmentTime,
                 Status = AppointmentStatus.Confirmed,
@@ -33,10 +36,9 @@ namespace BookingBackend.Services.Implementations
             await _context.SaveChangesAsync();
 
             // Send confirmation email
-            var patient = await _context.Patients.FindAsync(dto.PatId);
             var doctor = await _context.Doctors.FindAsync(dto.DocId);
 
-            if (patient != null && doctor != null)
+            if (doctor != null)
             {
                 var emailRequest = new EmailGenerateRequest
                 {
@@ -61,6 +63,7 @@ namespace BookingBackend.Services.Implementations
                 AppointmentId = appointment.AppointmentId,
                 DocId = appointment.DocId,
                 PatId = appointment.PatId,
+                PatEmail = patient.Email,
                 AppointmentDate = appointment.AppointmentDate,
                 AppointmentTime = appointment.AppointmentTime,
                 Status = appointment.Status.ToString(),
@@ -76,6 +79,7 @@ namespace BookingBackend.Services.Implementations
                     AppointmentId = a.AppointmentId,
                     DocId = a.DocId,
                     PatId = a.PatId,
+                    PatEmail = a.Patient.Email,
                     AppointmentDate = a.AppointmentDate,
                     AppointmentTime = a.AppointmentTime,
                     Status = a.Status.ToString(),
