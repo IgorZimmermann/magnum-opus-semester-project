@@ -915,7 +915,19 @@ This containerization enables:
 = Conclusion
 
 == Summary
-This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined by us and the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations, while the system is secure in terms of handling sensitive patient data on the clinic's network.
+This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined in collabortaion with the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations by reducing consultation administrative work, while the system is secure in terms of handling sensitive patient data on the clinic's network. Additionally, a proof of concept for the booking system was developed to demonstrated the end to end worfklow from patient booking to consultation, while seperating them.
+
+Reflecting on the project, the following points was a success:
+- CBS design - Independently deployed infrastructure allows for easy testability and modularity during development
+- Methodology - Two meetings a week ensures constant accountability and progress
+- Auth0 Integration - handled both backends cleanly with minimal friction
+- Docker compose - full system consistency, reproducible across all machines
+
+What could be imrpoved:
+- Booking backend - remains as POC, still lacks business logic validation and development
+- Interchangable infrastructure - have options to change multiple infrastructure models and impelemnt differnent infrastructure
+- Mailpit - remains as a development tool, production would require SMTP service
+
 
 The system demonstrates the application of the knowledge gained throughout this semester's courses. It demonstrates the design of a component-based system and the use of a self-hosted large language model.
 
