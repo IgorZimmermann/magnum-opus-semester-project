@@ -13,7 +13,7 @@ This report documents the work of this semester's project, a privacy-preserving 
 
 The system consists of a web application that lets patients handle appointments and allows doctors full control over the consultation workflow which can be broken down into the following: audio recording, transcription, AI-generated summary, AI-generated medical suggestions, and finally, delivery of the doctor's note via email to the patient.
 
-This project follows a component-based architecture, where components are connected through well-defined interfaces for an easily maintanable system. Additionally, to ensure better data security and privacy, the AI models are hosted locally to guarantee that no patient data ever leaves the clinic's network.
+This project follows a component-based architecture, where components are connected through well-defined interfaces for an easily maintainable system. Additionally, to ensure better data security and privacy, the AI models are hosted locally to guarantee that no patient data ever leaves the clinic's network.
 
 
 == Motivation
@@ -95,7 +95,7 @@ We have created a pipeline that sends a message to our Discord server about a ne
 
 #appendix(
   <sprint-4-backlog>,
-  image("../images/Sprint4BackLock.png"),
+  image("../images/Sprint4Backlog.png"),
   "Sprint 4 backlog & Story point - Jira",
 )
 
@@ -126,7 +126,7 @@ This administrative overhead impacts doctor to patient care quality, with 58% of
 #footnote[Patient Claim Line, Medical Misdiagnosis Statistics (2024). https://www.patientclaimline.com/article/medical-misdiagnosis-statistics/]
 and prescription errors ranging from 1% to 11% of all prescriptions written.#footnote[Wikipedia, Medical Error. https://en.wikipedia.org/wiki/Medical_error]
 
-These statistics clearly highlights a problem and a problem to solve. The current situation on administrative workload contributes to mistakes and affect pateint care outcomes on diagnosis and prescribing.
+These statistics clearly highlights a problem and a problem to solve. The current situation on administrative workload contributes to mistakes and affect patient care outcomes on diagnosis and prescribing.
 
 == Aim
 
@@ -134,7 +134,7 @@ The aim of this project is to provide a privacy-preserving, locally hosted OPD m
 
 The aim is built on two main technical focus: component-based architecture and privacy first design. Managing such workflow in a single, tightly coupled system would make it difficult to maintain, extend and replace individual parts. At the same time, dealing with health data requires strict precautions, meaning only locally hosted open-source models are used, so that patient data never leaves the hospital's network.
 
-To achieve this, the system is broken down into multiple indepent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation. These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components without affecting the rest of the system.
+To achieve this, the system is broken down into multiple independent services: appointment management, transcription, clinical summarisation, medical suggestions, and prescription generation. These services are isolated, each with its own runtime environment and well-defined interfaces that connect them and enable easy replacement and seamless upgrades of individual components without affecting the rest of the system.
 
 == Use cases
 
@@ -211,7 +211,7 @@ The following use cases follow the two primary user workflows: Doctor workflow f
 
 === Security
 
-TThe most significant risk in this project is the mishandling of sensitive patient data.
+The most significant risk in this project is the mishandling of sensitive patient data.
 To avoid this, the system is split into two separate locally hosted backends: a
 booking service and a clinical workflow service. By keeping them separate, the
 booking backend has zero access to clinical data, meaning even if the booking
@@ -343,7 +343,7 @@ manual intervention, directly addressing the reliability requirements of the sys
 
 == System architecture
 
-This semester's project was designed component-based system (CBS) design approach focusing on modularity and reusability, communicated through well-defined interfaces via RESTful API. Where components are independently deployed, enabling fault isolation and easy replaceability.
+This semester's project was designed with a component-based system (CBS) design approach focusing on modularity and reusability, communicating through well-defined interfaces via RESTful APIs, where components are independently deployed, enabling fault isolation and easy replaceability.
 
 A layered architecture enforces vertical separation of concerns across frontend, backend, databases.
 
@@ -354,10 +354,10 @@ as illustrated in @application_layer_diagram.
 
 Two front-ends exists - one for the consultation workflow and one as a proof-of-concept for the booking system.
 Each frontend communicates only through with its corresponding backend via RESTful API calls.
-An API gateway was not implemented as it was an unecessary overhead which the backend acted as.
+An API gateway was not implemented as it was an unnecessary overhead which the backend acted as.
 
 The backend act as a orchestrator, handling business logic and using the developed independent infrastructure to off load tasks such as PDF generation and prompting
-LLM. Additionally, two seperate database exists for relational booking data and a non-relational for patient health data.
+LLM. Additionally, two separate database exists for relational booking data and a non-relational for patient health data.
 
 #appendix(
   <application_layer_diagram>,
@@ -375,7 +375,7 @@ the overall system scope and operational complexity made a monolithic structure 
 
 In addition, two separate backends were defined for the two primary use cases - main consultation backend and a proof-of-concept booking backend.
 This separation improves reliability, since a failure in one backend does not affect the availability of the other.
-Addtionally by keeping the two system seperate, it allows the booking system independent and isolated
+Additionally by keeping the two system separate, it allows the booking system independent and isolated
 of any connection to patient sensitive data and allows the doctors consultation backend to be hosted locally.
 
 === Component-Based System Diagram
@@ -385,7 +385,7 @@ illustrates how the system is structured into modular components with explicit p
 
 The two backends act as the central orchestrators:
 - Booking Service: exposes IAuthentication, IBooking and IAvailability interfaces depending on IRelationalDb and IEmailService
-- Consultation Service: expoeses ITranscription, ISummaryEditor and ISendPrescription among others mentioned previously, depenending on all infrastructure
+- Consultation Service: exposes ITranscription, ISummaryEditor and ISendPrescription among others mentioned previously, depending on all infrastructure
 
 Using a component-based design, with dependencies only on the interfaces allows for interchangable services without modifying the consuming component.
 
@@ -409,7 +409,7 @@ For documentation, presentation and meeting logs, we used Typst, so it made for 
 The LLM model was selected with testing as well; with LFM2 from LiquidAI,
 it was faster and a better fit overall compared to Qwen3, Phi-3.5 and Medgemma.
 
-The evaluation of the different technologies selected for the project will be covered in detial in the validation chapter of the report.
+The evaluation of the different technologies selected for the project will be covered in detail in the validation chapter of the report.
 
 
 #figure(
@@ -606,7 +606,7 @@ The consultation backend has four controllers:
 -- `POST /api/consultation/StartConsultation` creates a consultation record in MongoDB tied to an existing appointment.
 
 - TranscriptController -
--- `POST /api/transcript/GenerateTranscript` accepts the audio file, forwards it to Echo and stores the result in `raw_transcipts`.
+-- `POST /api/transcript/GenerateTranscript` accepts the audio file, forwards it to Echo and stores the result in `raw_transcripts`.
 
 - SummaryController -
 -- `POST /api/summary/GenerateSummary` sends the transcript to Odin and stores the output in `summaries`.
@@ -636,7 +636,7 @@ There are four pages in this frontend:
 Each external service is registered in Program.cs as a typed HttpClient (see @Heimdall_DI).
 
 Each service has a defined interface (`ILLM`, `IPdf`, `ISpeechToText`, `IEmail`) implemented
-in the `Infrastructure/` layer in the consultaion backend. This acts as an abstraction for a translation
+in the `Infrastructure/` layer in the consultation backend. This acts as an abstraction for a translation
 layer between the business logic and the external service APIs.
 
 == Authentication & Authorization
@@ -915,7 +915,7 @@ This containerization enables:
 = Conclusion
 
 == Summary
-This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined in collabortaion with the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations by reducing consultation administrative work, while the system is secure in terms of handling sensitive patient data on the clinic's network. Additionally, a proof of concept for the booking system was developed to demonstrated the end to end worfklow from patient booking to consultation, while seperating them.
+This semester's project successfully delivered a privacy-preserving OPD (Outpatient Department) management system that meets the main objectives that were defined in collaboration with the case owners at the beginning of the semester. Our solution enables doctors to reduce mistakes made during consultations by reducing consultation administrative work, while the system is secure in terms of handling sensitive patient data on the clinic's network. Additionally, a proof of concept for the booking system was developed to demonstrated the end to end workflow from patient booking to consultation, while separating them.
 
 Reflecting on the project, the following points was a success:
 - CBS design - Independently deployed infrastructure allows for easy testability and modularity during development
@@ -923,9 +923,9 @@ Reflecting on the project, the following points was a success:
 - Auth0 Integration - handled both backends cleanly with minimal friction
 - Docker compose - full system consistency, reproducible across all machines
 
-What could be imrpoved:
+What could be improved:
 - Booking backend - remains as POC, still lacks business logic validation and development
-- Interchangable infrastructure - have options to change multiple infrastructure models and impelemnt differnent infrastructure
+- Interchangeable infrastructure - have options to change multiple infrastructure models and implement different infrastructure
 - Mailpit - remains as a development tool, production would require SMTP service
 
 
