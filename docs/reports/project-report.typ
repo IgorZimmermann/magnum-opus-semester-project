@@ -5,6 +5,17 @@
   authors: json("../team-members.json"),
 )
 
+= Abstract
+This report addresses the administrative burden faced by outpatient departments, where Danish GPs consult an average of 49 patients per day while spending 10-20 hours per week on administrative tasks. To tackle this, a privacy-preserving outpatient department management system was developed, keeping all sensitive patient data within the clinic's network. The motivation is to modernize clinical workflows using open-source AI tools, improve consultation quality through AI-assisted second opinions, and apply the combined knowledge from this semester's courses.
+
+The objectives were to deliver a working consultation management system that automates the workflow from audio recording to prescription delivery, while providing doctors with AI-generated summaries and medical suggestions and allowing patients to manage their bookings.
+
+In a task-driven development environment, the system was developed as two separate web applications backed by locally hosted speech recognition and language models for transcription and document generation, with secure authentication and a consistent deployment environment across all services.
+
+The finished system covers the full consultation workflow, with separate access for doctors and patients, AI-generated summaries and prescriptions that doctors can review and adjust, and automatic prescription delivery to patients by email.
+
+By the end of the semester, a working and secure outpatient consultation system had been built, putting into practice a service-based architecture alongside locally hosted AI. The system can be extended further, for example by incorporating patient history into AI suggestions, processing multiple audio recordings simultaneously, or expanding the AI's role in supporting diagnosis.
+
 
 = Introduction
 This report documents the work of this semester's project, a privacy-preserving OPD (Outpatient Department) management system. The project relies on skills gathered from this semester's subjects to provide a working solution for managing consultations in clinical environments, from booking to AI-assisted prescription.
