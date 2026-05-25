@@ -504,10 +504,26 @@ This is another layer of abstraction in our application, making service/componen
 
 As previously mentioned, we have two different kinds of databases.
 One of them is the relational database, PostgreSQL in our case,
-for the structured booking data and the non-relational for patient health data, MongoDB, for storing documents.
+for the structured booking data. The second one is a non-relational MongoD, for patient health data as documents.
+
 We decided to go with this design, because PostgreSQL can handle transactional records where consistency,
 relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries,
-all the while being faster and more flexible than its relational counterpart.
+all the while being faster for document-oriented queries and more flexible than its relational counterpart.
+
+During the desing phase the most important aspect for the databases were ACID properties, speed and ease-of-use with the built-in object-relational mapping.
+
+=== Relational database
+The relational model is designed to reflect the booking workflow:
+- `doctors` and `patients` are the core tables, they are also connected with the Auth0 component
+- `appointments` handle the metadata such as time, status and date. It's also a junction point for both `doctors` and `patients` modelling a many-to-many relationship.
+- `works_on` was designed as an extension to the booking. It would only start working after deployment, as it is time consuming to mock and test during development.
+
+=== Non-relational database
+
+MongoDB stores the documents that we create via the AI. These are large and semi-structured allowing us to keep AI outputs from the relational database, while still being easy to query them by appointment ids. The collactions are `consultations`, `raw_transcripts`, `summaries`, and `doctor_notes`. These are responsible for transcripts, summaries and the generated doctor's note.
+
+For data persistence, Docker mounts volumes, so data is saved even after a restart. This allows us to look back at past records and possibly fine-tune the agents prompt to match our standards.
+
 @relational_database_er shows our entity relationship diagram.
 
 #appendix(
