@@ -18,6 +18,7 @@ namespace BookingBackend.Controllers
         }
 
         [HttpGet("doctors")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<DoctorAvailability>>> GetDoctorsAvailability()
         {
             var availability = await _availability.GetAllDoctorsAvailabilityAsync();

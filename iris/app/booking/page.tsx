@@ -14,7 +14,7 @@ import { ChevronDownIcon } from "lucide-react"
 import * as React from "react"
 import { useState } from "react"
 
-type Booking = { appointmentId?: string, docId?: string, appointmentDate?: string, appointmentTime?: string, status?: string | null }
+type Booking = { appointmentId?: string, docId?: string, patId?: string, patEmail?: string, appointmentDate?: string, appointmentTime?: string, status?: string | null }
 type Doctor = { docId?: string, name?: string | null }
 
 export default function Page() {
@@ -42,12 +42,12 @@ export default function Page() {
 	})
 
 	const doctors = ((doctorsData as any)?.data as Doctor[]) ?? []
-	const appointments = ((appointmentsData as any)?.data as Booking[]) ?? []
+	const appointments = (((appointmentsData as any)?.data as Booking[]) ?? []).filter((a) => a.patEmail === user?.email)
 
 	function handleMakeBooking() {
 		if (!selectedDoctorId || !date) return
 		createAppointment({
-			data: {docId: selectedDoctorId, patId: user?.sub ?? "", appointmentDate: format(date, "yyyy-MM-dd"), appointmentTime: `${time}:00`}
+			data: {docId: selectedDoctorId, patId: user?.email ?? "", appointmentDate: format(date, "yyyy-MM-dd"), appointmentTime: `${time}:00`}
 		})
 	}
 

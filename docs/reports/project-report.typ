@@ -886,9 +886,46 @@ The tests use the same audio file across all phases. The file is a mash-up of au
 - *Full Recovery:*
   The recovery test shows the service returns to baseline performance, indicating no permanent degradation or resource leaks from sustained stress testing.
 
+#footnote[`docs/research/STT-test.typ`]
 The service represents a strong baseline suitable for stable, low-concurrency operation typical of a single outpatient department.
 
-#footnote[`docs/research/STT-test.typ`]
+
+=== Manual Testing
+
+
+#figure(
+  table(
+    columns: (auto, 1.2fr, 2fr, 1.6fr, auto),
+    align: horizon,
+
+    [*Test Case ID*], [*Test Scenario*], [*Test Steps*], [*Actual Result*], [*Status*],
+
+    [TC-001],
+    [Login via Iris/Eir],
+    [1. Navigate to the Iris/Eir login page. \ 2. Enter valid patient credentials. \ 3. Submit the login form.],
+    [User is authenticated and redirected to the booking/consultation dashboard],
+    [Pass],
+
+    [TC-002],
+    [Start a consultation],
+    [1. Log in as a doctor. \ 2. Select relevant appointment. \ 3. Press start consultation. \ 4. Talk with patient. \ 5. Edit summary.],
+    [The full doctor's note is generated with symptoms, diagnosis, description and advice or prescription and is stored in the non-relational database.],
+    [Pass],
+
+    [TC-003],
+    [Book an appointment],
+    [1. Log in as a patient. \ 2. Select a doctor and an available time slot. \ 3. Confirm the booking.],
+    [Booking is created, appears on the dashboard and is visible in the doctor's consultation view.],
+    [Pass],
+
+    [TC-004],
+    [Register with Iris/Eir],
+    [1. Press sign up. \ 2. Enter email and password. \ 3. Send the form. \ 4. Log in.],
+    [User is created in the local relational database and the Auth0 database.],
+    [Pass],
+  ),
+  caption: "Manual test cases",
+)
 
 == Supporting Technologies
 
