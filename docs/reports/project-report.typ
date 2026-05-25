@@ -438,16 +438,25 @@ The evaluation of the different technologies selected for the project will be co
 // TODO
 // lack of content and this section reads very weak and here are things we should cover:
 // - why we chose the tech stack over other things
-// - auth flow for front end, talk about tokens, sessions, how auth0 integrate with this
-// - we have two front ends, lets explain what each one does and for what. why did we seperate it?
-// - reference the backend, how do we communicate them, we just mentioned the IBookingApi in the CBSE section, how does it tie with the frontend
-// - REMEMBER: BOOKING IS POC!
+// - auth flow for front end, talk about tokens, sessions, how auth0 integrate with this - i don't think it's relevant for frontend
+// - we have two front ends, lets explain what each one does and for what. why did we seperate it? - DONE
+// - reference the backend, how do we communicate them, we just mentioned the IBookingApi in the CBSE section, how does it tie with the frontend - DONE
+// - REMEMBER: BOOKING IS POC! - DONE
 // - REMEMBER: you have to justify your choices in a report, analyse and explain your choices, it needs WHY
 
-The frontend design was based on the user flows (see @activity_bookings and @activity_doctor).
-We decided to keep the frontend very minimal, as the requirements were flexible regarding styling.
-There are two different frontends with two separate authentications and backends.
-This was done with separation of concerns and independent deployability in mind.
+So that the users have something to interact with we created frontend applications,
+that translate the user's clicks to API calls and present the responses from those requests.
+We built two frontends for our project, one for doctors, and one for the patients.
+Both frontends implement their respective user flows (see @activity_bookings for the patient flow,
+and @activity_doctor for the doctor flow).
+
+We built to standalone frontends, instead of one with role-based authorization, is that in the real-world
+the doctor's frontend would be deployed only locally, within the network of the medical institution,
+while patients' frontend would be accessible from everywhere in the world.
+Both backends expose OpenAPI specifications, which made generating type-safe API clients for the frontends a single command.
+
+It's also important to mention, that the frontend for patients is only a proof-of-concept.
+It was only made, so that we can present the entire usage workflow, all the way from start to finish.
 
 == Backend architecture
 
