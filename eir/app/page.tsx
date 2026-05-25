@@ -22,7 +22,7 @@ export default function Page() {
 	if (!user) return (
 		<div className="w-dvw h-dvh flex flex-col items-center justify-center gap-5">
 			<p>Welcome Doctor! Please authenticate!</p>
-			<Link href="/auth/login"><Button>Authenticate</Button></Link>
+			<a href="/auth/login"><Button>Authenticate</Button></a>
 		</div>
 	)
 

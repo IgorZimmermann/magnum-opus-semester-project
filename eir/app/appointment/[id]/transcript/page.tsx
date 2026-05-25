@@ -26,10 +26,8 @@ export default function Page() {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				// contentEditable lets the doctor fix transcription errors 
-				<p contentEditable suppressContentEditableWarning className="m-0 text-wrap max-w-[40dvw] box-border outline-none">
-					{transcript}
-				</p>
+				// lets the doctor fix transcription errors 
+					<textarea className="w-[40dvw] bg-transparent border-none outline-none resize-none text-sm" defaultValue={transcript} />
 			)}
 			<Button disabled={buttonLoading} onClick={async () => {
 				setButtonLoading(true)

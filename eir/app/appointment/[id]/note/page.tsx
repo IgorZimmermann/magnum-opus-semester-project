@@ -28,6 +28,7 @@ export default function Page() {
 	const [summaryEdit, setSummaryEdit] = useState<string | null>(null)
 	const [prescription, setPrescription] = useState<Prescription>({ symptoms: '', diagnosis: '', description: '', advicePrescription: '' })
 	const [isLoading, setIsLoading] = useState(false)
+	const [prescriptionError, setPrescriptionError] = useState<string | null>(null)
 	const { data: summaryData, isLoading: summaryLoading } = useGetApiSummaryGetSummary(
 		{ consultationId },
 		{ query: { enabled: !!consultationId } },
@@ -43,8 +44,12 @@ export default function Page() {
 			await putApiSummaryEditSumamry({ output: summaryText, type: 'summary', status: 'approved' }, { consultationId })
 			const result = await postApiPrescriptionGeneratePrescription({ consultationId })
 			const note = (result as { data?: { note?: Prescription } })?.data?.note
-			if (note) setPrescription(note)
-			setPhase('prescription')
+			if (note) {
+				setPrescription(note)
+				setPhase('prescription')
+			} else {
+				setPrescriptionError('Failed to generate prescription. Please try again.')
+			}
 		} finally {
 			setIsLoading(false)
 		}
@@ -76,6 +81,7 @@ export default function Page() {
 							<textarea className="w-full min-h-[200px] bg-transparent border-none outline-none resize-none text-sm" value={summaryText} onChange={e => setSummaryEdit(e.target.value)} />
 						</CardContent>
 					</Card>
+					{prescriptionError && <p className="text-red-500 text-sm">{prescriptionError}</p>}
 					<Button onClick={generatePrescription} disabled={isLoading}>{isLoading ? 'Generating...' : 'Generate Prescription'}</Button>
 				</>
 			) : (
@@ -85,7 +91,7 @@ export default function Page() {
 							<Card key={key} className="w-[40dvw]">
 								<CardHeader><CardTitle>{label}</CardTitle></CardHeader>
 								<CardContent>
-									<p className="text-wrap outline-none" contentEditable suppressContentEditableWarning onBlur={e => setPrescription(prev => ({ ...prev, [key]: e.currentTarget.textContent ?? '' }))}>{prescription[key]}</p>
+									<textarea className="w-full bg-transparent border-none outline-none resize-none text-sm" value={prescription[key]} onChange={e => setPrescription(prev => ({ ...prev, [key]: e.target.value }))} />
 								</CardContent>
 							</Card>
 						))}
