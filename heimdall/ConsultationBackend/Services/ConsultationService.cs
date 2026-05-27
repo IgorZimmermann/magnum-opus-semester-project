@@ -83,6 +83,18 @@ public class ConsultationService : IConsultationService
         };
     }
 
+    public void CompleteConsultation(Guid consultationId)
+    {
+        var filter = Builders<ConsultationDocument>.Filter.Eq(c => c.ConsultationId, consultationId);
+        var doc = _mongo.Consultations.Find(filter).FirstOrDefault() ?? throw new KeyNotFoundException("Consultation not found");
+
+        var appointment = _context.Appointments.FirstOrDefault(a => a.AppointmentId == doc.AppointmentId)
+            ?? throw new KeyNotFoundException("Appointment not found");
+
+        _context.Appointments.Remove(appointment);
+        _context.SaveChanges();
+    }
+
     // Accepts doctor email
     // Returns doctor appointment, max 10
     // it returns a list of AppointmentSummaryResponse DTO

@@ -31,6 +31,14 @@ export const postApiConsultationStartConsultation = (body: BookingRequest, optio
         body: JSON.stringify(body),
     })
 
+export const deleteApiConsultationCompleteConsultation = (consultationId: string, options?: RequestInit) => {
+    const qs = new URLSearchParams({ consultationId }).toString()
+    return customFetch<any>(`${BASE}/api/Consultation/CompleteConsultation?${qs}`, {
+        ...options,
+        method: 'DELETE',
+    })
+}
+
 export const getApiConsultationGetDoctorAppointments = (
     params?: GetApiConsultationGetDoctorAppointmentsParams,
     options?: RequestInit,
