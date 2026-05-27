@@ -450,7 +450,7 @@ We built two frontends for our project, one for doctors, and one for the patient
 Both frontends implement their respective user flows (see @activity_bookings for the patient flow,
 and @activity_doctor for the doctor flow).
 
-We built to standalone frontends, instead of one with role-based authorization, is that in the real-world
+We built two standalone frontends, instead of one with role-based authorization, is that in the real-world
 the doctor's frontend would be deployed only locally, within the network of the medical institution,
 while patients' frontend would be accessible from everywhere in the world.
 Both backends expose OpenAPI specifications, which made generating type-safe API clients for the frontends a single command.
