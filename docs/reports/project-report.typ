@@ -435,41 +435,20 @@ The evaluation of the different technologies selected for the project will be co
 
 == Frontend
 
-// TODO
-// lack of content and this section reads very weak and here are things we should cover:
-// - why we chose the tech stack over other things
-// - auth flow for front end, talk about tokens, sessions, how auth0 integrate with this - i don't think it's relevant for frontend
-// - we have two front ends, lets explain what each one does and for what. why did we seperate it? - DONE
-// - reference the backend, how do we communicate them, we just mentioned the IBookingApi in the CBSE section, how does it tie with the frontend - DONE
-// - REMEMBER: BOOKING IS POC! - DONE
-// - REMEMBER: you have to justify your choices in a report, analyse and explain your choices, it needs WHY
-
-So that the users have something to interact with we created frontend applications,
+So the user's do not have to manage API requests manually, we designed frontend applications,
 that translate the user's clicks to API calls and present the responses from those requests.
-We built two frontends for our project, one for doctors, and one for the patients.
-Both frontends implement their respective user flows (see @activity_bookings for the patient flow,
+We designed two frontends for our project, one for doctors, and one for the patients.
+Both frontends were designed based on their respective user flows (see @activity_bookings for the patient flow,
 and @activity_doctor for the doctor flow).
 
-We built two standalone frontends, instead of one with role-based authorization, is that in the real-world
+We designed two standalone frontends, instead of one with role-based authorization, because in the real-world
 the doctor's frontend would be deployed only locally, within the network of the medical institution,
 while patients' frontend would be accessible from everywhere in the world.
-Both backends expose OpenAPI specifications, which made generating type-safe API clients for the frontends a single command.
 
 It's also important to mention, that the frontend for patients is only a proof-of-concept.
-It was only made, so that we can present the entire usage workflow, all the way from start to finish.
+It was only designed, so that we can present the entire usage workflow, all the way from start to finish.
 
 == Backend architecture
-
-// TODO
-// same as frontend, lacks contnet and analysys and justification for choices made, we should cover things such as:
-// . what controllers exists: explain the seperation of domains that we have consultation, prescription, summary, transcript, why
-// - tie it to the corresponding infrastructure, why we have the business logic there
-// - middleware, same as frontend, how does Auth0 integrate into the backend, JWT tokens, sessions, hwo they are protected
-// - end points, make a table talk about it
-// - justification for the chosen tech stack over others
-// - MENTION: booking backend is a poc and its made to just complete workflow, what is and what isnt implemented.
-// - Other things such as DTO, error handling,
-
 
 === Booking backend
 
@@ -503,13 +482,6 @@ This backend was also engineered with a translation layer between the backend lo
 This is another layer of abstraction in our application, making service/component changes even easier.
 
 == Database design
-
-// TODO
-// This reads as a caption for the diagram but lacks the actual DESIGN CHOICES and justification
-// Talk about cardinatlity - one to many for WorksOn, Appointments - many to many. Say one doctor can have many appointment, one patient can have many, like data management class
-// Why do we have the workson table, whats the justification
-// MONGO - What does it store??
-// persistent volumes, what are the docker volumes we have
 
 As previously mentioned, we have two different kinds of databases.
 One of them is the relational database, PostgreSQL in our case,
