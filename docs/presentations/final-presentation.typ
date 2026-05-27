@@ -13,7 +13,7 @@
 
     *10–20 hours per week* lost to admin tasks alone \
     Staff burnout, longer wait times, shorter consultations \
-    Commercial alternatives are cloud-based
+    Most of the commercial alternatives require cloud infrastructure
     #v(1em)
 
     #text(size: 13pt, style: "italic")[
@@ -24,7 +24,7 @@
 
 #slide(title: "Problem statement")[
   #align(center + horizon)[
-    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referral.
+    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referrals.
 
     #text(size: 10pt)[Source: Beskrivelse af almen praksissektoren i Danmark (2016)]
   ]
@@ -32,7 +32,7 @@
 //https://www.ism.dk/Media/D/4/03-Beskrivelse-af-almen-praksis.pdf page 15
 #slide(title: "Project's goal")[
   #align(center + horizon)[
-    The goal of this year's semester project is to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
+    Our semester's project's is to build a software solution to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
   ]
 ]
 
@@ -44,7 +44,7 @@
 ]
 
 #slide(title: "What The System Does")[
-  *Consultation Worfklow:*
+  *Consultation worfklow:*
   - Record consultations via the doctor portal
   - Automatic speech-to-text transcription (Faster-Whisper)
   - AI-generated consultation summary (local LLM via Ollama)
@@ -52,7 +52,7 @@
   - Review, edit, and approve the final prescription
   - Export prescription as PDF and send directly to patient by email \
 
-  *PoC - Booking Worfklow*:
+  *PoC - Booking worfklow*:
   - Book new appointments with doctors
   - Manage current booked appointments
 
@@ -150,7 +150,7 @@
   ]
 ]
 
-#slide(title: "What Could Be Better")[
+#slide(title: "Current constraints")[
   - Booking backend remains a PoC — lacks full business logic
   - Mailpit is dev-only — production needs a real SMTP service
   - STT cannot handle concurrent audio files — no horizontal scaling yet
@@ -164,7 +164,7 @@
   - Appointment reminders + past consultation history in patient portal
 ]
 
-#slide(title: "Wrapping Up")[
+#slide(title: "Conclusion")[
   - Full end-to-end OPD system — from booking to prescription delivery
   - Privacy-preserving by design — no patient data leaves the clinic
   - Component-based architecture proven in practice — modular, testable, replaceable
