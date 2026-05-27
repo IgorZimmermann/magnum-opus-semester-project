@@ -13,5 +13,9 @@ export const customFetch = async <T>(url: string, options: RequestInit): Promise
     const contentType = response.headers.get('content-type')
     const data = contentType?.includes('application/json') ? await response.json() : null
 
+    if (!response.ok) {
+        throw new Error(`Request failed: ${response.status} ${response.statusText}`)
+    }
+
     return { data, status: response.status, headers: response.headers } as T
 }

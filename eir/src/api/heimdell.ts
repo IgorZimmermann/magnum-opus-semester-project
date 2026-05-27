@@ -8,6 +8,8 @@ import type {
     PostApiSummaryGenerateSummaryParams,
     PostApiTranscriptGenerateTranscriptBody,
     PostApiTranscriptGenerateTranscriptParams,
+    TranscriptEditRequest,
+    PutApiTranscriptEditTranscriptParams,
     SummaryEditRequest,
     PutApiSummaryEditSumamryParams,
     PostApiPrescriptionGeneratePrescriptionParams,
@@ -121,6 +123,20 @@ export const useGetApiSummaryGetSummary = (
         queryFn: ({ signal }) => getApiSummaryGetSummary(params, { signal }),
         ...options?.query,
     })
+
+export const putApiTranscriptEditTranscript = (
+    body: TranscriptEditRequest,
+    params?: PutApiTranscriptEditTranscriptParams,
+    options?: RequestInit,
+) => {
+    const qs = new URLSearchParams(params as any).toString()
+    return customFetch<any>(`${BASE}/api/Transcript/EditTranscript${qs ? `?${qs}` : ''}`, {
+        ...options,
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...options?.headers },
+        body: JSON.stringify(body),
+    })
+}
 
 // NOTE: route has a typo in the backend — it is literally "EditSumamry"
 export const putApiSummaryEditSumamry = (

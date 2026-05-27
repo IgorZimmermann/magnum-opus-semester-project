@@ -1,5 +1,6 @@
 using ConsultationBackend.Interfaces.Services;
 using ConsultationBackend.Data;
+using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Infrastructure;
 using ConsultationBackend.Models.NonRelational;
 using MongoDB.Driver;
@@ -80,6 +81,17 @@ public class TranscriptService : ITranscriptService
         var doc = _mongo.RawTranscripts.Find(filter).FirstOrDefault() ?? throw new KeyNotFoundException("Consultation not found");
 
         return doc;
+    }
 
+    public RawTranscriptDocument EditTranscript(Guid consultationId, TranscriptEditRequest request)
+    {
+        var filter = Builders<RawTranscriptDocument>.Filter.Eq(c => c.AppointmentId, consultationId);
+        var doc = _mongo.RawTranscripts.Find(filter).FirstOrDefault() ?? throw new KeyNotFoundException("Consultation not found");
+
+        var update = Builders<RawTranscriptDocument>.Update.Set(c => c.Transcription, request.Transcription);
+        _mongo.RawTranscripts.UpdateOne(filter, update);
+
+        doc.Transcription = request.Transcription;
+        return doc;
     }
 }

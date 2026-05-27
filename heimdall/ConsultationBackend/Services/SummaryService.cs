@@ -102,22 +102,18 @@ public class SummaryService : ISummaryService
 
         if (request.Output is null) throw new NoNullAllowedException("Output must not be null");
 
-        // creates a new document of the summary
-        // with the added difference of the "approved" status
-        var updatedSummary = new SummaryDocument
-        {
-            DoctorId = oldSummary.DoctorId,
-            DoctorName = oldSummary.DoctorName,
-            PatientId = oldSummary.PatientId,
-            PatientName = oldSummary.PatientName,
-            Output = request.Output,
-            Type = "summary",
-            Status = "approved",
-        };
+        var update = Builders<SummaryDocument>.Update
+            .Set(c => c.Output, request.Output)
+            .Set(c => c.Status, "approved");
+
+        _mongo.Summaries.UpdateOne(filter, update);
+
+        oldSummary.Output = request.Output;
+        oldSummary.Status = "approved";
 
         Console.WriteLine($"Editing Summary for {consultationId}");
-        
-        return updatedSummary;
+
+        return oldSummary;
     }
 
 }
