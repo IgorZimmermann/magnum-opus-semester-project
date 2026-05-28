@@ -760,6 +760,26 @@ The Booking Backend utilizes the same testing framework as the Consultation Back
 
 The testing approach focuses on service-level unit tests that validate the business logic of core operations:
 
+=== Test Coverage and Results for Backends
+
+Code coverage was measured for both backend services using `Coverlet` and `ReportGenerator`, following the .NET testing coverage guidelines. 
+
+The overall line coverage for the Consultation Backend was 19.1% and for the Booking Backend it was 9.8%. These figures are deceiving and low due to the infrastructure of both backends. There are many services used, such as Speech-to-Text or Email, that depend on external services and are not suitable for unit testing. Migrations and auto-generated code also significantly contribute to the uncovered line count.
+
+When looking at core logic, we get a much more representative result. In the Consultation Backend the service layer achieves between 48.6% and 73.3%, with the data models reaching 81.8% to 100% (see @consultation_test_coverage). In the Booking Backend, the appointment and availability services both achieve 100% (see @booking_test_coverage).
+
+#appendix(
+  <consultation_test_coverage>,
+  image("../images/ConsultationTestCoverage.png"),
+  "Consulation Test Coverage",
+)
+
+#appendix(
+  <booking_test_coverage>,
+  image("../images/BookingTestCoverage.png"),
+  "Booking Test Coverage",
+)
+
 *Appointment Service Tests*
 
 What is tested:
@@ -808,8 +828,6 @@ What is tested:
 - Overall performance on 50 representative questions from the 1000+ question medical knowledge base.
 - Latency and token throughput during medical question answering to assess real-time diagnostic support feasibility.
 
-*Test Coverage and Results*
-
 *Summary Quality Results:*
 Liquid AI demonstrated superior performance for clinical summary generation:
 - ROUGE-1 average: 0.562 vs Gemma 4 at 0.487
@@ -847,8 +865,6 @@ What is tested:
 - Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
 
 The tests use the same audio file across all phases. The file is a mash-up of audio clips from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
-
-*Test Coverage and Results*
 
 *Baseline Performance (Concurrency 1-2):*
 - Concurrency 1: 0.401 requests/sec, 2.49s mean latency, 0% failure rate
