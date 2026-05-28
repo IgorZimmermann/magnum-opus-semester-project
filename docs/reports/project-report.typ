@@ -781,11 +781,23 @@ The testing approach focuses on service-level unit tests that validate the busin
 
 === Test Coverage and Results for Backends
 
-Code coverage was measured for both backend services using `Coverlet` and `ReportGenerator`, following .NET testing coverage guidelines. 
+Code coverage was measured for both backend services using `Coverlet` and `ReportGenerator`, following the .NET testing coverage guidelines. 
 
 The overall line coverage for the Consultation Backend was 19.1% and for the Booking Backend it was 9.8%. These figures are deceiving and low due to the infrastructure of both backends. There are many services used, such as Speech-to-Text or Email, that depend on external services and are not suitable for unit testing. Migrations and auto-generated code also significantly contribute to the uncovered line count.
 
-When looking at core logic, we get a much more representative result. In the Consultation Backend the service layer achieves between 48.6% and 73.3%, with the data models reaching 81.8% to 100%. In the Booking Backend, the appointment and availability services both achieve 100%.
+When looking at core logic, we get a much more representative result. In the Consultation Backend the service layer achieves between 48.6% and 73.3%, with the data models reaching 81.8% to 100% (see @consultation_test_coverage). In the Booking Backend, the appointment and availability services both achieve 100% (see @booking_test_coverage).
+
+#appendix(
+  <consultation_test_coverage>,
+  image("../images/ConsultationTestCoverage.png"),
+  "Consulation Test Coverage",
+)
+
+#appendix(
+  <booking_test_coverage>,
+  image("../images/BookingTestCoverage.png"),
+  "Booking Test Coverage",
+)
 
 *Appointment Service Tests*
 
