@@ -100,32 +100,25 @@ public class ConsultationService : IConsultationService
     // it returns a list of AppointmentSummaryResponse DTO
     public List<AppointmentSummaryResponse> GetDoctorAppointments(string email)
     {
-        try
-        {
-            var doctor = _context.Doctors.FirstOrDefault(d => d.Email == email)
-                         ?? throw new KeyNotFoundException("Doctor not found");
+        var doctor = _context.Doctors.FirstOrDefault(d => d.Email == email)
+                     ?? throw new KeyNotFoundException("Doctor not found");
 
-            return _context.Appointments
-                .Include(a => a.Patient)
-                .Where(a => a.DocId == doctor.DocId)
-                .OrderBy(a => a.AppointmentDate)
-                .ThenBy(a => a.AppointmentTime)
-                .Take(10)
-                .Select(a => new AppointmentSummaryResponse
-                {
-                    AppointmentId = a.AppointmentId,
-                    PatientName = a.Patient!.Name,
-                    PatientEmail = a.Patient!.Email,
-                    AppointmentDate = a.AppointmentDate,
-                    AppointmentTime = a.AppointmentTime,
-                    AppointmentStatus = a.AppointmentStatus.ToString()
-                })
-                .ToList();
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException($"Failed to retrieve appointments for doctor {email}", ex);
-        }
+        return _context.Appointments
+            .Include(a => a.Patient)
+            .Where(a => a.DocId == doctor.DocId)
+            .OrderBy(a => a.AppointmentDate)
+            .ThenBy(a => a.AppointmentTime)
+            .Take(10)
+            .Select(a => new AppointmentSummaryResponse
+            {
+                AppointmentId = a.AppointmentId,
+                PatientName = a.Patient!.Name,
+                PatientEmail = a.Patient!.Email,
+                AppointmentDate = a.AppointmentDate,
+                AppointmentTime = a.AppointmentTime,
+                AppointmentStatus = a.AppointmentStatus.ToString()
+            })
+            .ToList();
     }
 
 }
