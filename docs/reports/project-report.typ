@@ -43,9 +43,8 @@ The project's aim is to deliver a working OPD management system that supports do
 The booking system serves as a proof of concept to simulate how a full patient-to-doctor workflow would look like in a production like environment. This also provides the system with patient email needed to send the doctors note to complete the full consultation workflow
 
 To achieve this, the project provides the following core capabilities:
-// TO DO: Does it cancel bookings?
 *Appointment Management:*
-Patients are able to register, log in, choose from doctors, and create or cancel bookings.
+Patients are able to register, log in, choose from doctors, and create bookings.
 
 *Audio Recording and Transcription:*
 Doctors begin and conclude consultations from their portal. The system records the audio and passes it to a local speech-to-text service for transcription.
@@ -161,7 +160,7 @@ The following use cases follow the two primary user workflows: Doctor workflow f
 + The user selects a preferred doctor
 + The system displays available time slots
 + The user books an available appointment
-+ The user is redirected to a dashboard where they can view or cancel their bookings
++ The user is redirected to a dashboard where they can view their bookings
 + The system sends a confirmation email
 
 #appendix(
@@ -263,7 +262,7 @@ manual intervention, directly addressing the reliability requirements of the sys
 == Functional Requirements
 
 *MUST have*
-- The system shall allow patients to create, view, and cancel bookings.
+- The system shall allow patients to create and view bookings.
   - Acceptance criteria:
     - Creating a booking returns a booking identifier and status.
 
@@ -592,7 +591,7 @@ Afterwards, the data is passed against the note template and a PDF file is creat
 When Heimdall calls the service, the file gets attached to the email sent via Hermes.
 
 === Email Service (Hermes)
-Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations and cancellations. It uses the `axllent/mailpit` Docker image.
+Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations. It uses the `axllent/mailpit` Docker image.
 `POST /api/v1/send` requests a PDF from the Typst service, then sends it to Hermes as an SMTP message with the PDF attached.
 
 
@@ -921,7 +920,9 @@ The service represents a strong baseline suitable for stable, low-concurrency op
 
     [TC-002],
     [Start a consultation],
-    [1. Log in as a doctor. \ 2. Select relevant appointment. \ 3. Press start consultation. \ 4. Talk with patient. \ 5. Edit summary.],
+    [
+      1. Log in as a doctor. \ 2. Select relevant appointment. \ 3. Press start consultation. \ 4. Talk with patient. \ 5. Edit summary.
+    ],
     [The full doctor's note is generated with symptoms, diagnosis, description and advice or prescription and is stored in the non-relational database.],
     [Pass],
 
