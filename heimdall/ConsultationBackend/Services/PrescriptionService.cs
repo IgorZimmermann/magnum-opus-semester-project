@@ -131,31 +131,35 @@ public class PrescriptionService : IPrescriptionService
         return docs.OrderByDescending(d => d.CreatedAt).First();
     }
 
-    public DoctorNoteDocument EditPrescription (Guid consultaionId, PrescriptionEditRequest request)
+    public DoctorNoteDocument EditPrescription(Guid consultaionId, PrescriptionEditRequest request)
     {
-        var filter = Builders<DoctorNoteDocument>.Filter.Eq(c => c.AppointmentId, consultaionId);
-        var oldNote = _mongo.DoctorNotes.Find(filter).First();
+        var appointmentFilter = Builders<DoctorNoteDocument>.Filter.Eq(c => c.AppointmentId, consultaionId);
+        var note = _mongo.DoctorNotes.Find(appointmentFilter).ToList()
+            .OrderByDescending(d => d.CreatedAt).FirstOrDefault()
+            ?? throw new KeyNotFoundException("Prescription not found");
 
         if (request.AdvicePrescription is null) throw new NoNullAllowedException("Advice prescription must not be null");
         if (request.Diagnosis is null) throw new NoNullAllowedException("Diagnosis must not be null");
         if (request.Symptoms is null) throw new NoNullAllowedException("Symptom must not be null");
         if (request.Description is null) throw new NoNullAllowedException("Description must not be null");
 
-        var updatedPrescription = new DoctorNoteDocument
-        {
-            AppointmentId = oldNote.AppointmentId,
-            DoctorId = oldNote.DoctorId,
-            DoctorName = oldNote.DoctorName,
-            PatientId = oldNote.PatientId,
-            PatientName = oldNote.PatientName,
-            Symptoms = request.Symptoms,
-            Diagnosis = request.Diagnosis,
-            Description = request.Description,
-            AdvicePrescription = request.AdvicePrescription,
-            Status = "approved"
-        };
+        var update = Builders<DoctorNoteDocument>.Update
+            .Set(d => d.Symptoms, request.Symptoms)
+            .Set(d => d.Diagnosis, request.Diagnosis)
+            .Set(d => d.Description, request.Description)
+            .Set(d => d.AdvicePrescription, request.AdvicePrescription)
+            .Set(d => d.Status, "approved");
 
-        return updatedPrescription;
+        var idFilter = Builders<DoctorNoteDocument>.Filter.Eq(d => d.Id, note.Id);
+        _mongo.DoctorNotes.UpdateOne(idFilter, update);
+
+        note.Symptoms = request.Symptoms;
+        note.Diagnosis = request.Diagnosis;
+        note.Description = request.Description;
+        note.AdvicePrescription = request.AdvicePrescription;
+        note.Status = "approved";
+
+        return note;
     }
 
     public async Task ApprovePrescription(Guid consultationId)
@@ -213,7 +217,8 @@ public class PrescriptionService : IPrescriptionService
         }
 
         var update = Builders<DoctorNoteDocument>.Update.Set(d => d.Status, "approved");
-        _mongo.DoctorNotes.UpdateOne(noteFilter, update);
+        var idFilter = Builders<DoctorNoteDocument>.Filter.Eq(d => d.Id, note.Id);
+        _mongo.DoctorNotes.UpdateOne(idFilter, update);
 
         Console.WriteLine($"Prescription approved and emailed to {consultation.PatientEmail} for {consultationId}");
     }
