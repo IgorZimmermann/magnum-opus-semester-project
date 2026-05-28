@@ -52,7 +52,7 @@ export default function Page() {
 	function handleMakeBooking() {
 		if (!selectedDoctorId || !date) return
 		createAppointment({
-			data: {docId: selectedDoctorId, patId: user?.email ?? "", appointmentDate: format(date, "yyyy-MM-dd"), appointmentTime: `${time}:00`}
+			data: {docId: selectedDoctorId, patId: user?.email ?? "", patientName: user?.name ?? user?.email ?? "", appointmentDate: format(date, "yyyy-MM-dd"), appointmentTime: `${time}:00`}
 		})
 	}
 

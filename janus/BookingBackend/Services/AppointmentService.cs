@@ -22,7 +22,7 @@ namespace BookingBackend.Services.Implementations
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Email == dto.PatId);
             if (patient == null)
             {
-                patient = new Patient { PatId = Guid.NewGuid(), Email = dto.PatId, Name = dto.PatId };
+                patient = new Patient { PatId = Guid.NewGuid(), Email = dto.PatId, Name = dto.PatientName };
                 _context.Patients.Add(patient);
                 await _context.SaveChangesAsync();
             }
