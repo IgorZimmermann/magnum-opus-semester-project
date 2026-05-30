@@ -475,7 +475,7 @@ The booking backend (Janus) exists primarily to complete the end-to-end patient 
 === Controller separation.
 The consultation backend (Heimdall) is divided into four controllers, each responsible for exactly one stage of the clinical workflow. This maps directly onto the use cases defined in the analysis phase:
 
-- *ConsultationController:* Manages consultation record creation and retrieval. This is the entry point for tieing an appointment to an active consultation.
+- *ConsultationController:* Manages consultation record creation and retrieval. This is the entry point for tying an appointment to an active consultation.
 - *TranscriptController:* Accepts audio upload, delegates transcription to Echo, and stores the result.
 - *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval. 
 - *PrescriptionController:* LLM draft generation, doctor review and editing, approval, PDF export via Saga, and email delivery via Hermes.
