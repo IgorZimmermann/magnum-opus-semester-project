@@ -470,7 +470,7 @@ C\# was chosen for its strong static typing, which makes complex domain models e
 ASP.NET Core ships with a built-in dependency injection container, a structured middleware pipeline, and a Auth0 library, covering all core infrastructure needs without additional packages. Python's typical advantage in ML-adjacent work does not apply here, since the LLM services are isolated behind HTTP APIs that the backend simply calls.
 
 === Booking backend as proof of concept.
-The booking backend (Janus) exists primarily to complete the end-to-end patient workflow and to give the consultation backend the patient email address needed to deliver the doctor's note. Core booking and availability functionality is implemented. Certain business logic are intentionally out of scope as the focus of this project is the consultation workflow. The UML diagram in @uml_booking_backend illustrates the booking backend's layer structure.
+The booking backend (Janus) exists primarily to complete the end-to-end patient workflow and to give the consultation backend the patient email address needed to deliver the doctor's note. Core booking and availability functionality is implemented. Certain business logic is intentionally out of scope as the focus of this project is the consultation workflow. The UML diagram in @uml_booking_backend illustrates the booking backend's layer structure.
 
 === Controller separation.
 The consultation backend (Heimdall) is divided into four controllers, each responsible for exactly one stage of the clinical workflow. This maps directly onto the use cases defined in the analysis phase:
