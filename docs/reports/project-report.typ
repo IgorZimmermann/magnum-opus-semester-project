@@ -43,9 +43,8 @@ The project's aim is to deliver a working OPD management system that supports do
 The booking system serves as a proof of concept to simulate how a full patient-to-doctor workflow would look like in a production like environment. This also provides the system with patient email needed to send the doctors note to complete the full consultation workflow
 
 To achieve this, the project provides the following core capabilities:
-// TO DO: Does it cancel bookings?
 *Appointment Management:*
-Patients are able to register, log in, choose from doctors, and create or cancel bookings.
+Patients are able to register, log in, choose from doctors, and create bookings.
 
 *Audio Recording and Transcription:*
 Doctors begin and conclude consultations from their portal. The system records the audio and passes it to a local speech-to-text service for transcription.
@@ -161,7 +160,7 @@ The following use cases follow the two primary user workflows: Doctor workflow f
 + The user selects a preferred doctor
 + The system displays available time slots
 + The user books an available appointment
-+ The user is redirected to a dashboard where they can view or cancel their bookings
++ The user is redirected to a dashboard where they can view their bookings
 + The system sends a confirmation email
 
 #appendix(
@@ -263,7 +262,7 @@ manual intervention, directly addressing the reliability requirements of the sys
 == Functional Requirements
 
 *MUST have*
-- The system shall allow patients to create, view, and cancel bookings.
+- The system shall allow patients to create and view bookings.
   - Acceptance criteria:
     - Creating a booking returns a booking identifier and status.
 
@@ -446,32 +445,20 @@ The evaluation of the different technologies selected for the project will be co
 
 == Frontend
 
-// TODO
-// lack of content and this section reads very weak and here are things we should cover:
-// - why we chose the tech stack over other things
-// - auth flow for front end, talk about tokens, sessions, how auth0 integrate with this
-// - we have two front ends, lets explain what each one does and for what. why did we seperate it?
-// - reference the backend, how do we communicate them, we just mentioned the IBookingApi in the CBSE section, how does it tie with the frontend
-// - REMEMBER: BOOKING IS POC!
-// - REMEMBER: you have to justify your choices in a report, analyse and explain your choices, it needs WHY
+So the user's do not have to manage API requests manually, we designed frontend applications,
+that translate the user's clicks to API calls and present the responses from those requests.
+We designed two frontends for our project, one for doctors, and one for the patients.
+Both frontends were designed based on their respective user flows (see @activity_bookings for the patient flow,
+and @activity_doctor for the doctor flow).
 
-The frontend design was based on the user flows (see @activity_bookings and @activity_doctor).
-We decided to keep the frontend very minimal, as the requirements were flexible regarding styling.
-There are two different frontends with two separate authentications and backends.
-This was done with separation of concerns and independent deployability in mind.
+We designed two standalone frontends, instead of one with role-based authorization, because in the real-world
+the doctor's frontend would be deployed only locally, within the network of the medical institution,
+while patients' frontend would be accessible from everywhere in the world.
+
+It's also important to mention, that the frontend for patients is only a proof-of-concept.
+It was only designed, so that we can present the entire usage workflow, all the way from start to finish.
 
 == Backend architecture
-
-// TODO
-// same as frontend, lacks contnet and analysys and justification for choices made, we should cover things such as:
-// . what controllers exists: explain the seperation of domains that we have consultation, prescription, summary, transcript, why
-// - tie it to the corresponding infrastructure, why we have the business logic there
-// - middleware, same as frontend, how does Auth0 integrate into the backend, JWT tokens, sessions, hwo they are protected
-// - end points, make a table talk about it
-// - justification for the chosen tech stack over others
-// - MENTION: booking backend is a poc and its made to just complete workflow, what is and what isnt implemented.
-// - Other things such as DTO, error handling,
-
 
 === Booking backend
 
@@ -506,19 +493,28 @@ This is another layer of abstraction in our application, making service/componen
 
 == Database design
 
-// TODO
-// This reads as a caption for the diagram but lacks the actual DESIGN CHOICES and justification
-// Talk about cardinatlity - one to many for WorksOn, Appointments - many to many. Say one doctor can have many appointment, one patient can have many, like data management class
-// Why do we have the workson table, whats the justification
-// MONGO - What does it store??
-// persistent volumes, what are the docker volumes we have
-
 As previously mentioned, we have two different kinds of databases.
 One of them is the relational database, PostgreSQL in our case,
-for the structured booking data and the non-relational for patient health data, MongoDB, for storing documents.
+for the structured booking data. The second one is a non-relational MongoD, for patient health data as documents.
+
 We decided to go with this design, because PostgreSQL can handle transactional records where consistency,
 relations and constraints are important, while MongoDB is a better fit for generated documents such as transcripts and summaries,
-all the while being faster and more flexible than its relational counterpart.
+all the while being faster for document-oriented queries and more flexible than its relational counterpart.
+
+During the desing phase the most important aspect for the databases were ACID properties, speed and ease-of-use with the built-in object-relational mapping.
+
+=== Relational database
+The relational model is designed to reflect the booking workflow:
+- `doctors` and `patients` are the core tables, they are also connected with the Auth0 component
+- `appointments` handle the metadata such as time, status and date. It's also a junction point for both `doctors` and `patients` modelling a many-to-many relationship.
+- `works_on` was designed as an extension to the booking. It would only start working after deployment, as it is time consuming to mock and test during development.
+
+=== Non-relational database
+
+MongoDB stores the documents that we create via the AI. These are large and semi-structured allowing us to keep AI outputs from the relational database, while still being easy to query them by appointment ids. The collactions are `consultations`, `raw_transcripts`, `summaries`, and `doctor_notes`. These are responsible for transcripts, summaries and the generated doctor's note.
+
+For data persistence, Docker mounts volumes, so data is saved even after a restart. This allows us to look back at past records and possibly fine-tune the agents prompt to match our standards.
+
 @relational_database_er shows our entity relationship diagram.
 
 #appendix(
@@ -595,7 +591,7 @@ Afterwards, the data is passed against the note template and a PDF file is creat
 When Heimdall calls the service, the file gets attached to the email sent via Hermes.
 
 === Email Service (Hermes)
-Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations and cancellations. It uses the `axllent/mailpit` Docker image.
+Hermes is the service that sends the generated doctor's note to the patients as well as booking confirmations. It uses the `axllent/mailpit` Docker image.
 `POST /api/v1/send` requests a PDF from the Typst service, then sends it to Hermes as an SMTP message with the PDF attached.
 
 
@@ -763,6 +759,26 @@ The Booking Backend utilizes the same testing framework as the Consultation Back
 
 The testing approach focuses on service-level unit tests that validate the business logic of core operations:
 
+=== Test Coverage and Results for Backends
+
+Code coverage was measured for both backend services using `Coverlet` and `ReportGenerator`, following the .NET testing coverage guidelines. 
+
+The overall line coverage for the Consultation Backend was 19.1% and for the Booking Backend it was 9.8%. These figures are deceiving and low due to the infrastructure of both backends. There are many services used, such as Speech-to-Text or Email, that depend on external services and are not suitable for unit testing. Migrations and auto-generated code also significantly contribute to the uncovered line count.
+
+When looking at core logic, we get a much more representative result. In the Consultation Backend the service layer achieves between 48.6% and 73.3%, with the data models reaching 81.8% to 100% (see @consultation_test_coverage). In the Booking Backend, the appointment and availability services both achieve 100% (see @booking_test_coverage).
+
+#appendix(
+  <consultation_test_coverage>,
+  image("../images/ConsultationTestCoverage.png"),
+  "Consulation Test Coverage",
+)
+
+#appendix(
+  <booking_test_coverage>,
+  image("../images/BookingTestCoverage.png"),
+  "Booking Test Coverage",
+)
+
 *Appointment Service Tests*
 
 What is tested:
@@ -811,8 +827,6 @@ What is tested:
 - Overall performance on 50 representative questions from the 1000+ question medical knowledge base.
 - Latency and token throughput during medical question answering to assess real-time diagnostic support feasibility.
 
-*Test Coverage and Results*
-
 *Summary Quality Results:*
 Liquid AI demonstrated superior performance for clinical summary generation:
 - ROUGE-1 average: 0.562 vs Gemma 4 at 0.487
@@ -850,8 +864,6 @@ What is tested:
 - Recovery and stability after stress testing to ensure no permanent degradation from heavy load scenarios.
 
 The tests use the same audio file across all phases. The file is a mash-up of audio clips from Mozilla Common Voice dataset. Concurrency levels represent simultaneous transcription requests. Key metrics measured include throughput (requests/second), mean latency, 95th percentile latency (p95), and failure rate.
-
-*Test Coverage and Results*
 
 *Baseline Performance (Concurrency 1-2):*
 - Concurrency 1: 0.401 requests/sec, 2.49s mean latency, 0% failure rate
@@ -908,7 +920,9 @@ The service represents a strong baseline suitable for stable, low-concurrency op
 
     [TC-002],
     [Start a consultation],
-    [1. Log in as a doctor. \ 2. Select relevant appointment. \ 3. Press start consultation. \ 4. Talk with patient. \ 5. Edit summary.],
+    [
+      1. Log in as a doctor. \ 2. Select relevant appointment. \ 3. Press start consultation. \ 4. Talk with patient. \ 5. Edit summary.
+    ],
     [The full doctor's note is generated with symptoms, diagnosis, description and advice or prescription and is stored in the non-relational database.],
     [Pass],
 

@@ -32,7 +32,7 @@
 //https://www.ism.dk/Media/D/4/03-Beskrivelse-af-almen-praksis.pdf page 15
 #slide(title: "Project's goal")[
   #align(center + horizon)[
-    Our semester's project's is to build a software solution to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
+    Our semester's project's goal is to build a software solution to identify potential mistakes during the consultation made by GPs by providing an AI-assisted workflow, where both the medical AI and the GP can look for mistakes made during the consultation.
   ]
 ]
 
