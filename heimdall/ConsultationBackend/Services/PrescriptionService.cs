@@ -78,6 +78,10 @@ public class PrescriptionService : IPrescriptionService
         try
         {
             var json = llmResponse.Trim();
+            var start = json.IndexOf('{');
+            var end = json.LastIndexOf('}');
+            if (start >= 0 && end > start)
+                json = json[start..(end + 1)];
             parsed = JsonSerializer.Deserialize<DoctorNoteFields>(json, JsonOptions)
                 ?? throw new InvalidOperationException("LLM returned null JSON");
         }

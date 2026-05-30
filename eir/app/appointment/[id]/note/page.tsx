@@ -34,7 +34,9 @@ export default function Page() {
 		{ query: { enabled: !!consultationId } },
 	)
 
-	const summaryText = summaryEdit ?? (summaryData as { data?: { sumamry?: { output?: string } } })?.data?.sumamry?.output ?? ''
+	const rawOutput = (summaryData as { data?: { sumamry?: { output?: string } } })?.data?.sumamry?.output ?? ''
+	const parsedOutput = (() => { try { const o = JSON.parse(rawOutput); return o.clinical_summary ?? rawOutput } catch { return rawOutput } })()
+	const summaryText = summaryEdit ?? parsedOutput
 
 	const generatePrescription = async () => {
 		if (!consultationId) return
