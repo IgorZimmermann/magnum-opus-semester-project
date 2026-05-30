@@ -464,15 +464,15 @@ This was done with separation of concerns and independent deployability in mind.
 
 The backend layer consists of two separate ASP.NET Core services written in C\#.
 
-=== Tech stack justification.
+=== Tech stack justification
 C\# was chosen for its strong static typing, which makes complex domain models easier to reason about and catches errors at compile time rather than at runtime. 
 
-ASP.NET Core ships with a built-in dependency injection container, a structured middleware pipeline, and a Auth0 library, covering all core infrastructure needs without additional packages. Python's typical advantage in ML-adjacent work does not apply here, since the LLM services are isolated behind HTTP APIs that the backend simply calls.
+ASP.NET Core ships with a built-in dependency injection container, a structured middleware pipeline, and an Auth0 library, covering all core infrastructure needs without additional packages. Python's typical advantage in ML-adjacent work does not apply here, since the LLM services are isolated behind HTTP APIs that the backend simply calls.
 
-=== Booking backend as proof of concept.
+=== Booking backend as proof of concept
 The booking backend (Janus) exists primarily to complete the end-to-end patient workflow and to give the consultation backend the patient email address needed to deliver the doctor's note. Core booking and availability functionality is implemented. Certain business logic is intentionally out of scope as the focus of this project is the consultation workflow. The UML diagram in @uml_booking_backend illustrates the booking backend's layer structure.
 
-=== Controller separation.
+=== Controller separation
 The consultation backend (Heimdall) is divided into four controllers, each responsible for exactly one stage of the clinical workflow. This maps directly onto the use cases defined in the analysis phase:
 
 - *ConsultationController:* Manages consultation record creation and retrieval. This is the entry point for tying an appointment to an active consultation.
@@ -480,27 +480,27 @@ The consultation backend (Heimdall) is divided into four controllers, each respo
 - *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval. 
 - *PrescriptionController:* LLM draft generation, doctor review and editing, approval, PDF export via Saga, and email delivery via Hermes.
 
-=== Service and infrastructure layers.
+=== Service and infrastructure layers
 Controllers in both backends are kept thin: they parse the incoming HTTP request, delegate to a service interface, and return a response. All business logic lives in the service layer, injected through interfaces. This decoupling means each service is independently testable without needing an HTTP context.
 
 In Heimdall, external dependencies are encapsulated in a dedicated `Infrastructure` layer. Each external service is wrapped behind a typed interface and registered as a named `HttpClient` through ASP.NET's dependency injection. The rest of the codebase depends only on the interface, not the implementation. Replacing the LLM provider, for example, only requires a new `ILLM` implementation with no changes to any controller or service.
 
-=== Data Transfer Objects.
+=== Data Transfer Objects
 Both backends use request and response DTOs to decouple the API contract from the internal data model. Request DTOs define exactly what the caller must send. Response DTOs define what gets returned. 
 
 This prevents internal fields, generated identifiers, and database-specific properties from leaking into the API surface, and allows the internal model to change without breaking the external contract.
 
-=== Error handling.
+=== Error handling
 Errors are handled at the controller level through typed exception mapping: `KeyNotFoundException` returns `404 Not Found`, while `InvalidOperationException` and `TimeoutException` return `400 Bad Request`. This keeps the mapping between domain errors and HTTP status codes explicit and readable without requiring global error middleware.
 
-=== Authentication and authorization.
+=== Authentication and authorization
 Both backends use Auth0 for authentication, integrated via JWT Bearer tokens. A JWT is a signed, self-contained token that encodes claims about the user, such as their identity and role. It is issued by Auth0 after a successful login. The backend does not need to call Auth0 on every request, it simply verifies the token's signature using Auth0's public key and checks that it has not expired.
 
 In ASP.NET, authentication is wired into the middleware pipeline in `Program.cs` via `AddAuth0ApiAuthentication`. The `[Authorize]` attribute is then applied at the controller class level, meaning every endpoint requires a valid token by default. The one exception is `GET /api/Availability/doctors`, which carries `[AllowAnonymous]`.
 
 On the frontend, Auth0 handles the login redirect. A server-side `/api/access-token` route is exposed by Next.js so the browser-side client can retrieve its current JWT, which is then forwarded as the `Bearer` header with every backend API call.
 
-=== API endpoints.
+=== API endpoints
 The tables below list all HTTP endpoints exposed by each backend.
 
 #figure(
