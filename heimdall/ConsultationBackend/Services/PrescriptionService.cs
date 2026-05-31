@@ -13,9 +13,7 @@ namespace ConsultationBackend.Services;
 
 public class PrescriptionService : IPrescriptionService
 {
-    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
-
-    private readonly MongoDbContext _mongo;
+private readonly MongoDbContext _mongo;
     private readonly ILLM _llm;
     private readonly IPdf _pdf;
     private readonly IEmail _email;
@@ -56,6 +54,9 @@ public class PrescriptionService : IPrescriptionService
             - "description": one or two sentences describing the clinical case and key findings
             - "advice_prescription": a specific, actionable, comma-separated list of treatment recommendations. First extract any prescriptions or advice the doctor explicitly gave in the summary. Then add your own evidence-based clinical recommendations appropriate for the diagnosis and symptoms — include specific medication names with dosages and durations where clinically appropriate. Always produce a complete list even if the summary is brief. (e.g. "Amoxicillin 500mg three times daily for 7 days, rest for 3 days, paracetamol 500mg every 6 hours as needed, increase fluid intake, follow up in 1 week if no improvement")
 
+            OUTPUT EXAMPLE (use exactly these field names):
+            {"symptoms":"...","diagnosis":"...","description":"...","advice_prescription":"..."}
+
             Consultation Summary:
             {{summary.Output}}
             """;
@@ -82,8 +83,17 @@ public class PrescriptionService : IPrescriptionService
             var end = json.LastIndexOf('}');
             if (start >= 0 && end > start)
                 json = json[start..(end + 1)];
-            parsed = JsonSerializer.Deserialize<DoctorNoteFields>(json, JsonOptions)
-                ?? throw new InvalidOperationException("LLM returned null JSON");
+
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            parsed = new DoctorNoteFields
+            {
+                Symptoms           = TryGetField(root, "symptoms") ?? "not mentioned",
+                Diagnosis          = TryGetField(root, "diagnosis") ?? "not mentioned",
+                Description        = TryGetField(root, "description") ?? "not mentioned",
+                AdvicePrescription = TryGetField(root, "advice_prescription", "advice", "prescription", "treatment") ?? "not mentioned",
+            };
         }
         catch (JsonException ex)
         {
@@ -110,6 +120,15 @@ public class PrescriptionService : IPrescriptionService
         Console.WriteLine($"Generated prescription for {consultationId}");
 
         return note;
+    }
+
+    private static string? TryGetField(JsonElement root, params string[] names)
+    {
+        foreach (var prop in root.EnumerateObject())
+            foreach (var name in names)
+                if (prop.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    return prop.Value.GetString();
+        return null;
     }
 
     private sealed class DoctorNoteFields

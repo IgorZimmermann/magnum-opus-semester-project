@@ -35,7 +35,7 @@ export default function Page() {
 	)
 
 	const rawOutput = (summaryData as { data?: { sumamry?: { output?: string } } })?.data?.sumamry?.output ?? ''
-	const parsedOutput = (() => { try { const o = JSON.parse(rawOutput); return o.clinical_summary ?? rawOutput } catch { return rawOutput } })()
+	const parsedOutput = (() => { try { const o = JSON.parse(rawOutput); return o.clinical_summary ?? o.summary ?? rawOutput } catch { return rawOutput } })()
 	const summaryText = summaryEdit ?? parsedOutput
 
 	const generatePrescription = async () => {

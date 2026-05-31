@@ -44,15 +44,8 @@ public class TranscriptController : ControllerBase
     [HttpGet("GetTranscript")]
     public IActionResult GetTranscript(Guid consultationId)
     {
-        try
-        {
-            var transcript = _transcriptService.GetTranscript(consultationId);
-            return Ok(new { transcript });
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var transcript = _transcriptService.GetTranscript(consultationId);
+        return Ok(new { transcript });
     }
 
     [HttpPut("EditTranscript")]

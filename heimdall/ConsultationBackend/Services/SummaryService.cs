@@ -7,6 +7,7 @@ using ConsultationBackend.Models.NonRelational;
 using System.Threading.Tasks;
 using DnsClient.Protocol;
 using System.Data;
+using System.Text.Json;
 
 namespace ConsultationBackend.Services;
 
@@ -65,6 +66,23 @@ public class SummaryService : ISummaryService
             throw new InvalidOperationException("Summary generation failed.", ex);
         }
 
+        var output = response.Trim();
+        try
+        {
+            using var jsonDoc = JsonDocument.Parse(output);
+            var root = jsonDoc.RootElement;
+            foreach (var prop in root.EnumerateObject())
+            {
+                var key = prop.Name.ToLowerInvariant().Replace(" ", "_");
+                if (key == "clinical_summary" || key == "summary")
+                {
+                    output = prop.Value.GetString() ?? output;
+                    break;
+                }
+            }
+        }
+        catch (JsonException) { }
+
         var summary = new SummaryDocument
         {
             AppointmentId = consultationId,
@@ -72,7 +90,7 @@ public class SummaryService : ISummaryService
             DoctorName = doc.DoctorName,
             PatientId = doc.PatientId,
             PatientName = doc.PatientName,
-            Output = response,
+            Output = output,
             Type = "summary",
             Status = "pending_review"
         };
