@@ -53,8 +53,6 @@ services:
         condition: service_healthy
       hermes:
         condition: service_started
-      heimdall:
-        condition: service_healthy
     env_file: .env
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}

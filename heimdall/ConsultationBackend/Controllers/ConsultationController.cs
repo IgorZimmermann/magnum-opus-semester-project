@@ -50,6 +50,20 @@ public class ConsultationController : ControllerBase
         }
     }
 
+    [HttpDelete("CompleteConsultation")]
+    public IActionResult CompleteConsultation(Guid consultationId)
+    {
+        try
+        {
+            _consultationService.CompleteConsultation(consultationId);
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
     [HttpGet("GetDoctorAppointments")]
     public IActionResult GetDoctorAppointments(string email)
     {

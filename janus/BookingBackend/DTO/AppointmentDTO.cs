@@ -4,6 +4,7 @@ namespace BookingBackend.DTO
     {
         public Guid DocId { get; set; }
         public string PatId { get; set; } = string.Empty;
+        public string PatientName { get; set; } = string.Empty;
         public DateOnly AppointmentDate { get; set; }
         public TimeOnly AppointmentTime { get; set; }
     }

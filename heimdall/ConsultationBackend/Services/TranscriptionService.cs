@@ -1,5 +1,6 @@
 using ConsultationBackend.Interfaces.Services;
 using ConsultationBackend.Data;
+using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Infrastructure;
 using ConsultationBackend.Models.NonRelational;
 using MongoDB.Driver;
@@ -74,12 +75,41 @@ public class TranscriptService : ITranscriptService
         Console.WriteLine($"Audio file uploaded and transcribed with booking number: {consultationId}");
     }
 
-    public RawTranscriptDocument GetTranscript(Guid consultationId)
+    public RawTranscriptDocument? GetTranscript(Guid consultationId)
     {
         var filter = Builders<RawTranscriptDocument>.Filter.Eq(c => c.AppointmentId, consultationId);
-        var doc = _mongo.RawTranscripts.Find(filter).FirstOrDefault() ?? throw new KeyNotFoundException("Consultation not found");
+        return _mongo.RawTranscripts.Find(filter).FirstOrDefault();
+    }
+
+    public RawTranscriptDocument EditTranscript(Guid consultationId, TranscriptEditRequest request)
+    {
+        var filter = Builders<RawTranscriptDocument>.Filter.Eq(c => c.AppointmentId, consultationId);
+        var doc = _mongo.RawTranscripts.Find(filter).FirstOrDefault();
+
+        if (doc is null)
+        {
+            var consultFilter = Builders<ConsultationDocument>.Filter.Eq(c => c.ConsultationId, consultationId);
+            var consult = _mongo.Consultations.Find(consultFilter).FirstOrDefault()
+                ?? throw new KeyNotFoundException("Consultation not found");
+
+            doc = new RawTranscriptDocument
+            {
+                AppointmentId = consultationId,
+                DoctorId = consult.DoctorId,
+                DoctorName = consult.DoctorName,
+                PatientId = consult.PatientId,
+                PatientName = consult.PatientName,
+                Transcription = request.Transcription ?? string.Empty,
+            };
+            _mongo.RawTranscripts.InsertOne(doc);
+        }
+        else
+        {
+            var update = Builders<RawTranscriptDocument>.Update.Set(c => c.Transcription, request.Transcription);
+            _mongo.RawTranscripts.UpdateOne(filter, update);
+            doc.Transcription = request.Transcription;
+        }
 
         return doc;
-
     }
 }
