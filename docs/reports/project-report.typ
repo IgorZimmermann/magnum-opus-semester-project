@@ -168,7 +168,7 @@ and by replying to that message, the PR owner had to tag the requested reviewers
 
 #appendix(
   <sprint-4-backlog>,
-  image("../images/Sprint4Backlog.png"),
+  image("../images/Sprint4BackLog.png"),
   "Sprint 4 backlog & Story point - Jira",
 )
 
@@ -567,16 +567,89 @@ It was only designed, so that we can present the entire usage workflow, all the 
 
 == Backend architecture
 
-=== Booking backend
+The backend layer consists of two separate ASP.NET Core services written in C\#.
 
-The booking backend was designed as a small ASP.NET service.
-The architecture is organised into layers: controllers, services, interfaces for the services and the data layer.
-The controllers only handle HTTP requests, and the actual business logic is being handled by the separate services.
+=== Tech stack justification
+C\# was chosen for its strong static typing, which makes complex domain models easier to reason about and catches errors at compile time rather than at runtime. 
 
-This backend only uses the relational database for relational queries.
-We landed on this structure because of the abstraction it provides using interfaces and APIs,
-which makes the system easier to maintain and keeps the business logic loosely coupled from the data layer.
-@uml_booking_backend shows the UML diagram for the booking backend.
+ASP.NET Core ships with a built-in dependency injection container, a structured middleware pipeline, and an Auth0 library, covering all core infrastructure needs without additional packages. Python's typical advantage in ML-adjacent work does not apply here, since the LLM services are isolated behind HTTP APIs that the backend simply calls.
+
+=== Booking backend as proof of concept
+The booking backend (Janus) exists primarily to complete the end-to-end patient workflow and to give the consultation backend the patient email address needed to deliver the doctor's note. Core booking and availability functionality is implemented. Certain business logic is intentionally out of scope as the focus of this project is the consultation workflow. The UML diagram in @uml_booking_backend illustrates the booking backend's layer structure.
+
+=== Controller separation
+The consultation backend (Heimdall) is divided into four controllers, each responsible for exactly one stage of the clinical workflow. This maps directly onto the use cases defined in the analysis phase:
+
+- *ConsultationController:* Manages consultation record creation and retrieval. This is the entry point for tying an appointment to an active consultation.
+- *TranscriptController:* Accepts audio upload, delegates transcription to Echo, and stores the result.
+- *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval. 
+- *PrescriptionController:* LLM draft generation, doctor review and editing, approval, PDF export via Saga, and email delivery via Hermes.
+
+=== Service and infrastructure layers
+Controllers in both backends are kept thin: they parse the incoming HTTP request, delegate to a service interface, and return a response. All business logic lives in the service layer, injected through interfaces. This decoupling means each service is independently testable without needing an HTTP context.
+
+In Heimdall, external dependencies are encapsulated in a dedicated `Infrastructure` layer. Each external service is wrapped behind a typed interface and registered as a named `HttpClient` through ASP.NET's dependency injection. The rest of the codebase depends only on the interface, not the implementation. Replacing the LLM provider, for example, only requires a new `ILLM` implementation with no changes to any controller or service.
+
+=== Data Transfer Objects
+Both backends use request and response DTOs to decouple the API contract from the internal data model. Request DTOs define exactly what the caller must send. Response DTOs define what gets returned. 
+
+This prevents internal fields, generated identifiers, and database-specific properties from leaking into the API surface, and allows the internal model to change without breaking the external contract.
+
+=== Error handling
+Errors are handled at the controller level through typed exception mapping: `KeyNotFoundException` returns `404 Not Found`, while `InvalidOperationException` and `TimeoutException` return `400 Bad Request`. This keeps the mapping between domain errors and HTTP status codes explicit and readable without requiring global error middleware.
+
+=== Authentication and authorization
+Both backends use Auth0 for authentication, integrated via JWT Bearer tokens. A JWT is a signed, self-contained token that encodes claims about the user, such as their identity and role. It is issued by Auth0 after a successful login. The backend does not need to call Auth0 on every request, it simply verifies the token's signature using Auth0's public key and checks that it has not expired.
+
+In ASP.NET, authentication is wired into the middleware pipeline in `Program.cs` via `AddAuth0ApiAuthentication`. The `[Authorize]` attribute is then applied at the controller class level, meaning every endpoint requires a valid token by default. The one exception is `GET /api/Availability/doctors`, which carries `[AllowAnonymous]`.
+
+On the frontend, Auth0 handles the login redirect. A server-side `/api/access-token` route is exposed by Next.js so the browser-side client can retrieve its current JWT, which is then forwarded as the `Bearer` header with every backend API call.
+
+=== API endpoints
+The tables below list all HTTP endpoints exposed by each backend.
+
+#figure(
+  table(
+    columns: 4,
+    align: left,
+    stroke: 0.5pt,
+    inset: 6pt,
+
+    [*Method*], [*Endpoint*], [*Description*], [*Auth*],
+
+    [POST], [`/api/Appointment`], [Create a new appointment and send a confirmation email], [Required],
+    [GET], [`/api/Appointment`], [Retrieve all appointments for the authenticated user], [Required],
+    [GET], [`/api/Availability/doctors`], [List all doctors and their available time slots], [Public],
+  ),
+  caption: "Janus (Booking Backend) API endpoints",
+)
+
+#figure(
+  table(
+    columns: 4,
+    align: left,
+    stroke: 0.5pt,
+    inset: 6pt,
+
+    [*Method*], [*Endpoint*], [*Description*], [*Auth*],
+    [POST], [`/api/Consultation/StartConsultation`], [Create a consultation record linked to an appointment], [Required],
+    [GET], [`/api/Consultation/GetConsultation`], [Retrieve consultation metadata by ID], [Required],
+    [GET], [`/api/Consultation/GetDoctorAppointments`], [List all appointments for the authenticated doctor], [Required],
+
+    [POST], [`/api/Transcript/GenerateTranscript`], [Upload audio and trigger transcription via Echo], [Required],
+    [GET], [`/api/Transcript/GetTranscript`], [Retrieve the stored transcript], [Required],
+
+    [POST], [`/api/Summary/GenerateSummary`], [Generate a clinical summary via the LLM], [Required],
+    [GET], [`/api/Summary/GetSummary`], [Retrieve the stored summary], [Required],
+    [PUT], [`/api/Summary/EditSummary`], [Update the summary with doctor edits], [Required],
+
+    [POST], [`/api/Prescription/GeneratePrescription`], [Generate a prescription draft via the LLM], [Required],
+    [GET], [`/api/Prescription/GetPrescription`], [Retrieve the stored prescription], [Required],
+    [PUT], [`/api/Prescription/EditPrescription`], [Update the prescription with doctor edits], [Required],
+    [POST], [`/api/Prescription/ApprovePrescription`], [Approve, generate PDF via Saga, and email to patient], [Required],
+  ),
+  caption: "Heimdall (Consultation Backend) API endpoints",
+)
 
 #appendix(
   <uml_booking_backend>,
@@ -586,17 +659,6 @@ which makes the system easier to maintain and keeps the business logic loosely c
   ),
   "UML diagram of the booking backend",
 )
-
-=== Consultation backend
-
-The consultation backend generally uses the same principle as booking, going through the whole user flow from starting a consultation,
-then summarising, and finally outputting a PDF sent via email.
-It also separates the HTTP calls, business logic and the data layer.
-However, in contrast to the previously mentioned backend, it uses two databases:
-a relational one for structured data and a non-relational one for storing documents.
-The matching of each storage type and also the integrations behind interfaces make this backend easier to extend or replace in the future.
-This backend was also engineered with a translation layer between the backend logic and the service APIs, called "Infrastructure".
-This is another layer of abstraction in our application, making service/component changes even easier.
 
 == Database design
 
