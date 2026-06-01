@@ -4,17 +4,17 @@ import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { useGetApiSummaryGetSummary, putApiSummaryEditSumamry, postApiPrescriptionGeneratePrescription, putApiPrescriptionEditPrescription, postApiPrescriptionApprovePrescription } from '@/src/api/heimdell'
+import { useGetApiSummaryGetSummary, putApiSummaryEditSumamry, postApiPrescriptionGeneratePrescription, putApiPrescriptionEditPrescription, postApiPrescriptionApprovePrescription, deleteApiConsultationCompleteConsultation } from '@/src/api/heimdell'
 
 type Prescription = { symptoms: string, diagnosis: string, description: string, advicePrescription: string }
 
 // drives the editable cards rendered in the prescription review phase
 // editable cards in review section
-const fields: { key: keyof Prescription; label: string }[] = [
+const fields: { key: keyof Prescription; label: string; minHeight?: string }[] = [
 	{ key: 'symptoms', label: 'Symptoms' },
 	{ key: 'diagnosis', label: 'Diagnosis' },
-	{ key: 'description', label: 'Description' },
-	{ key: 'advicePrescription', label: 'Advice / Prescription' },
+	{ key: 'description', label: 'Description', minHeight: 'min-h-[150px]' },
+	{ key: 'advicePrescription', label: 'Advice / Prescription', minHeight: 'min-h-[150px]' },
 ]
 
 export default function Page() {
@@ -34,11 +34,14 @@ export default function Page() {
 		{ query: { enabled: !!consultationId } },
 	)
 
-	const summaryText = summaryEdit ?? (summaryData as { data?: { sumamry?: { output?: string } } })?.data?.sumamry?.output ?? ''
+	const rawOutput = (summaryData as { data?: { sumamry?: { output?: string } } })?.data?.sumamry?.output ?? ''
+	const parsedOutput = (() => { try { const o = JSON.parse(rawOutput); return o.clinical_summary ?? o.summary ?? rawOutput } catch { return rawOutput } })()
+	const summaryText = summaryEdit ?? parsedOutput
 
 	const generatePrescription = async () => {
 		if (!consultationId) return
 		setIsLoading(true)
+		setPrescriptionError(null)
 		try {
 			// save any edits the doctor made to the summary before generating
 			await putApiSummaryEditSumamry({ output: summaryText, type: 'summary', status: 'approved' }, { consultationId })
@@ -50,6 +53,8 @@ export default function Page() {
 			} else {
 				setPrescriptionError('Failed to generate prescription. Please try again.')
 			}
+		} catch {
+			setPrescriptionError('Failed to generate prescription. Please try again.')
 		} finally {
 			setIsLoading(false)
 		}
@@ -62,6 +67,7 @@ export default function Page() {
 			// save edits first, then approves / sends to patient
 			await putApiPrescriptionEditPrescription(prescription, { consultationId })
 			await postApiPrescriptionApprovePrescription({ consultationId })
+			await deleteApiConsultationCompleteConsultation(consultationId)
 			router.push('/')
 		} finally {
 			setIsLoading(false)
@@ -87,11 +93,11 @@ export default function Page() {
 			) : (
 				<>
 					<div className="flex flex-col gap-5">
-						{fields.map(({ key, label }) => (
+						{fields.map(({ key, label, minHeight }) => (
 							<Card key={key} className="w-[40dvw]">
 								<CardHeader><CardTitle>{label}</CardTitle></CardHeader>
 								<CardContent>
-									<textarea className="w-full bg-transparent border-none outline-none resize-none text-sm" value={prescription[key]} onChange={e => setPrescription(prev => ({ ...prev, [key]: e.target.value }))} />
+									<textarea className={`w-full bg-transparent border-none outline-none resize-none text-sm${minHeight ? ` ${minHeight}` : ''}`} value={prescription[key]} onChange={e => setPrescription(prev => ({ ...prev, [key]: e.target.value }))} />
 								</CardContent>
 							</Card>
 						))}

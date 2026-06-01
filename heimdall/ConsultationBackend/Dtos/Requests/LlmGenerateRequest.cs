@@ -10,6 +10,9 @@ public class LlmGenerateRequest
     [JsonPropertyName("messages")]
     public List<LlmMessage> Messages { get; set; } = [];
 
+    [JsonPropertyName("format")]
+    public string Format { get; set; } = "json";
+
     [JsonPropertyName("stream")]
     public bool Stream { get; set; } = false;
 }

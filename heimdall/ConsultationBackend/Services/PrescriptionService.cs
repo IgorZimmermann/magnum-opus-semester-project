@@ -13,9 +13,7 @@ namespace ConsultationBackend.Services;
 
 public class PrescriptionService : IPrescriptionService
 {
-    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
-
-    private readonly MongoDbContext _mongo;
+private readonly MongoDbContext _mongo;
     private readonly ILLM _llm;
     private readonly IPdf _pdf;
     private readonly IEmail _email;
@@ -56,6 +54,9 @@ public class PrescriptionService : IPrescriptionService
             - "description": one or two sentences describing the clinical case and key findings
             - "advice_prescription": a specific, actionable, comma-separated list of treatment recommendations. First extract any prescriptions or advice the doctor explicitly gave in the summary. Then add your own evidence-based clinical recommendations appropriate for the diagnosis and symptoms — include specific medication names with dosages and durations where clinically appropriate. Always produce a complete list even if the summary is brief. (e.g. "Amoxicillin 500mg three times daily for 7 days, rest for 3 days, paracetamol 500mg every 6 hours as needed, increase fluid intake, follow up in 1 week if no improvement")
 
+            OUTPUT EXAMPLE (use exactly these field names):
+            {"symptoms":"...","diagnosis":"...","description":"...","advice_prescription":"..."}
+
             Consultation Summary:
             {{summary.Output}}
             """;
@@ -78,8 +79,21 @@ public class PrescriptionService : IPrescriptionService
         try
         {
             var json = llmResponse.Trim();
-            parsed = JsonSerializer.Deserialize<DoctorNoteFields>(json, JsonOptions)
-                ?? throw new InvalidOperationException("LLM returned null JSON");
+            var start = json.IndexOf('{');
+            var end = json.LastIndexOf('}');
+            if (start >= 0 && end > start)
+                json = json[start..(end + 1)];
+
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            parsed = new DoctorNoteFields
+            {
+                Symptoms           = TryGetField(root, "symptoms") ?? "not mentioned",
+                Diagnosis          = TryGetField(root, "diagnosis") ?? "not mentioned",
+                Description        = TryGetField(root, "description") ?? "not mentioned",
+                AdvicePrescription = TryGetField(root, "advice_prescription", "advice", "prescription", "treatment") ?? "not mentioned",
+            };
         }
         catch (JsonException ex)
         {
@@ -108,6 +122,15 @@ public class PrescriptionService : IPrescriptionService
         return note;
     }
 
+    private static string? TryGetField(JsonElement root, params string[] names)
+    {
+        foreach (var prop in root.EnumerateObject())
+            foreach (var name in names)
+                if (prop.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    return prop.Value.GetString();
+        return null;
+    }
+
     private sealed class DoctorNoteFields
     {
         [JsonPropertyName("symptoms")]
@@ -131,31 +154,35 @@ public class PrescriptionService : IPrescriptionService
         return docs.OrderByDescending(d => d.CreatedAt).First();
     }
 
-    public DoctorNoteDocument EditPrescription (Guid consultaionId, PrescriptionEditRequest request)
+    public DoctorNoteDocument EditPrescription(Guid consultaionId, PrescriptionEditRequest request)
     {
-        var filter = Builders<DoctorNoteDocument>.Filter.Eq(c => c.AppointmentId, consultaionId);
-        var oldNote = _mongo.DoctorNotes.Find(filter).First();
+        var appointmentFilter = Builders<DoctorNoteDocument>.Filter.Eq(c => c.AppointmentId, consultaionId);
+        var note = _mongo.DoctorNotes.Find(appointmentFilter).ToList()
+            .OrderByDescending(d => d.CreatedAt).FirstOrDefault()
+            ?? throw new KeyNotFoundException("Prescription not found");
 
         if (request.AdvicePrescription is null) throw new NoNullAllowedException("Advice prescription must not be null");
         if (request.Diagnosis is null) throw new NoNullAllowedException("Diagnosis must not be null");
         if (request.Symptoms is null) throw new NoNullAllowedException("Symptom must not be null");
         if (request.Description is null) throw new NoNullAllowedException("Description must not be null");
 
-        var updatedPrescription = new DoctorNoteDocument
-        {
-            AppointmentId = oldNote.AppointmentId,
-            DoctorId = oldNote.DoctorId,
-            DoctorName = oldNote.DoctorName,
-            PatientId = oldNote.PatientId,
-            PatientName = oldNote.PatientName,
-            Symptoms = request.Symptoms,
-            Diagnosis = request.Diagnosis,
-            Description = request.Description,
-            AdvicePrescription = request.AdvicePrescription,
-            Status = "approved"
-        };
+        var update = Builders<DoctorNoteDocument>.Update
+            .Set(d => d.Symptoms, request.Symptoms)
+            .Set(d => d.Diagnosis, request.Diagnosis)
+            .Set(d => d.Description, request.Description)
+            .Set(d => d.AdvicePrescription, request.AdvicePrescription)
+            .Set(d => d.Status, "approved");
 
-        return updatedPrescription;
+        var idFilter = Builders<DoctorNoteDocument>.Filter.Eq(d => d.Id, note.Id);
+        _mongo.DoctorNotes.UpdateOne(idFilter, update);
+
+        note.Symptoms = request.Symptoms;
+        note.Diagnosis = request.Diagnosis;
+        note.Description = request.Description;
+        note.AdvicePrescription = request.AdvicePrescription;
+        note.Status = "approved";
+
+        return note;
     }
 
     public async Task ApprovePrescription(Guid consultationId)
@@ -213,7 +240,8 @@ public class PrescriptionService : IPrescriptionService
         }
 
         var update = Builders<DoctorNoteDocument>.Update.Set(d => d.Status, "approved");
-        _mongo.DoctorNotes.UpdateOne(noteFilter, update);
+        var idFilter = Builders<DoctorNoteDocument>.Filter.Eq(d => d.Id, note.Id);
+        _mongo.DoctorNotes.UpdateOne(idFilter, update);
 
         Console.WriteLine($"Prescription approved and emailed to {consultation.PatientEmail} for {consultationId}");
     }

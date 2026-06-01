@@ -8,4 +8,5 @@ public interface IConsultationService
     Guid StartConsultation(BookingRequest request);
     ConsultationResponse GetConsultation(Guid consultationId);
     List<AppointmentSummaryResponse> GetDoctorAppointments(string email);
+    void CompleteConsultation(Guid consultationId);
 }

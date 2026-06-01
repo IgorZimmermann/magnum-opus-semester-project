@@ -8,6 +8,8 @@ import type {
     PostApiSummaryGenerateSummaryParams,
     PostApiTranscriptGenerateTranscriptBody,
     PostApiTranscriptGenerateTranscriptParams,
+    TranscriptEditRequest,
+    PutApiTranscriptEditTranscriptParams,
     SummaryEditRequest,
     PutApiSummaryEditSumamryParams,
     PostApiPrescriptionGeneratePrescriptionParams,
@@ -28,6 +30,14 @@ export const postApiConsultationStartConsultation = (body: BookingRequest, optio
         headers: { 'Content-Type': 'application/json', ...options?.headers },
         body: JSON.stringify(body),
     })
+
+export const deleteApiConsultationCompleteConsultation = (consultationId: string, options?: RequestInit) => {
+    const qs = new URLSearchParams({ consultationId }).toString()
+    return customFetch<any>(`${BASE}/api/Consultation/CompleteConsultation?${qs}`, {
+        ...options,
+        method: 'DELETE',
+    })
+}
 
 export const getApiConsultationGetDoctorAppointments = (
     params?: GetApiConsultationGetDoctorAppointmentsParams,
@@ -121,6 +131,20 @@ export const useGetApiSummaryGetSummary = (
         queryFn: ({ signal }) => getApiSummaryGetSummary(params, { signal }),
         ...options?.query,
     })
+
+export const putApiTranscriptEditTranscript = (
+    body: TranscriptEditRequest,
+    params?: PutApiTranscriptEditTranscriptParams,
+    options?: RequestInit,
+) => {
+    const qs = new URLSearchParams(params as any).toString()
+    return customFetch<any>(`${BASE}/api/Transcript/EditTranscript${qs ? `?${qs}` : ''}`, {
+        ...options,
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...options?.headers },
+        body: JSON.stringify(body),
+    })
+}
 
 // NOTE: route has a typo in the backend — it is literally "EditSumamry"
 export const putApiSummaryEditSumamry = (

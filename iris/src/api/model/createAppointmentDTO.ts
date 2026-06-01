@@ -8,6 +8,7 @@
 export interface CreateAppointmentDTO {
   docId?: string;
   patId?: string;
+  patientName?: string;
   appointmentDate?: string;
   appointmentTime?: string;
 }
