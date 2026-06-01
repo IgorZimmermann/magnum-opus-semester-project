@@ -99,7 +99,7 @@ referrals that act as a second opinion.
 Doctors can then revise the prescription if needed and finally send a formatted PDF to patients via email.
 
 This report covers the methodology,
-the problem analysis and the requirements to set boundaries and limitations of our objective,
+the problem analysis and the requirements to set boundaries and limitations to our objective,
 followed by the implementation and design of each component to achieve this goal.
 The report concludes with the testing and validation process used to verify the set limitations and functions.
 
@@ -185,15 +185,15 @@ outpatient departments face outdated manual processes that drastically slow down
 put a burden on both patients and medical staff.
 One main cause of this problem is due to the legacy IT infrastructure.
 Hospitals run old and outdated systems that are expensive and risky to replace during their constant operation.
-Additionally, integrating new clinical tools requires a large amount of resources to transfer data,
-train staff, and comply data privacy compliances.
+Additionally, integrating new clinical tools require large amounts of resources to transfer data,
+train staff, and comply with data privacy compliances.
 This makes moving on from legacy systems costly and slow.
 Moreover, these old legacy systems are a large threat to cyber-attacks yet they contain highly sensitive patient health data.
 
 On top of that, GPs and physicians report spending between 10 and 20 hours per week on administrative tasks alone.
 #footnote[Medscape Physician Compensation Report (2018). American Medical Association.]
-This large overhead on top of the stress of patient care causes a large diagnostic errors,
-with 58% of diagnostic errors occurring during GP consultation.
+This large overhead on top of the stress of patient care causes large diagnostic errors,
+with 58% of them occurring during GP consultation.
 #footnote[Patient Claim Line, Medical Misdiagnosis Statistics (2024). https://www.patientclaimline.com/article/medical-misdiagnosis-statistics/]
 
 Commercial health systems, like Epic, do exist and are widely used,
@@ -471,7 +471,7 @@ Each frontend communicates only with the corresponding backend via RESTful API c
 
 The backends act as orchestrators, handling business logic and
 using the independent infrastructure to off-load tasks such as PDF generation and LLM prompting.
-Additionally, two separate databases exists for relational booking data and
+Additionally, two separate databases exist for relational booking data and
 a non-relational for patient health data.
 
 #appendix(
@@ -569,7 +569,7 @@ It was only designed, so that we can present the entire usage workflow, all the 
 The backend layer consists of two separate ASP.NET Core services written in C\#.
 
 === Tech stack justification
-C\# was chosen for its strong static typing, which makes complex domain models easier to reason about and catches errors at compile time rather than at runtime. 
+C\# was chosen for its strong static typing, which makes complex domain models easier to reason about and catches errors at compile time rather than at runtime.
 
 ASP.NET Core ships with a built-in dependency injection container, a structured middleware pipeline, and an Auth0 library, covering all core infrastructure needs without additional packages. Python's typical advantage in ML-adjacent work does not apply here, since the LLM services are isolated behind HTTP APIs that the backend simply calls.
 
@@ -581,7 +581,7 @@ The consultation backend (Heimdall) is divided into four controllers, each respo
 
 - *ConsultationController:* Manages consultation record creation and retrieval. This is the entry point for tying an appointment to an active consultation.
 - *TranscriptController:* Accepts audio upload, delegates transcription to Echo, and stores the result.
-- *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval. 
+- *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval.
 - *PrescriptionController:* LLM draft generation, doctor review and editing, approval, PDF export via Saga, and email delivery via Hermes.
 
 === Service and infrastructure layers
@@ -590,7 +590,7 @@ Controllers in both backends are kept thin: they parse the incoming HTTP request
 In Heimdall, external dependencies are encapsulated in a dedicated `Infrastructure` layer. Each external service is wrapped behind a typed interface and registered as a named `HttpClient` through ASP.NET's dependency injection. The rest of the codebase depends only on the interface, not the implementation. Replacing the LLM provider, for example, only requires a new `ILLM` implementation with no changes to any controller or service.
 
 === Data Transfer Objects
-Both backends use request and response DTOs to decouple the API contract from the internal data model. Request DTOs define exactly what the caller must send. Response DTOs define what gets returned. 
+Both backends use request and response DTOs to decouple the API contract from the internal data model. Request DTOs define exactly what the caller must send. Response DTOs define what gets returned.
 
 This prevents internal fields, generated identifiers, and database-specific properties from leaking into the API surface, and allows the internal model to change without breaking the external contract.
 
@@ -631,9 +631,16 @@ The tables below list all HTTP endpoints exposed by each backend.
     inset: 6pt,
 
     [*Method*], [*Endpoint*], [*Description*], [*Auth*],
-    [POST], [`/api/Consultation/StartConsultation`], [Create a consultation record linked to an appointment], [Required],
+    [POST],
+    [`/api/Consultation/StartConsultation`],
+    [Create a consultation record linked to an appointment],
+    [Required],
+
     [GET], [`/api/Consultation/GetConsultation`], [Retrieve consultation metadata by ID], [Required],
-    [GET], [`/api/Consultation/GetDoctorAppointments`], [List all appointments for the authenticated doctor], [Required],
+    [GET],
+    [`/api/Consultation/GetDoctorAppointments`],
+    [List all appointments for the authenticated doctor],
+    [Required],
 
     [POST], [`/api/Transcript/GenerateTranscript`], [Upload audio and trigger transcription via Echo], [Required],
     [GET], [`/api/Transcript/GetTranscript`], [Retrieve the stored transcript], [Required],
@@ -645,7 +652,10 @@ The tables below list all HTTP endpoints exposed by each backend.
     [POST], [`/api/Prescription/GeneratePrescription`], [Generate a prescription draft via the LLM], [Required],
     [GET], [`/api/Prescription/GetPrescription`], [Retrieve the stored prescription], [Required],
     [PUT], [`/api/Prescription/EditPrescription`], [Update the prescription with doctor edits], [Required],
-    [POST], [`/api/Prescription/ApprovePrescription`], [Approve, generate PDF via Saga, and email to patient], [Required],
+    [POST],
+    [`/api/Prescription/ApprovePrescription`],
+    [Approve, generate PDF via Saga, and email to patient],
+    [Required],
   ),
   caption: "Heimdall (Consultation Backend) API endpoints",
 )
@@ -990,7 +1000,7 @@ External dependencies are mocked to isolate business logic:
 === Test Coverage and Results for Backends
 
 Code coverage was measured for both backend services using `Coverlet` and `ReportGenerator`,
-following the .NET testing coverage guidelines. 
+following the .NET testing coverage guidelines.
 
 The overall line coverage for the Consultation Backend was 19.1% and for the Booking Backend it was 9.8%.
 These figures are deceiving and low due to the infrastructure of both backends.
@@ -1251,7 +1261,7 @@ Furthermore, the speech-to-text (STT) component currently used in the system is 
 because it cannot handle more than one audio file at the same time.
 We need to find a solution that is concurrent, either using a job queue or async transcriptions.
 This change would allow the parallel processing of the audio recordings,
-reducing the wait times and the making user experience smoother.
+reducing the wait times and making the user experience smoother.
 
 In conclusion, these improvements would greatly enhance user experience and
 the variety of features offered by our application and
