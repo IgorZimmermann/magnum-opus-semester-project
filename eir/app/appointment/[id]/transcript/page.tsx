@@ -1,9 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { postApiSummaryGenerateSummary, useGetApiTranscriptGetTranscript } from '@/src/api/heimdell'
+import { postApiSummaryGenerateSummary, putApiTranscriptEditTranscript, useGetApiTranscriptGetTranscript } from '@/src/api/heimdell'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Page() {
 	const { id } = useParams<{ id: string }>()
@@ -11,14 +11,18 @@ export default function Page() {
 	const consultationId = useSearchParams().get('consultationId') ?? undefined
 
 	const [buttonLoading, setButtonLoading] = useState<boolean>(false)
+	const [transcriptEdit, setTranscriptEdit] = useState<string>('')
 
 	const { data, isLoading } = useGetApiTranscriptGetTranscript(
 		{ consultationId },
 		{ query: { enabled: !!consultationId } },
 	)
 
-	// GetTranscript endpoint which returns transcript
 	const transcript = (data as any)?.data?.transcript?.transcription ?? ''
+
+	useEffect(() => {
+		if (transcript) setTranscriptEdit(transcript)
+	}, [transcript])
 
 	return (
 		<div className="w-full flex flex-col gap-5 items-center justify-center py-20">
@@ -26,16 +30,23 @@ export default function Page() {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				// lets the doctor fix transcription errors 
-					<textarea className="w-[40dvw] bg-transparent border-none outline-none resize-none text-sm" defaultValue={transcript} />
+				<textarea
+					className="w-[40dvw] min-h-[60dvh] bg-transparent border rounded-md p-3 outline-none resize-y text-sm"
+					value={transcriptEdit}
+					onChange={(e) => setTranscriptEdit(e.target.value)}
+				/>
 			)}
-			<Button disabled={buttonLoading} onClick={async () => {
+			<Button disabled={isLoading || buttonLoading} onClick={async () => {
 				setButtonLoading(true)
-				// generate summary before navigating
-				if (consultationId) await postApiSummaryGenerateSummary({ consultationId })
+				if (consultationId) {
+					await putApiTranscriptEditTranscript({ transcription: transcriptEdit }, { consultationId })
+					await postApiSummaryGenerateSummary({ consultationId })
+				}
 				setButtonLoading(false)
 				router.push(`/appointment/${id}/note?consultationId=${consultationId}`)
-			}}>{buttonLoading ? "Analysing..." : "Analyse"}</Button>
+			}}>
+				{isLoading ? 'Loading transcript...' : buttonLoading ? 'Analysing...' : 'Analyse'}
+			</Button>
 		</div>
 	)
 }

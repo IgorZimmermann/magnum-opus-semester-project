@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using ConsultationBackend.Dtos;
 using ConsultationBackend.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 
@@ -42,17 +43,23 @@ public class TranscriptController : ControllerBase
 
     [HttpGet("GetTranscript")]
     public IActionResult GetTranscript(Guid consultationId)
-    {   
+    {
+        var transcript = _transcriptService.GetTranscript(consultationId);
+        return Ok(new { transcript });
+    }
+
+    [HttpPut("EditTranscript")]
+    public IActionResult EditTranscript(Guid consultationId, TranscriptEditRequest request)
+    {
         try
         {
-            var transcript = _transcriptService.GetTranscript(consultationId);
-            return Ok(new { transcript });    
+            var transcript = _transcriptService.EditTranscript(consultationId, request);
+            return Ok(new { transcript });
         }
         catch (KeyNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
-        
     }
 
 }

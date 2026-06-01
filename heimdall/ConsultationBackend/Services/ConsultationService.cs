@@ -83,37 +83,42 @@ public class ConsultationService : IConsultationService
         };
     }
 
+    public void CompleteConsultation(Guid consultationId)
+    {
+        var filter = Builders<ConsultationDocument>.Filter.Eq(c => c.ConsultationId, consultationId);
+        var doc = _mongo.Consultations.Find(filter).FirstOrDefault() ?? throw new KeyNotFoundException("Consultation not found");
+
+        var appointment = _context.Appointments.FirstOrDefault(a => a.AppointmentId == doc.AppointmentId)
+            ?? throw new KeyNotFoundException("Appointment not found");
+
+        _context.Appointments.Remove(appointment);
+        _context.SaveChanges();
+    }
+
     // Accepts doctor email
     // Returns doctor appointment, max 10
     // it returns a list of AppointmentSummaryResponse DTO
     public List<AppointmentSummaryResponse> GetDoctorAppointments(string email)
     {
-        try
-        {
-            var doctor = _context.Doctors.FirstOrDefault(d => d.Email == email)
-                         ?? throw new KeyNotFoundException("Doctor not found");
+        var doctor = _context.Doctors.FirstOrDefault(d => d.Email == email)
+                     ?? throw new KeyNotFoundException("Doctor not found");
 
-            return _context.Appointments
-                .Include(a => a.Patient)
-                .Where(a => a.DocId == doctor.DocId)
-                .OrderBy(a => a.AppointmentDate)
-                .ThenBy(a => a.AppointmentTime)
-                .Take(10)
-                .Select(a => new AppointmentSummaryResponse
-                {
-                    AppointmentId = a.AppointmentId,
-                    PatientName = a.Patient!.Name,
-                    PatientEmail = a.Patient!.Email,
-                    AppointmentDate = a.AppointmentDate,
-                    AppointmentTime = a.AppointmentTime,
-                    AppointmentStatus = a.AppointmentStatus.ToString()
-                })
-                .ToList();
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException($"Failed to retrieve appointments for doctor {email}", ex);
-        }
+        return _context.Appointments
+            .Include(a => a.Patient)
+            .Where(a => a.DocId == doctor.DocId)
+            .OrderBy(a => a.AppointmentDate)
+            .ThenBy(a => a.AppointmentTime)
+            .Take(10)
+            .Select(a => new AppointmentSummaryResponse
+            {
+                AppointmentId = a.AppointmentId,
+                PatientName = a.Patient!.Name,
+                PatientEmail = a.Patient!.Email,
+                AppointmentDate = a.AppointmentDate,
+                AppointmentTime = a.AppointmentTime,
+                AppointmentStatus = a.AppointmentStatus.ToString()
+            })
+            .ToList();
     }
 
 }

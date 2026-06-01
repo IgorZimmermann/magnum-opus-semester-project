@@ -25,6 +25,7 @@ export default function Page() {
 	const [open, setOpen] = useState<boolean>(false)
 	const [date, setDate] = React.useState<Date | undefined>(undefined)
 	const [time, setTime] = useState<string>("10:30")
+	const [bookingError, setBookingError] = useState<string | null>(null)
 
 	const { data: doctorsData } = useGetApiAvailabilityDoctors()
 	const { data: appointmentsData, refetch } = useGetApiAppointment()
@@ -37,6 +38,10 @@ export default function Page() {
 				setSelectedDoctorName("")
 				setDate(undefined)
 				setTime("10:30")
+				setBookingError(null)
+			},
+			onError: () => {
+				setBookingError("Failed to make booking. Please try again.")
 			},
 		},
 	})
@@ -47,7 +52,7 @@ export default function Page() {
 	function handleMakeBooking() {
 		if (!selectedDoctorId || !date) return
 		createAppointment({
-			data: {docId: selectedDoctorId, patId: user?.email ?? "", appointmentDate: format(date, "yyyy-MM-dd"), appointmentTime: `${time}:00`}
+			data: {docId: selectedDoctorId, patId: user?.email ?? "", patientName: user?.name ?? user?.email ?? "", appointmentDate: format(date, "yyyy-MM-dd"), appointmentTime: `${time}:00`}
 		})
 	}
 
@@ -134,7 +139,8 @@ export default function Page() {
 									/>
 								</Field>
 							</FieldGroup>
-							<Button onClick={handleMakeBooking}>Make booking</Button>
+							{bookingError && <p className="text-sm text-red-600">{bookingError}</p>}
+						<Button onClick={handleMakeBooking}>Make booking</Button>
 						</>
 					)}
 				</div>

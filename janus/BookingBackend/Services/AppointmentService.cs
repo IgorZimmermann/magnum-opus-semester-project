@@ -20,7 +20,12 @@ namespace BookingBackend.Services.Implementations
         public async Task<AppointmentDTO> SaveAppointmentAsync(CreateAppointmentDTO dto)
         {
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Email == dto.PatId);
-            if (patient == null) throw new Exception($"Patient with email '{dto.PatId}' not found");
+            if (patient == null)
+            {
+                patient = new Patient { PatId = Guid.NewGuid(), Email = dto.PatId, Name = dto.PatientName };
+                _context.Patients.Add(patient);
+                await _context.SaveChangesAsync();
+            }
 
             var appointment = new Appointment
             {

@@ -29,6 +29,14 @@
     numbering: "1.",
   )
 
+  set super(
+    size: 6pt,
+  )
+
+  show raw: set text(
+    size: 10pt,
+  )
+
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
     text()[

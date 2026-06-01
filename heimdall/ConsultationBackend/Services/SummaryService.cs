@@ -7,6 +7,7 @@ using ConsultationBackend.Models.NonRelational;
 using System.Threading.Tasks;
 using DnsClient.Protocol;
 using System.Data;
+using System.Text.Json;
 
 namespace ConsultationBackend.Services;
 
@@ -65,6 +66,23 @@ public class SummaryService : ISummaryService
             throw new InvalidOperationException("Summary generation failed.", ex);
         }
 
+        var output = response.Trim();
+        try
+        {
+            using var jsonDoc = JsonDocument.Parse(output);
+            var root = jsonDoc.RootElement;
+            foreach (var prop in root.EnumerateObject())
+            {
+                var key = prop.Name.ToLowerInvariant().Replace(" ", "_");
+                if (key == "clinical_summary" || key == "summary")
+                {
+                    output = prop.Value.GetString() ?? output;
+                    break;
+                }
+            }
+        }
+        catch (JsonException) { }
+
         var summary = new SummaryDocument
         {
             AppointmentId = consultationId,
@@ -72,7 +90,7 @@ public class SummaryService : ISummaryService
             DoctorName = doc.DoctorName,
             PatientId = doc.PatientId,
             PatientName = doc.PatientName,
-            Output = response,
+            Output = output,
             Type = "summary",
             Status = "pending_review"
         };
@@ -102,22 +120,18 @@ public class SummaryService : ISummaryService
 
         if (request.Output is null) throw new NoNullAllowedException("Output must not be null");
 
-        // creates a new document of the summary
-        // with the added difference of the "approved" status
-        var updatedSummary = new SummaryDocument
-        {
-            DoctorId = oldSummary.DoctorId,
-            DoctorName = oldSummary.DoctorName,
-            PatientId = oldSummary.PatientId,
-            PatientName = oldSummary.PatientName,
-            Output = request.Output,
-            Type = "summary",
-            Status = "approved",
-        };
+        var update = Builders<SummaryDocument>.Update
+            .Set(c => c.Output, request.Output)
+            .Set(c => c.Status, "approved");
+
+        _mongo.Summaries.UpdateOne(filter, update);
+
+        oldSummary.Output = request.Output;
+        oldSummary.Status = "approved";
 
         Console.WriteLine($"Editing Summary for {consultationId}");
-        
-        return updatedSummary;
+
+        return oldSummary;
     }
 
 }

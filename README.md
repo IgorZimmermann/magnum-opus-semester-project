@@ -21,7 +21,7 @@ This project is the work of this semester's project, a privacy-preserving OPD (O
 ## Running with Docker
 
 ```bash
-docker-compose up -d
+docker compose --profile llm up -d
 ```
 If you are experiencing issues with opening either frontend during testing please open it in incognito or delete the browser data.
 
