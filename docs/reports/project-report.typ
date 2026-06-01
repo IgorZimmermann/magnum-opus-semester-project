@@ -15,7 +15,7 @@ improve consultation quality through AI-assisted second opinions,
 and apply the combined knowledge from this semester's courses.
 
 The objectives were to deliver a working consultation management system that automates the workflow from audio recording to prescription delivery,
-while providing doctors with AI-generated summaries and medical suggestions and allowing patients to manage their bookings.
+while providing doctors with AI-generated summaries and medical suggestions, and allowing patients to manage their bookings.
 
 In a task-driven development environment,
 the system was developed as two separate web applications backed by locally hosted speech recognition and language models for transcription and document generation,
@@ -33,7 +33,7 @@ or expanding the AI's role in supporting diagnosis.
 
 
 = Introduction
-Outpatient departments face an ever increasing load and pressure to maintain high patient volumes while maintaining quality patient care,
+Outpatient departments face an ever-increasing load and pressure to maintain high patient volumes while maintaining quality patient care,
 often relying on outdated systems.
 
 This report documents the work of this semester's project, a privacy-preserving OPD (Outpatient Department) management system.
@@ -41,7 +41,7 @@ The project applies skills gathered from this semester's subjects to provide a w
 from appointment bookings to AI-assisted prescriptions.
 
 The system consists of a web application that lets patients handle appointments and
-allows doctors full control over the consultation workflow which can be broken down into the following:
+allows doctors full control over the consultation workflow that can be broken down into the following:
 audio recording, transcription, AI-generated summary, AI-generated medical suggestions,
 and finally, delivery of the doctor's note via email to the patient.
 
@@ -54,7 +54,7 @@ the AI models are hosted locally to guarantee that no patient data ever leaves t
 == Motivation
 
 Danish GPs see an average of 49 patients per day,
-leaving little to no time for patient care by the administrative overhead.
+leaving little to no time for patient care due to the administrative overhead.
 Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools,
 all contributing to staff burnout.
 As a consequence, patients suffer from longer wait times,
@@ -94,10 +94,9 @@ processes the transcript and produces a structured consultation summary to cut d
 The summary is then manually checked by the doctor for accuracy before finalization.
 
 *Prescription Review and Delivery:*
-Upon summary validation, a prescription is generated along with AI generated suggestions such as overlooked medications or
-referrals which act as a second opinion.
+Upon summary validation, a prescription is generated along with AI-generated suggestions such as overlooked medications or
+referrals that act as a second opinion.
 Doctors can then revise the prescription if needed and finally send a formatted PDF to patients via email.
-
 
 This report covers the methodology,
 the problem analysis and the requirements to set boundaries and limitations to our objective,
@@ -131,7 +130,7 @@ see example @sprint-4-backlog.
 
 == Documents and Presentations
 To create our documentation and presentations, we chose #link("https://typst.app/")[Typst].
-Typst is a text-based document markup language which allowed us to version control and
+Typst is a text-based document markup language that allowed us to version control and
 handle our documents as if they were code.
 We created templates to achieve a uniform look for all of our reports and presentations.
 In order to keep track of our images and diagrams,
@@ -184,17 +183,17 @@ With constant peer reviewing, our codebase remained consistent and maintained qu
 As mentioned in the introduction,
 outpatient departments face outdated manual processes that drastically slow down operations and
 put a burden on both patients and medical staff.
-One main cause of this problem is due to legacy IT infrastructure.
+One main cause of this problem is due to the legacy IT infrastructure.
 Hospitals run old and outdated systems that are expensive and risky to replace during their constant operation.
-Additionally integrating new clinical tools require large amount of resources to transfer data,
-train staff, and follow data privacy compliances.
+Additionally, integrating new clinical tools require large amounts of resources to transfer data,
+train staff, and comply with data privacy compliances.
 This makes moving on from legacy systems costly and slow.
 Moreover, these old legacy systems are a large threat to cyber-attacks yet they contain highly sensitive patient health data.
 
 On top of that, GPs and physicians report spending between 10 and 20 hours per week on administrative tasks alone.
 #footnote[Medscape Physician Compensation Report (2018). American Medical Association.]
-This large overhead on top of the stress of patient care causes a large amount of diagnostic errors,
-with 58% of medical diagnostic errors occurring during GP consultations.
+This large overhead on top of the stress of patient care causes large diagnostic errors,
+with 58% of them occurring during GP consultation.
 #footnote[Patient Claim Line, Medical Misdiagnosis Statistics (2024). https://www.patientclaimline.com/article/medical-misdiagnosis-statistics/]
 
 Commercial health systems, like Epic, do exist and are widely used,
@@ -202,7 +201,7 @@ however they are often cloud based.
 Sending patient data to external servers to process with AI tools creates a large GDPR compliance issue in case of a data breach.
 #footnote[GDPR Register, Navigating GDPR in Healthcare. https://gdprregister.eu/gdpr/healthcare-sector-gdpr]
 
-This highlights a need for a solution: a simple AI tools that run entirely locally using open-source models.
+This highlights a need for a solution: simple AI tools that run entirely locally using open-source models.
 Keeping all sensitive health information secure within the clinic's network,
 relieve medical staff of administrative work and modernize facilities quickly and affordably.
 
@@ -214,13 +213,13 @@ Operating at this quantity and volume leaves little room for error,
 yet GPs and physicians report spending between 10 and 20 hours per week on administrative tasks alone.
 #footnote[Medscape Physician Compensation Report (2018). American Medical Association.]
 This administrative overhead impacts doctor to patient care quality,
-with 58% of diagnostic errors occurring during GP consultations in ODP environments.
+with 58% of diagnostic errors occurring during GP consultations in OPD environments.
 #footnote[Patient Claim Line, Medical Misdiagnosis Statistics (2024). https://www.patientclaimline.com/article/medical-misdiagnosis-statistics/]
 and prescription errors ranging from 1% to 11% of all prescriptions written.
 #footnote[Wikipedia, Medical Error. https://en.wikipedia.org/wiki/Medical_error]
 
-These statistics clearly highlights a problem and a problem to solve.
-The current situation on administrative workload contributes to mistakes and affect patient care outcomes on diagnosis and prescribing.
+These statistics clearly highlight a problem and a problem to solve.
+The current situation on administrative workload contributes to mistakes and affect patient care outcomes in diagnosis and prescribing.
 
 == Aim
 
@@ -228,7 +227,7 @@ The aim of this project is to provide a privacy-preserving,
 locally hosted OPD management system that automates the workflow from consultation to digital prescription,
 using open-source speech-to-text and large language models, with a "safety net" of suggestive alerts.
 
-The aim is built on two main technical focus: component-based architecture and privacy first design.
+The aim is built on two main technical focuses: component-based architecture and privacy first design.
 Managing such workflow in a single, tightly coupled system would make it difficult to maintain,
 extend and replace individual parts. At the same time, dealing with health data requires strict precautions,
 meaning only locally hosted open-source models are used,
@@ -245,7 +244,7 @@ connect them and enable easy replacement and seamless upgrades of individual com
 The following use cases follow the two primary user workflows:
 the doctor's workflow for a consultation broken down into two segments, consultation and then review.
 Additionally, a booking workflow is included as part of the proof of concept.
-These following use cases outline the system behaviour and actor interactions.
+The following use cases outline the system behaviour and actor interactions.
 
 #block(breakable: false)[
   === Booking process
@@ -287,7 +286,7 @@ These following use cases outline the system behaviour and actor interactions.
 )
 
 #block(breakable: false)[
-=== Consultation process
+  === Consultation process
   - *Primary actor:* Doctor
   - *Secondary actor:* Patient
   - *Preconditions:* An appointment exists in the system and the doctor has valid credentials
@@ -467,12 +466,12 @@ A layered architecture enforces vertical separation of concerns across frontend,
 The system is structured into three main layers: frontend, backend, and services/databases,
 as illustrated in @application_layer_diagram.
 
-Two front-ends exists - one for the consultation system and one as a proof-of-concept for the booking system.
+Two frontends exist - one for the consultation system and one as a proof-of-concept for the booking system.
 Each frontend communicates only with the corresponding backend via RESTful API calls.
 
-The backends act as a orchestrators, handling business logic and
+The backends act as orchestrators, handling business logic and
 using the independent infrastructure to off-load tasks such as PDF generation and LLM prompting.
-Additionally, two separate database exists for relational booking data and
+Additionally, two separate databases exist for relational booking data and
 a non-relational for patient health data.
 
 #appendix(
@@ -492,7 +491,7 @@ the overall system scope and operational complexity made a monolithic structure 
 In addition, two separate backends were defined for the two primary use cases - main consultation backend and a proof-of-concept booking backend.
 This separation improves reliability, since a failure in one backend does not affect the availability of the other.
 Additionally, by keeping the two systems separate, the booking system is independent and isolated
-of any connection to sensitive patient data and allows the doctors consultation backend to be hosted locally.
+from any connection to sensitive patient data and allows the doctors consultation backend to be hosted locally.
 
 === Component-Based System Diagram
 
@@ -503,7 +502,7 @@ The two backends act as the central orchestrators:
 - Booking Service: exposes IAuthentication, IBooking and IAvailability interfaces depending on IRelationalDb and IEmailService
 - Consultation Service: exposes ITranscription, ISummaryEditor and ISendPrescription among others mentioned previously, depending on all interfaces.
 
-Using a component-based design, with dependencies only on the interfaces allows for interchangable services without modifying the consuming component.
+Using a component-based design, with dependencies only on the interfaces allows for interchangeable services without modifying the consuming component.
 
 #appendix(
   <component_based_system_diagram>,
@@ -552,17 +551,17 @@ The evaluation of the different technologies selected for the project will be co
 
 == Frontend
 
-So the user's do not have to manage API requests manually, we designed frontend applications,
+So the users do not have to manage API requests manually, we designed frontend applications,
 that translate the user's clicks to API calls and present the responses of those requests.
 We designed two frontends for our project, one for doctors, and one for the patients.
 Both frontends were designed based on their respective user flows (see @activity_bookings for the patient flow,
 and @activity_doctor for the doctor flow).
 
-We designed two standalone frontends, instead of one with role-based authorization, because in the real-world
+We designed two standalone frontends, instead of one with role-based authorization, because in the real world
 the doctor's frontend would be deployed only locally, within the network of the medical institution,
 while the patients' frontend would be accessible from everywhere in the world.
 
-It's also important to mention, that the frontend for patients is only a proof-of-concept.
+It's also important to mention that the frontend for patients is only a proof-of-concept.
 It was only designed, so that we can present the entire usage workflow, all the way from start to finish.
 
 == Backend architecture
@@ -570,7 +569,7 @@ It was only designed, so that we can present the entire usage workflow, all the 
 The backend layer consists of two separate ASP.NET Core services written in C\#.
 
 === Tech stack justification
-C\# was chosen for its strong static typing, which makes complex domain models easier to reason about and catches errors at compile time rather than at runtime. 
+C\# was chosen for its strong static typing, which makes complex domain models easier to reason about and catches errors at compile time rather than at runtime.
 
 ASP.NET Core ships with a built-in dependency injection container, a structured middleware pipeline, and an Auth0 library, covering all core infrastructure needs without additional packages. Python's typical advantage in ML-adjacent work does not apply here, since the LLM services are isolated behind HTTP APIs that the backend simply calls.
 
@@ -582,7 +581,7 @@ The consultation backend (Heimdall) is divided into four controllers, each respo
 
 - *ConsultationController:* Manages consultation record creation and retrieval. This is the entry point for tying an appointment to an active consultation.
 - *TranscriptController:* Accepts audio upload, delegates transcription to Echo, and stores the result.
-- *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval. 
+- *SummaryController:* Handles LLM-generated summary creation, editing, and retrieval.
 - *PrescriptionController:* LLM draft generation, doctor review and editing, approval, PDF export via Saga, and email delivery via Hermes.
 
 === Service and infrastructure layers
@@ -591,7 +590,7 @@ Controllers in both backends are kept thin: they parse the incoming HTTP request
 In Heimdall, external dependencies are encapsulated in a dedicated `Infrastructure` layer. Each external service is wrapped behind a typed interface and registered as a named `HttpClient` through ASP.NET's dependency injection. The rest of the codebase depends only on the interface, not the implementation. Replacing the LLM provider, for example, only requires a new `ILLM` implementation with no changes to any controller or service.
 
 === Data Transfer Objects
-Both backends use request and response DTOs to decouple the API contract from the internal data model. Request DTOs define exactly what the caller must send. Response DTOs define what gets returned. 
+Both backends use request and response DTOs to decouple the API contract from the internal data model. Request DTOs define exactly what the caller must send. Response DTOs define what gets returned.
 
 This prevents internal fields, generated identifiers, and database-specific properties from leaking into the API surface, and allows the internal model to change without breaking the external contract.
 
@@ -632,9 +631,16 @@ The tables below list all HTTP endpoints exposed by each backend.
     inset: 6pt,
 
     [*Method*], [*Endpoint*], [*Description*], [*Auth*],
-    [POST], [`/api/Consultation/StartConsultation`], [Create a consultation record linked to an appointment], [Required],
+    [POST],
+    [`/api/Consultation/StartConsultation`],
+    [Create a consultation record linked to an appointment],
+    [Required],
+
     [GET], [`/api/Consultation/GetConsultation`], [Retrieve consultation metadata by ID], [Required],
-    [GET], [`/api/Consultation/GetDoctorAppointments`], [List all appointments for the authenticated doctor], [Required],
+    [GET],
+    [`/api/Consultation/GetDoctorAppointments`],
+    [List all appointments for the authenticated doctor],
+    [Required],
 
     [POST], [`/api/Transcript/GenerateTranscript`], [Upload audio and trigger transcription via Echo], [Required],
     [GET], [`/api/Transcript/GetTranscript`], [Retrieve the stored transcript], [Required],
@@ -646,7 +652,10 @@ The tables below list all HTTP endpoints exposed by each backend.
     [POST], [`/api/Prescription/GeneratePrescription`], [Generate a prescription draft via the LLM], [Required],
     [GET], [`/api/Prescription/GetPrescription`], [Retrieve the stored prescription], [Required],
     [PUT], [`/api/Prescription/EditPrescription`], [Update the prescription with doctor edits], [Required],
-    [POST], [`/api/Prescription/ApprovePrescription`], [Approve, generate PDF via Saga, and email to patient], [Required],
+    [POST],
+    [`/api/Prescription/ApprovePrescription`],
+    [Approve, generate PDF via Saga, and email to patient],
+    [Required],
   ),
   caption: "Heimdall (Consultation Backend) API endpoints",
 )
@@ -739,7 +748,7 @@ Startup order is enforced through Docker's `depends_on` conditions. Four service
 - *Heimdall* and *Janus* declare `condition: service_healthy` for these four dependencies,
   ensuring neither backend starts before its data stores and other services have become fully available.
 
-- *Odin* and *Hermes* use `condition: service_started` since neither services expose a meaningful ready signal.
+- *Odin* and *Hermes* use `condition: service_started` since neither service exposes a meaningful ready signal.
 
 === Environment Variables
 
@@ -852,7 +861,7 @@ Each backend has its own Auth0 tenant and audience — Heimdall expects https://
 
 `[Authorize]` is applied at the controller class level in both backends, so every endpoint requires a valid token by default.
 
-Both frontends use Auth0 to handle the login flow. It exposes an /api/access-token route that the client calls to retrieve the token, which is then forwarded to Heimdall with each request.
+Both frontends use Auth0 to handle the login flow. Both frontends expose an /api/access-token route that the client calls to retrieve the token, which is then forwarded to Heimdall with each request.
 
 #appendix(
   <postgres_image>,
@@ -936,7 +945,7 @@ What is tested:
 *Summary Service Tests*
 
 What is tested:
-- Mocks the LLM service to verify that the service correctly passes the transcription to the language model.
+- The test mocks the LLM service to verify that the service correctly passes the transcription to the language model.
 - Confirming that the service retrieves the most recent summary version as multiple versions might exist.
 
 *Prescription Service Tests*
@@ -991,7 +1000,7 @@ External dependencies are mocked to isolate business logic:
 === Test Coverage and Results for Backends
 
 Code coverage was measured for both backend services using `Coverlet` and `ReportGenerator`,
-following the .NET testing coverage guidelines. 
+following the .NET testing coverage guidelines.
 
 The overall line coverage for the Consultation Backend was 19.1% and for the Booking Backend it was 9.8%.
 These figures are deceiving and low due to the infrastructure of both backends.
@@ -1223,7 +1232,7 @@ Reflecting on the project, the following points were a success:
 - CBS design - Independently deployed infrastructure allows for easy testability and modularity during development
 - Methodology - Two meetings a week ensures constant accountability and progress
 - Auth0 Integration - handled both backends cleanly with minimal friction
-- Docker compose - full system consistency, reproducible across all machines
+- Docker Compose - full system consistency, reproducible across all machines
 
 What could be improved:
 - Booking backend/frontend - remains as POC, still lacks business logic validation and development
@@ -1236,7 +1245,7 @@ It demonstrates the design of a component-based system and the use of a locally-
 There are many improvements, which can be implemented in the future to enhance the system.
 In terms of clinical capability, the LLM could be expanded,
 so it looks at past patient history to propose contraindications or
-warn about possible allergy-related side affects.
+warn about possible allergy-related side effects.
 We could also make the AI use reinforcement learning,
 where the doctor can rate the AI's responses to fine-tune the local model over time.
 Furthermore, AI could help assist the doctor not only with making mistakes and prescriptions,
@@ -1252,7 +1261,7 @@ Furthermore, the speech-to-text (STT) component currently used in the system is 
 because it cannot handle more than one audio file at the same time.
 We need to find a solution that is concurrent, either using a job queue or async transcriptions.
 This change would allow the parallel processing of the audio recordings,
-making the waiting time less and the user experience smoother.
+reducing the wait times and making the user experience smoother.
 
 In conclusion, these improvements would greatly enhance user experience and
 the variety of features offered by our application and
