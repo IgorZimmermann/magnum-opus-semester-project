@@ -54,7 +54,7 @@ the AI models are hosted locally to guarantee that no patient data ever leaves t
 == Motivation
 
 Danish GPs see an average of 49 patients per day,
-leaving little to no time for patient care due the administrative overhead.
+leaving little to no time for patient care due to the administrative overhead.
 Managing appointments on paper, taking notes during consultations, and writing prescriptions in separate tools,
 all contributing to staff burnout.
 As a consequence, patients suffer from longer wait times,
