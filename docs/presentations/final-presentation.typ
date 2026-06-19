@@ -13,11 +13,14 @@
   ]
 ]
 
-#slide(title: "System design & architecture")[
-  #align(center + horizon)[
-    Placeholder slide for Ors.
 
-    System design and architecture content will be added here.
+/* - This semesters project design main focus was on redundancy and fail-safe systems. This is why we choose the component based systmes framework and created two instances of the frontend, backend and database. This ensures that if one part of the system fails then the others can still keep going.
+- Two backends: one relational and one document based.
+- Two frontends: Contract first approach. one is for consultation doctor side, the other is proof of concept
+- C# ASP:NET: layered architecture: Controllers, services, interfaces, repositories Services depend only on interfaces, never concrete implementations dependency injection lets ASP.NET wire in the right backend/database at runtime*/
+#slide(title: "System design and architecture")[
+  #align(center + horizon)[
+    #image("../images/ApplicationDiagram.jpg", width: 100%, height: 105%, fit: "contain")
   ]
 ]
 
