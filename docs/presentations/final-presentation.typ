@@ -41,12 +41,40 @@
 ]
 
 #slide(title: "Validation & testing results")[
-  #align(center + horizon)[
-    Placeholder slide for David.
+  *Testing methodologies:*
+  - service and unit tests - backend and components
+  - manual testing - frontend
+  - benchmarking and stress test - STT and LLM
 
-    Validation and testing results will be added here.
+  ]
+
+
+
+#slide(title: "LLM — Liquid AI vs Gemma 4")[
+  *Summary Quality (ROUGE-1 / BERTScore)*
+  - Liquid AI: ROUGE-1 *0.562*, BERTScore *0.385*, latency *110s*
+  - Gemma 4: ROUGE-1 0.487, BERTScore 0.341, latency 267s
+
+  *Medical Knowledge (MedQA — 50 questions)*
+  - Gemma 4: *74%* accuracy — but 81s average latency
+  - Liquid AI: 48% accuracy — but *15s* average latency
+
+  #text(size: 12pt, style: "italic")[
+    → Liquid AI selected: better clinical summaries and 2.4× faster
   ]
 ]
+
+#slide(title: "Speech-to-Text — Stress Testing")[
+  - Zero failures across all concurrency levels (1–24 simultaneous requests)
+  - Throughput stable at *~0.42 req/sec* regardless of load
+  - Latency scales linearly and predictably with concurrency
+  - Full recovery to baseline after peak stress — no resource leaks
+
+  #text(size: 12pt, style: "italic")[
+    → Reliable for single-clinic, low-concurrency use
+  ]
+]
+
 
 #slide(title: "Pre-recorded demo")[
   #align(center + horizon)[
