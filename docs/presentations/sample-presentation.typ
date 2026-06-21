@@ -117,6 +117,19 @@
   ]
 ]
 
+#slide(title: "")[
+  #align(center + horizon)[
+    #image("/assets/image.png")
+    #image("/assets/image-1.png")
+  ]
+]
+
+#slide(title: "")[
+  #align(center + horizon)[
+    #image("/assets/image-2.png")
+  ]
+]
+
 #slide(title: "What We Achieved")[
   - Full consultation workflow: recording → transcription → summary → prescription → email
   - Both frontends are functional

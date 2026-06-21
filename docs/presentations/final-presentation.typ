@@ -24,13 +24,34 @@
   ]
 ]
 
-#slide(title: "Component diagram")[
-  #align(center + horizon)[
-    Placeholder slide for Sean.
 
-    Component diagram content will be added here.
+#slide(title: "Component Based Diagram")[
+  #align(center + horizon)[
+    #image("../images/CBSE2.drawio.svg", width: 100%, height: 105%, fit: "contain")
   ]
 ]
+
+
+#slide(title: "")[
+  #align(center + horizon)[
+    #image("/assets/image.png")
+    #image("/assets/image-1.png")
+  ]
+]
+
+#slide(title: "")[
+  #align(center + horizon)[
+    #image("/assets/image-2.png")
+  ]
+]
+
+#slide(title: "½")[
+  #align(center + horizon)[
+    #image("../images/CBSE2.drawio.svg", width: 100%, height: 105%, fit: "contain")
+  ]
+]
+
+
 
 #slide(title: "Patient Workflow")[
   #align(center + horizon)[
