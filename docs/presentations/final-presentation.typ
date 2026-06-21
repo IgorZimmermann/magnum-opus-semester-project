@@ -32,11 +32,15 @@
   ]
 ]
 
-#slide(title: "Use-case / sequence diagram")[
+#slide(title: "Patient Workflow")[
   #align(center + horizon)[
-    Placeholder slide for Denis.
+    #image("../images/ActivityBooking.drawio.svg", width: 100%, height: 165%, fit: "contain")
+  ]
+]
 
-    Use-case and sequence diagram content will be added here.
+#slide(title: "Doctor Workflow")[
+  #align(center + horizon)[
+    #image("../images/ActivityDoctor.drawio.svg", width: 100%, height: 165%, fit: "contain")
   ]
 ]
 
@@ -46,7 +50,7 @@
   - manual testing - frontend
   - benchmarking and stress test - STT and LLM
 
-  ]
+]
 
 
 
