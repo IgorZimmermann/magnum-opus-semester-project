@@ -35,12 +35,21 @@
 #slide(title: "Patient Workflow")[
   #align(center + horizon)[
     #image("../images/ActivityBooking.drawio.svg", width: 100%, height: 165%, fit: "contain")
+
+    // The project's use cases follow the two primary user workflows:
+    // Firstly, the patient workflow starts with the system querying the database to display all available doctors along with their schedules.
+    // When the patient selects a doctor and a time, the backend commits the record, updates the dashboard and sends a confirmation email.
   ]
 ]
 
 #slide(title: "Doctor Workflow")[
   #align(center + horizon)[
     #image("../images/ActivityDoctor.drawio.svg", width: 100%, height: 165%, fit: "contain")
+
+    // Secondly, the doctor's workflow begins with the GP selecting an appointment and starting the consultation. As the doctor and patient talk, the system records them. Upon conclusion, the audio stream is routed to the speech-to-text component for transription.
+    // After said transciption is made, a summary is generated from it. The doctor can edit it as needed before the data is sent to the LLM. Then, two tasks are handled simultaneously: a draft of the prescription is created as well as AI suggestions.
+    // Once they're sent to the UI, the GP again has the choice to review the generated info and modify it if it needs modifying.
+    // Finally, when everything is validated, the backend exports the prescription into a PDF document and emails it to the client.
   ]
 ]
 
