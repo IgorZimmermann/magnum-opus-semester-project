@@ -5,14 +5,44 @@
   members: json("../team-members.json"),
 )
 
-#slide(title: "Intro — problem analysis & requirements")[
+#slide(title: "OPD-Vertex")[
   #align(center + horizon)[
-    Placeholder slide for Akos.
+    #text(size: 18pt)[A privacy-preserving, AI-assisted outpatient consultation system]
 
-    Problem analysis and requirements will be added here.
+    #v(1.5em)
+
+    #text(size: 14pt)[Locally hosted | Open-source | Component-based]
   ]
 ]
 
+#slide(title: "The Problem")[
+  #align(center + horizon)[
+    Danish General Practitioners (GPs) have contact with around 49 patients per day on average. Operating with such a high volume of patients carries risks of making mistakes across three core steps: diagnosis, prescribing, and referrals.
+
+    #text(size: 10pt)[Source: Beskrivelse af almen praksissektoren i Danmark (2016)]
+
+    #v(1.5em)
+
+    #grid(
+      columns: (1fr, 1fr, 1fr),
+      gutter: 1em,
+      align(center)[*10–20 hrs/week* \ #text(size: 11pt)[lost to admin tasks]],
+      align(center)[*58%* \ #text(size: 11pt)[of diagnostic errors occur during GP consultations]],
+      align(center)[*Cloud-based* \ #text(size: 11pt)[alternatives risk GDPR compliance]],
+    )
+  ]
+]
+
+#slide(title: "Goal and Solution")[
+  #align(horizon)[
+    #text(size: 18pt)[
+      *Build an OPD management system that:*
+      - has a secure, privacy-first design
+      - automates the full consultation workflow
+      - uses locally hosted open-source AI models
+    ]
+  ]
+]
 
 /* - This semesters project design main focus was on redundancy and fail-safe systems. This is why we choose the component based systmes framework and created two instances of the frontend, backend and database. This ensures that if one part of the system fails then the others can still keep going.
 - Two backends: one relational and one document based.
@@ -24,13 +54,34 @@
   ]
 ]
 
-#slide(title: "Component diagram")[
-  #align(center + horizon)[
-    Placeholder slide for Sean.
 
-    Component diagram content will be added here.
+#slide(title: "Component Based Diagram")[
+  #align(center + horizon)[
+    #image("../images/CBSE2.drawio.svg", width: 100%, height: 105%, fit: "contain")
   ]
 ]
+
+
+#slide(title: "")[
+  #align(center + horizon)[
+    #image("/assets/image.png")
+    #image("/assets/image-1.png")
+  ]
+]
+
+#slide(title: "")[
+  #align(center + horizon)[
+    #image("/assets/image-2.png")
+  ]
+]
+
+#slide(title: "½")[
+  #align(center + horizon)[
+    #image("../images/CBSE2.drawio.svg", width: 100%, height: 105%, fit: "contain")
+  ]
+]
+
+
 
 #slide(title: "Patient Workflow")[
   #align(center + horizon)[
